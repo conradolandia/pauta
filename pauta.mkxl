@@ -1,0 +1,144 @@
+\startsetups pauta:cartahorizontal
+  \setuppapersize
+    [letter,landscape]
+    [letter,landscape]
+\stopsetups
+
+\startsetups pauta:cartavertical
+  \setuppapersize
+    [letter]
+    [letter]
+\stopsetups
+
+\definemode[carta:h][keep]
+\definemode[carta:v][keep]
+
+\startmode[carta:h]
+  \setup[pauta:cartahorizontal]
+\stopmode
+
+\startmode[carta:v]
+  \setup[pauta:cartavertical]
+\stopmode
+
+\def\Pauta[#1]#2#3#4#5#6{
+  \definecolor[colorMarca][#6]
+  \definecolor[colorLineaSecundaria][#5]
+  \definecolor[colorLineaPrincipal][#4]
+  \setupfootertexts[#2][#3]
+  \setupMPvariables[pauta][#1]
+  \reuseMPgraphic{pauta}
+}
+
+\setuplayout
+  [
+    backspace={.06\paperwidth},
+    width={.88\paperwidth},
+    header=0mm,
+    height={.88\paperheight},
+    footer={.06\paperwidth},
+  ]
+
+\setupbodyfont[ebgaramond,10pt]
+
+\startuseMPgraphic{pauta}
+  % Mostrar marcas
+  boolean marcas ; marcas := \MPvar{verMarcas} ;
+
+  % Trazado de marcas
+  path marca ; marca := unitsquare ;
+
+  % Ancho de linea
+  numeric linea ; linea := TextWidth ;
+
+  % Altura de caja tipográfica
+  numeric caja ; caja = TextHeight - FooterHeight ;
+
+  % Distancia entre líneas
+  numeric pluma ; pluma := \MPvar{pluma} ;
+
+  % Ascendentes
+  numeric asc ; asc := \MPvar{ascendentes} ;
+
+  % Ojo medio
+  numeric med ; med := \MPvar{ojoMedio} ;
+
+  % Descendentes
+  numeric dsc ; dsc := \MPvar{descendentes} ;
+
+  % Altura total de un renglon
+  numeric alturaRenglon ;
+  alturaRenglon = (asc + med + dsc) * pluma ;
+
+  % Renglones disponibles
+  numeric renglonesDisponibles ;
+  renglonesDisponibles = floor(caja / alturaRenglon) ;
+
+  % Posición inicial
+  numeric inicio ; inicio := 0 ;
+
+  % Macros
+
+  % Dibujar una sección (ascendente, ojo medio o descendente)
+  vardef Seccion(expr lineas, inicial) =
+
+    % Dibujamos líneas de sección
+    for i = 0 upto lineas :
+      save final ; final = i*pluma ;
+      save distancia ; distancia = final + inicial ;
+      % dibujamos la linea
+      pair a; a = (0, distancia) ;
+      pair b; b = (linea, distancia) ;
+      draw a -- b withpen pencircle scaled 0.1mm withcolor \MPcolor{colorLineaSecundaria} ;
+    endfor ;
+
+    % Dibujamos separadores de sección
+    draw (0, inicial) -- (linea, inicial)
+      withpen pencircle scaled 0.2mm withcolor \MPcolor{colorLineaPrincipal} ;
+
+    draw (0, distancia) -- (linea, distancia)
+      withpen pencircle scaled 0.2mm withcolor \MPcolor{colorLineaPrincipal} ;
+
+    distancia
+  enddef ;
+
+  % Dibujar un renglon con las tres secciones
+  vardef Renglon(expr descendente, ascendente, ojoMedio, inicial) =
+
+    % Si marcas=true mostrar marca de ancho de pluma
+    if marcas = true :
+
+      numeric lineas ; lineas = descendente + ascendente + ojoMedio ;
+      numeric espacios ; espacios = lineas - 1 ;
+
+      for i = 0 upto espacios :
+        numeric espacio ;
+        espacio = i * pluma + inicial ;
+
+        fill unitsquare scaled pluma shifted
+          (if (i mod 2 = 0) :
+            (0, espacio)
+          else:
+            (pluma, espacio)
+          fi) withcolor \MPcolor{colorMarca} ;
+
+      endfor ;
+    fi ;
+
+    % Líneas
+    numeric desc, omed, asce ;
+
+    desc = Seccion(descendente, inicial) ;
+    omed = Seccion(ojoMedio, desc) ;
+    asce = Seccion(ascendente, omed) ;
+
+    % Devolver posicion final con espacio para siguiente renglon
+    asce + pluma * 2
+  enddef ;
+
+  % Llenar la página con renglones
+  for i=1 upto renglonesDisponibles :
+    inicio := Renglon(dsc, asc, med, inicio) ;
+  endfor ;
+\stopuseMPgraphic
+
