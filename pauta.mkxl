@@ -43,7 +43,12 @@
 
 \startuseMPgraphic{pauta}
   % Mostrar marcas
-  boolean marcas ; marcas := \MPvar{verMarcas} ;
+  boolean marcas ;
+  if known \MPvar{verMarcas} :
+    marcas := \MPvar{verMarcas} ;
+  else :
+    marcas := false ;
+  fi ;
 
   % Trazado de marcas
   path marca ; marca := unitsquare ;
@@ -52,7 +57,7 @@
   numeric linea ; linea := TextWidth ;
 
   % Altura de caja tipográfica
-  numeric caja ; caja = TextHeight - FooterHeight ;
+  numeric caja ; caja = TextHeight - FooterHeight - HeaderHeight ;
 
   % Distancia entre líneas
   numeric pluma ; pluma := \MPvar{pluma} ;
@@ -66,9 +71,12 @@
   % Descendentes
   numeric dsc ; dsc := \MPvar{descendentes} ;
 
+  % Valor de compensación para ajustar layouts
+  numeric ajuste ; ajuste := \MPvar{ajuste} ;
+
   % Altura total de un renglon
   numeric alturaRenglon ;
-  alturaRenglon = (asc + med + dsc) * pluma ;
+  alturaRenglon = (asc + med + dsc + ajuste) * pluma ;
 
   % Renglones disponibles
   numeric renglonesDisponibles ;
@@ -81,7 +89,6 @@
 
   % Dibujar una sección (ascendente, ojo medio o descendente)
   vardef Seccion(expr lineas, inicial) =
-
     % Dibujamos líneas de sección
     for i = 0 upto lineas :
       save final ; final = i*pluma ;
@@ -89,23 +96,25 @@
       % dibujamos la linea
       pair a; a = (0, distancia) ;
       pair b; b = (linea, distancia) ;
-      draw a -- b withpen pencircle scaled 0.1mm withcolor \MPcolor{colorLineaSecundaria} ;
+      draw a -- b withpen pencircle scaled 0.1mm
+        withcolor \MPcolor{colorLineaSecundaria} ;
     endfor ;
 
     % Dibujamos separadores de sección
     draw (0, inicial) -- (linea, inicial)
-      withpen pencircle scaled 0.2mm withcolor \MPcolor{colorLineaPrincipal} ;
+      withpen pencircle scaled 0.2mm
+      withcolor \MPcolor{colorLineaPrincipal} ;
 
     draw (0, distancia) -- (linea, distancia)
-      withpen pencircle scaled 0.2mm withcolor \MPcolor{colorLineaPrincipal} ;
+      withpen pencircle scaled 0.2mm
+      withcolor \MPcolor{colorLineaPrincipal} ;
 
     distancia
   enddef ;
 
   % Dibujar un renglon con las tres secciones
   vardef Renglon(expr descendente, ascendente, ojoMedio, inicial) =
-
-    % Si marcas=true mostrar marca de ancho de pluma
+    % mostrar marca de ancho de pluma
     if marcas = true :
 
       numeric lineas ; lineas = descendente + ascendente + ojoMedio ;

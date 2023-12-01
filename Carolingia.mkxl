@@ -6,16 +6,23 @@
 
 \startdocument
 
-\Pauta[verMarcas=true,pluma=2.5mm,ascendentes=3,ojoMedio=4,descendentes=3]
+\Pauta[verMarcas=true,pluma=3mm,ascendentes=3,ojoMedio=4,descendentes=3,ajuste=1]
   {Pluma: \unit{3 mm} \quad (3/4/3)}
   {Carolingia \quad Escuela de Tours, siglo VIII}
   {s=.6}{s=.6}{s=.8}
 
 \page
 
-\Pauta[verMarcas=true,pluma=3mm,ascendentes=3,ojoMedio=4,descendentes=3]
+\Pauta[verMarcas=true,pluma=2.5mm,ascendentes=3,ojoMedio=4,descendentes=3,ajuste=0]
   {Pluma: \unit{2.5 mm} \quad (3/4/3)}
   {Carolingia \quad Escuela de Tours, siglo VIII}
-  {s=.3}{s=.5}{s=0}
+  {s=.6}{s=.6}{s=.8}
+
+\page
+
+\Pauta[verMarcas=true,pluma=2mm,ascendentes=3,ojoMedio=4,descendentes=3,ajuste=0]
+  {Pluma: \unit{2 mm} \quad (3/4/3)}
+  {Carolingia \quad Escuela de Tours, siglo VIII}
+  {s=.6}{s=.6}{s=.8}
 
 \stopdocument
