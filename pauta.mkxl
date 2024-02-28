@@ -5,6 +5,13 @@
 \setuppagenumbering[location=,]
 \setupbodyfont[10pt]
 
+\setuplayout[
+  backspace={.07\paperwidth},
+  width={.86\paperwidth},
+  height={.87\paperheight},
+  topspace={.063\paperheight},
+]
+
 \startsetups pauta:cartavertical
   \setuppapersize
     [letter]
@@ -37,13 +44,6 @@
   \setuplayout[header={.07\paperheight},footer=0mm]
   \define[2]\informacion{\setupheadertexts[##1][##2]}
 \stopsetups
-
-\setuplayout[
-  backspace={.07\paperwidth},
-  width={.86\paperwidth},
-  height={.87\paperheight},
-  topspace={.063\paperheight},
-]
 
 \starttexdefinition nospaces unexpanded Pauta [#1]
   \getparameters[PAUTA][
