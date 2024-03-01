@@ -183,6 +183,17 @@
     omed = Seccion(ojoMedio, desc) ;
     asce = Seccion(ascendente, omed) ;
 
+    % Angulos
+    numeric guias ; guias = floor(linea / pluma) ;
+
+    picture malla ; malla := image(
+      for i=2 upto guias :
+        draw (i * pluma,inicial) -- (i * pluma,asce) withpen pencircle scaled 0.1mm withcolor red ;
+      endfor ;
+    ) ;
+
+    draw malla ;
+
     % Devolver posicion final con espacio para siguiente renglon
     asce + pluma * 2
   enddef ;
