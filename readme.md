@@ -14,12 +14,13 @@ Se incluyen:
 
 ## Modo de empleo
 
-1. Incluir la pauta en su archivo de ConTeXt:
+1. `pauta.mkxl`, `hatching.mp` y su archivo a compilar deben estar en el mismo directorio.
+2. Incluir la pauta en su archivo de ConTeXt:
    ```tex
    \input pauta.mkxl
    ```
+3. Compilar con `context --mode=carta:h [ARCHIVO]` para una plantilla en tamaño carta y posición horizontal, o `context --mode=carta:v [ARCHIVO]` para una plantilla en tamaño carta y posición vertical.
 
-Compilar con `mtxrun --autogenerate --script context [ARCHIVO]`, o `context [ARCHIVO]`.
 
 ## Configuración de la retícula
 
