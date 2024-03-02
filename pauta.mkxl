@@ -55,10 +55,10 @@
     descendentes=3,
     ajuste=0,
     verAngulo=false,
-    angulo=25,
-    colorMarca=black,
-    colorLineaSecundaria=black,
-    colorLineaPrincipal=black,
+    angulo=45,
+    colorPrincipal=black,
+    colorSecundario=black,
+    colorTerciario=black,
     infoIzquierda=,
     infoDerecha=,
     #1,
@@ -68,9 +68,9 @@
     {\setup[pauta:layout:marcasenfooter]}
     {\setup[pauta:layout:marcasenheader]}
 
-  \definecolor[colorMarca][\PAUTAcolorMarca]
-  \definecolor[colorLineaSecundaria][\PAUTAcolorLineaSecundaria]
-  \definecolor[colorLineaPrincipal][\PAUTAcolorLineaPrincipal]
+  \definecolor[colorTerciario][\PAUTAcolorTerciario]
+  \definecolor[colorPrincipal][\PAUTAcolorPrincipal]
+  \definecolor[colorSecundario][\PAUTAcolorSecundario]
 
   \informacion{\PAUTAinfoIzquierda}{\PAUTAinfoDerecha}
 
@@ -101,28 +101,28 @@
   fi ;
 
   % Trazado de marcas
-  path marca ; marca := unitsquare ;
+  path marca ; marca = unitsquare ;
 
   % Ancho de linea
-  numeric linea ; linea := TextWidth ;
+  numeric linea ; linea = TextWidth ;
 
   % Altura de caja tipográfica
   numeric caja ; caja = TextHeight - FooterHeight - HeaderHeight ;
 
   % Distancia entre líneas
-  numeric pluma ; pluma := \MPvar{pluma} ;
+  numeric pluma ; pluma = \MPvar{pluma} ;
 
   % Ascendentes
-  numeric asc ; asc := \MPvar{ascendentes} ;
+  numeric asc ; asc = \MPvar{ascendentes} ;
 
   % Ojo medio
-  numeric med ; med := \MPvar{ojoMedio} ;
+  numeric med ; med = \MPvar{ojoMedio} ;
 
   % Descendentes
-  numeric dsc ; dsc := \MPvar{descendentes} ;
+  numeric dsc ; dsc = \MPvar{descendentes} ;
 
   % Valor de compensación para ajustar layouts
-  numeric ajuste ; ajuste := \MPvar{ajuste} ;
+  numeric ajuste ; ajuste = \MPvar{ajuste} ;
 
   % Altura total de un renglon
   numeric alturaRenglon ;
@@ -135,7 +135,24 @@
   % Posición inicial
   numeric inicio ; inicio := 0 ;
 
+  % Ángulo de pluma
+  boolean verAngulo ;
+  if known \MPvar{verAngulo} :
+    verAngulo := \MPvar{verAngulo} ;
+  else :
+    verAngulo := false ;
+  fi ;
+
+  numeric angulo ; angulo = \MPvar{angulo} + 90 ;
+
+  % Colores de marcas y líneas
+  color colorTerciario ; colorTerciario = \MPcolor{colorTerciario} ;
+  color colorPrincipal ; colorPrincipal = \MPcolor{colorPrincipal} ;
+  color colorSecundario ; colorSecundario = \MPcolor{colorSecundario} ;
+
+  % -------------------------------------------------------------------
   % Macros
+  % -------------------------------------------------------------------
 
   % Dibujar una sección (ascendente, ojo medio o descendente)
   vardef Seccion(expr lineas, inicial) =
@@ -147,17 +164,17 @@
       pair a; a = (0, distancia) ;
       pair b; b = (linea, distancia) ;
       draw a -- b withpen pencircle scaled 0.1mm
-        withcolor \MPcolor{colorLineaSecundaria} ;
+        withcolor colorSecundario ;
     endfor ;
 
     % Dibujamos separadores de sección
     draw (0, inicial) -- (linea, inicial)
       withpen pencircle scaled 0.2mm
-      withcolor \MPcolor{colorLineaPrincipal} ;
+      withcolor colorPrincipal ;
 
     draw (0, distancia) -- (linea, distancia)
       withpen pencircle scaled 0.2mm
-      withcolor \MPcolor{colorLineaPrincipal} ;
+      withcolor colorPrincipal ;
 
     distancia
   enddef ;
@@ -179,7 +196,7 @@
             (0, espacio)
           else:
             (pluma, espacio)
-          fi) withcolor \MPcolor{colorMarca} ;
+          fi) withcolor colorTerciario ;
       endfor ;
     fi ;
 
@@ -191,14 +208,16 @@
     asce = Seccion(ascendente, omed) ;
 
     % Caja para renglon con angulos
-    path caja ; caja =
-      (pluma * 2, inicial) --
-      (pluma * 2, asce) --
-      (linea, asce) --
-      (linea, inicial) --
-      cycle ;
-    hatchoptions (withcolor red dashed withdots) ;
-    hatchfill caja withcolor (25, pluma, -0.2mm) ;
+    if verAngulo = true :
+      path caja ; caja =
+        (pluma * 2, inicial) --
+        (pluma * 2, asce) --
+        (linea, asce) --
+        (linea, inicial) --
+        cycle ;
+      hatchoptions (withcolor colorSecundario dashed withdots) ;
+      hatchfill caja withcolor (angulo, 1mm, -0.2mm) ;
+    fi ;
 
     % Devolver posicion final con espacio para siguiente renglon
     asce + pluma * 2
