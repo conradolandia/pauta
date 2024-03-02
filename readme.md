@@ -30,6 +30,7 @@ Todos los parámetros son opcionales. Sin embargo, si se desea invocar la macro 
 ```tex
 \Pauta[
   verMarcas=true, % Mostrar marcas de anchos de pluma (true / false)
+  marcas=header, % Dónde mostramos las marcas (header | footer)
   pluma=2mm, % Ancho de pluma (se le pueden pasar las unidades también)
   ascendentes=3, % Cantidad de líneas ascendentes (en anchos de pluma)
   ojoMedio=4, % Cantidad de líneas de ojo medio (en anchos de pluma)
