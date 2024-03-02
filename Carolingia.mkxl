@@ -25,7 +25,7 @@
 \Pauta[
   verMarcas=true,
   marcas=header,
-  pluma=4mm,
+  pluma=3mm,
   ascendentes=2,
   ojoMedio=3,
   descendentes=2,
@@ -35,7 +35,7 @@
   colorPrincipal={s=.4},
   colorSecundario={s=.8},
   colorTerciario={s=.9},
-  infoIzquierda={Pluma: \unit{4 mm} \quad (2/3/2) \qquad 25\textdegree{}},
+  infoIzquierda={Pluma: \unit{3 mm} \quad (2/3/2) \qquad 25\textdegree{}},
   infoDerecha={Carolingia \quad Escuela de Tours, siglo VIII},
 ]
 
@@ -48,11 +48,11 @@
   descendentes=2,
   ajuste=0,
   verAngulo=true,
-  angulo=25,
+  angulo=30,
   colorPrincipal={s=.4},
   colorSecundario={s=.8},
   colorTerciario={s=.9},
-  infoIzquierda={Pluma: \unit{4 mm} \quad (2/3/2) \qquad 25\textdegree{}},
+  infoIzquierda={Pluma: \unit{4 mm} \quad (2/3/2) \qquad 30\textdegree{}},
   infoDerecha={Carolingia \quad Escuela de Tours, siglo VIII},
 ]
 

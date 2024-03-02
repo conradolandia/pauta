@@ -39,6 +39,8 @@
   infoDerecha={Foundational Hand \quad Edward Johnston, 1906},
 ]
 
+\Pauta[verAngulo=true]
+
 \Pauta[]
 
 \stopdocument
