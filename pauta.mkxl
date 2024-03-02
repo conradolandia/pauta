@@ -184,11 +184,13 @@
     asce = Seccion(ascendente, omed) ;
 
     % Angulos
-    numeric guias ; guias = floor(linea / pluma) ;
-    numeric longitud ; longitud = asce - inicial ;
-    numeric angulo ; angulo = 45 ;
+    numeric longitud ; longitud := asce - inicial ;
+    numeric angulo ; angulo := 75 ;
+    numeric desplazamiento ; desplazamiento := longitud * cosd(angulo) ;
+    numeric guias ; guias := floor((linea - desplazamiento) / pluma) ;
+
     for i=2 upto guias :
-      draw ((i * pluma), inicial) -- (((i * pluma) + (longitud * cosd(angulo))), asce)
+      draw ((i * pluma), inicial) -- (((i * pluma) + desplazamiento), asce)
         withpen pencircle
         scaled 0.1mm
         withcolor red ;
