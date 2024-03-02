@@ -14,7 +14,7 @@ Se incluyen:
 
 ## Modo de empleo
 
-1. `pauta.mkxl`, `hatching.mp` y su archivo a compilar deben estar en el mismo directorio.
+1. `pauta.mkxl`, `hatching.mp` y su archivo de ConTeXt a compilar deben estar en el mismo directorio.
 2. Incluir la pauta en su archivo de ConTeXt:
    ```tex
    \input pauta.mkxl
