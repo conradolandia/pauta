@@ -54,6 +54,8 @@
     ojoMedio=4,
     descendentes=3,
     ajuste=0,
+    verAngulo=false,
+    angulo=25,
     colorMarca=black,
     colorLineaSecundaria=black,
     colorLineaPrincipal=black,
@@ -79,12 +81,17 @@
     ojoMedio=\PAUTAojoMedio,
     descendentes=\PAUTAdescendentes,
     ajuste=\PAUTAajuste,
+    verAngulo=\PAUTAverAngulo,
+    angulo=\PAUTAangulo,
   ]
 
   \reuseMPgraphic{pauta}\page
 \stoptexdefinition
 
 \startuseMPgraphic{pauta}
+  % Hatching.mp para crear las guias de ángulo
+  input ./hatching.mp ;
+
   % Mostrar marcas cuadradas al inicio de renglon
   boolean marcas ;
   if known \MPvar{verMarcas} :
@@ -183,18 +190,15 @@
     omed = Seccion(ojoMedio, desc) ;
     asce = Seccion(ascendente, omed) ;
 
-    % Angulos
-    numeric longitud ; longitud := asce - inicial ;
-    numeric angulo ; angulo := 75 ;
-    numeric desplazamiento ; desplazamiento := longitud * cosd(angulo) ;
-    numeric guias ; guias := floor((linea - desplazamiento) / pluma) ;
-
-    for i=2 upto guias :
-      draw ((i * pluma), inicial) -- (((i * pluma) + desplazamiento), asce)
-        withpen pencircle
-        scaled 0.1mm
-        withcolor red ;
-    endfor ;
+    % Caja para renglon con angulos
+    path caja ; caja =
+      (pluma * 2, inicial) --
+      (pluma * 2, asce) --
+      (linea, asce) --
+      (linea, inicial) --
+      cycle ;
+    hatchoptions (withcolor red dashed withdots) ;
+    hatchfill caja withcolor (25, pluma, -0.2mm) ;
 
     % Devolver posicion final con espacio para siguiente renglon
     asce + pluma * 2
