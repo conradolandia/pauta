@@ -12,7 +12,7 @@ Se incluyen:
   - `Carolingia.mkxl`
   - `FoundationalHand.mkxl`
 
-## Modo de empleo
+## Modo de empleo y configuración
 
 1. `pauta.mkxl`, `hatching.mp` y su archivo de ConTeXt a compilar deben estar en el mismo directorio.
 2. Incluir la pauta en su archivo de ConTeXt:
@@ -21,16 +21,7 @@ Se incluyen:
    ```
 3. Compilar con `context --mode=carta:h [ARCHIVO]` para una plantilla en tamaño carta y posición horizontal, o `context --mode=carta:v [ARCHIVO]` para una plantilla en tamaño carta y posición vertical.
 
-
-## Configuración de la retícula
-
-Es bastante simple. Primero importamos la pauta desde nuestro archivo (asumiendo que están en el mismo directorio):
-
-```tex
-\input pauta.mkxl
-```
-
-Luego invocamos la macro `\Pauta` tantas veces como páginas queremos. Cada invocación puede tener una configuración diferente.
+4. Luego invocamos la macro `\Pauta` tantas veces como páginas queremos. Cada invocación puede tener una configuración diferente.
 
 Todos los parámetros son opcionales. Sin embargo, si se desea invocar la macro sin parámetros, deben incluirse los paréntesis cuadrados, así: `\Pauta[]`.
 
