@@ -17,7 +17,7 @@
   angulo=35, % Ángulo de la punta de la pluma en grados respecto de la vertical
   colorPrincipal={s=.7}, % Color principal (líneas que separan secciones)
   colorSecundario={s=.8}, % Color secundario (líneas separadas por una anchura de pluma y líneas punteadas de ángulo)
-  colorTerciario={s=.9}, % Color terciario (marcas de anchos de pluma que separan secciones)
+  colorTerciario={s=.9}, % Color terciario (marcas de anchos de pluma)
   infoIzquierda={Pluma: \unit{2 mm} \qquad (3/4/3) \qquad 35\textdegree{}}, % Info a la izquierda de la página
   infoDerecha={Carolingia \quad Escuela de Tours, siglo VIII}, % Info a la derecha de la página
 ]
