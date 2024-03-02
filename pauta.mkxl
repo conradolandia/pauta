@@ -208,13 +208,20 @@
     asce = Seccion(ascendente, omed) ;
 
     % Caja para renglon con angulos
+    numeric espacio ;
+
     if verAngulo = true :
+      if marcas :
+        espacio = pluma * 2 ;
+      else :
+        espacio = 0 ;
+      fi ;
+
       path caja ; caja =
-        (pluma * 2, inicial) --
-        (pluma * 2, asce) --
-        (linea, asce) --
-        (linea, inicial) --
+        (espacio, inicial) -- (espacio, asce) --
+        (linea, asce) -- (linea, inicial) --
         cycle ;
+
       hatchoptions (withcolor colorSecundario dashed withdots) ;
       hatchfill caja withcolor (angulo, 1mm, -0.2mm) ;
     fi ;
