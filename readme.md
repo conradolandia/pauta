@@ -12,7 +12,7 @@ Se incluyen:
   - `Carolingia.mkxl`
   - `FoundationalHand.mkxl`
 
-## Modo de empleo y configuración
+## Modo de empleo
 
 1. `pauta.mkxl`, `hatching.mp` y su archivo de ConTeXt a compilar deben estar en el mismo directorio.
 2. Incluir la pauta en su archivo de ConTeXt:
@@ -24,6 +24,8 @@ Se incluyen:
 4. Luego invocamos la macro `\Pauta` tantas veces como páginas queremos. Cada invocación puede tener una configuración diferente.
 
 Todos los parámetros son opcionales. Sin embargo, si se desea invocar la macro sin parámetros, deben incluirse los paréntesis cuadrados, así: `\Pauta[]`.
+
+## Parámetros de configuración
 
 ```tex
 \Pauta[
