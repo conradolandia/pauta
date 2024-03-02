@@ -7,17 +7,19 @@
 \startdocument
 
 \Pauta[
-  verMarcas=true,
-  pluma=2mm,
-  ascendentes=3,
-  ojoMedio=4,
-  descendentes=3,
-  ajuste=0,
-  colorMarca={s=.6},
-  colorLineaSecundaria={s=.8},
-  colorLineaPrincipal={s=.6},
-  infoIzquierda={Pluma: \unit{2 mm} \quad (3/4/3)},
-  infoDerecha={Carolingia \quad Escuela de Tours, siglo VIII},
+  verMarcas=true, % Mostrar marcas de anchos de pluma (true / false)
+  pluma=2mm, % Ancho de pluma (se le pueden pasar las unidades también)
+  ascendentes=3, % Cantidad de líneas ascendentes (en anchos de pluma)
+  ojoMedio=4, % Cantidad de líneas de ojo medio (en anchos de pluma)
+  descendentes=3, % Cantidad de líneas descendentes (en anchos de pluma)
+  ajuste=0, % A veces es necesario ajustar la altura del renglón si el último cubre la info
+  verAngulo=true, % Ver el ángulo de la punta de la pluna
+  angulo=35, % Ángulo de la punta de la pluma en grados respecto de la vertical
+  colorPrincipal={s=.7}, % Color principal (líneas que separan secciones)
+  colorSecundario={s=.8}, % Color secundario (líneas separadas por una anchura de pluma y líneas punteadas de ángulo)
+  colorTerciario={s=.9}, % Color terciario (marcas de anchos de pluma que separan secciones)
+  infoIzquierda={Pluma: \unit{2 mm} \qquad (3/4/3) \qquad 35\textdegree{}}, % Info a la izquierda de la página
+  infoDerecha={Carolingia \quad Escuela de Tours, siglo VIII}, % Info a la derecha de la página
 ]
 
 \Pauta[
@@ -28,10 +30,29 @@
   ojoMedio=3,
   descendentes=2,
   ajuste=0,
-  colorMarca={s=.9},
-  colorLineaSecundaria={s=.8},
-  colorLineaPrincipal={s=.4},
-  infoIzquierda={Pluma: \unit{4 mm} \quad (2/3/2)},
+  verAngulo=true,
+  angulo=25,
+  colorPrincipal={s=.4},
+  colorSecundario={s=.8},
+  colorTerciario={s=.9},
+  infoIzquierda={Pluma: \unit{4 mm} \quad (2/3/2) \qquad 25\textdegree{}},
+  infoDerecha={Carolingia \quad Escuela de Tours, siglo VIII},
+]
+
+\Pauta[
+  verMarcas=true,
+  marcas=footer,
+  pluma=4mm,
+  ascendentes=2,
+  ojoMedio=3,
+  descendentes=2,
+  ajuste=0,
+  verAngulo=true,
+  angulo=25,
+  colorPrincipal={s=.4},
+  colorSecundario={s=.8},
+  colorTerciario={s=.9},
+  infoIzquierda={Pluma: \unit{4 mm} \quad (2/3/2) \qquad 25\textdegree{}},
   infoDerecha={Carolingia \quad Escuela de Tours, siglo VIII},
 ]
 

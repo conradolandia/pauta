@@ -6,19 +6,36 @@
 
 \startdocument
 
-\Pauta[verMarcas=true,pluma=3mm,ascendentes=3,ojoMedio=4,descendentes=3,ajuste=0,
-  colorMarca={s=.6},
-  colorLineaSecundaria={s=.6},
-  colorLineaPrincipal={s=.8},
-  infoIzquierda={Pluma: \unit{3 mm} \quad (3/4/3)},
+\Pauta[
+  verMarcas=true,
+  pluma=2mm,
+  ascendentes=3,
+  ojoMedio=4,
+  descendentes=3,
+  ajuste=0,
+  verAngulo=true,
+  angulo=35,
+  colorPrincipal={s=.7},
+  colorSecundario={s=.8},
+  colorTerciario={s=.9},
+  infoIzquierda={Pluma: \unit{3 mm} \quad (3/4/3) \qquad 35\textdegree{}},
   infoDerecha={Foundational Hand \quad Edward Johnston, 1906},
 ]
 
-\Pauta[verMarcas=true,pluma=2.5mm,ascendentes=3,ojoMedio=4,descendentes=3,ajuste=0,
-  colorMarca={s=.6},
-  colorLineaSecundaria={s=.6},
-  colorLineaPrincipal={s=.8},
-  infoIzquierda={Pluma: \unit{2.5 mm} \quad (3/4/3)},
+\Pauta[
+  verMarcas=true,
+  marcas=header,
+  pluma=4mm,
+  ascendentes=2,
+  ojoMedio=3,
+  descendentes=2,
+  ajuste=0,
+  verAngulo=true,
+  angulo=25,
+  colorPrincipal={s=.8},
+  colorSecundario={s=.6},
+  colorTerciario={s=.4},
+  infoIzquierda={Pluma: \unit{2.5 mm} \quad (3/4/3) \qquad 25\textdegree{}},
   infoDerecha={Foundational Hand \quad Edward Johnston, 1906},
 ]
 
