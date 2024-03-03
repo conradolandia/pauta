@@ -1,6 +1,35 @@
-% Pauta.mkxl
-% Un pequeño script en ConTeXt para generar pautas para caligrafía
-% usando METAPOST
+%D \module
+%D   [       file=t-pauta,
+%D        version=2024.03.02,
+%D          title=\CONTEXT\ User Module,
+%D       subtitle=Create templates for calligraphy practice using METAPOST,
+%D         author=Andrés Conrado Montoya Acosta,
+%D           date=\currentdate,
+%D      copyright={Andrés Conrado Montoya Acosta},
+%D        email=andresconrado@gmail.com,
+%D      license=MIT License]
+%D
+
+%C Copyright (c) 2024 Andrés Conrado Montoya Acosta
+%C
+%C Permission is hereby granted, free of charge, to any person obtaining
+%C a copy of this software and associated documentation files (the
+%C "Software"), to deal in the Software without restriction, including
+%C without limitation the rights to use, copy, modify, merge, publish,
+%C distribute, sublicense, and/or sell copies of the Software, and to
+%C permit persons to whom the Software is furnished to do so, subject to
+%C the following conditions:
+%C
+%C The above copyright notice and this permission notice shall be
+%C included in all copies or substantial portions of the Software.
+%C
+%C THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+%C EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+%C MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+%C IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+%C CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+%C TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+%C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 \setuppagenumbering[location=,]
 \setupbodyfont[10pt]
@@ -12,226 +41,290 @@
   topspace={.063\paperheight},
 ]
 
-\startsetups pauta:cartavertical
+\startsetups pauta:letterv
   \setuppapersize
     [letter]
     [letter]
 \stopsetups
 
-\startsetups pauta:cartahorizontal
+\startsetups pauta:letterh
   \setuppapersize
     [letter,landscape]
     [letter,landscape]
 \stopsetups
 
-\definemode[carta:v][keep]
-\definemode[carta:h][keep]
+\definemode[letter:v][keep]
+\definemode[letter:h][keep]
 
-\startmode[carta:v]
-  \setup[pauta:cartavertical]
+\startmode[letter:v]
+  \setup[pauta:letterv]
 \stopmode
 
-\startmode[carta:h]
-  \setup[pauta:cartahorizontal]
+\startmode[letter:h]
+  \setup[pauta:letterh]
 \stopmode
 
-\startsetups pauta:layout:marcasenfooter
-  \setuplayout[header=0mm,footer={.07\paperheight}]
-  \define[2]\informacion{\setupfootertexts[##1][##2]}
+\startsetups pauta:layout:footermarks
+  \setuplayout[header=\zeropoint,footer={.07\paperheight}]
+  \setupfootertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
-\startsetups pauta:layout:marcasenheader
-  \setuplayout[header={.07\paperheight},footer=0mm]
-  \define[2]\informacion{\setupheadertexts[##1][##2]}
+\startsetups pauta:layout:headermarks
+  \setuplayout[header={.07\paperheight},footer=\zeropoint]
+  \setupheadertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
 \starttexdefinition nospaces unexpanded Pauta [#1]
   \getparameters[PAUTA][
-    verMarcas=false,
-    marcas=footer,
-    pluma=3mm,
-    ascendentes=3,
-    ojoMedio=4,
-    descendentes=3,
-    ajuste=0,
-    verAngulo=false,
-    angulo=45,
-    colorPrincipal=black,
-    colorSecundario=black,
-    colorTerciario=black,
-    infoIzquierda=,
-    infoDerecha=,
+    displayNibs=false,
+    infoPosition=footer,
+    nibWidth=3mm,
+    ascenders=3,
+    xHeight=4,
+    descenders=3,
+    adjustment=0,
+    displayAngleMarks=false,
+    nibAngle=45,
+    mainColor=black,
+    secondaryColor=black,
+    tertiaryColor=black,
+    infoLeft=,
+    infoRight=,
     #1,
   ]
 
-  \doifelse{\PAUTAmarcas}{footer}
-    {\setup[pauta:layout:marcasenfooter]}
-    {\setup[pauta:layout:marcasenheader]}
+  \doifelse{\PAUTAinfoPosition}{footer}
+    {\setup[pauta:layout:footermarks]}
+    {\setup[pauta:layout:headermarks]}
 
-  \definecolor[colorTerciario][\PAUTAcolorTerciario]
-  \definecolor[colorPrincipal][\PAUTAcolorPrincipal]
-  \definecolor[colorSecundario][\PAUTAcolorSecundario]
-
-  \informacion{\PAUTAinfoIzquierda}{\PAUTAinfoDerecha}
+  \definecolor[tertiaryColor][\PAUTAtertiaryColor]
+  \definecolor[mainColor][\PAUTAmainColor]
+  \definecolor[secondaryColor][\PAUTAsecondaryColor]
 
   \setupMPvariables[pauta][
-    verMarcas=\PAUTAverMarcas,
-    pluma=\PAUTApluma,
-    ascendentes=\PAUTAascendentes,
-    ojoMedio=\PAUTAojoMedio,
-    descendentes=\PAUTAdescendentes,
-    ajuste=\PAUTAajuste,
-    verAngulo=\PAUTAverAngulo,
-    angulo=\PAUTAangulo,
+    displayNibs=\PAUTAdisplayNibs,
+    nibWidth=\PAUTAnibWidth,
+    ascenders=\PAUTAascenders,
+    xHeight=\PAUTAxHeight,
+    descenders=\PAUTAdescenders,
+    adjustment=\PAUTAadjustment,
+    displayAngleMarks=\PAUTAdisplayAngleMarks,
+    nibAngle=\PAUTAnibAngle,
   ]
 
-  \reuseMPgraphic{pauta}\page
+  \page
+  \reuseMPgraphic{pauta}
+  \page
 \stoptexdefinition
 
 \startuseMPgraphic{pauta}
-  % Hatching.mp para crear las guias de ángulo
-  input ./hatching.mp ;
+  % Hatching.mp
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-  % Mostrar marcas cuadradas al inicio de renglon
-  boolean marcas ;
-  if known \MPvar{verMarcas} :
-    marcas := \MPvar{verMarcas} ;
+  % This is HATCHING.MP file defining a set of METAPOST macros for
+  % hatching interior of closed paths.
+  %
+  % Made in BOP, Gda\'nsk, Poland
+  % E-mail contact: B.Jackowski@gust.org.pl
+  % Public domain software (no copyrights, copylefts, copyups, copydowns, etc.)
+  % Current version: 11.07.2000 -- ver 0.1 (pre-release)
+  % Current version: 21.09.2000 -- ver 0.11 (ending semicolon
+  %    added in |extra_beginfig|; |hatchfill_| introduced in order
+  %    to make possible something like |def fill = hatchfill enddef|
+  def hatchfill_ expr c = addto currentpicture contour c _op_ enddef;
+
+  vardef hatchfill text p =
+  save c_,p_; path p_; color c_[\\]; c_.num:=0;
+  save withcolor_; let withcolor_:=withcolor;
+  def withcolor = ; c_[incr c_.num]:= enddef;
+  p_:=p; let withcolor:=withcolor_;
+  for i_:=c_.num downto 1: % find the least ``true'' fill
+    c_.num':=i_; exitif bluepart(c_[i_])>0;
+  endfor
+  if c_.num>0:
+    for i_:=c_.num' upto c_.num:
+    if bluepart(c_[i_])<0: draw hatched(p_)c_[i_];
+    else: hatchfill_ p_ withcolor c_[i_]; fi
+    endfor
+  else: hatchfill_ p_; fi
+  enddef;
+
+  vardef hatched(expr o) primary c =
+  save a_, b_, d_, l_, i_, r_, za_, zb_, zc_, zd_;
+  path b_; picture r_; pair za_, zb_, zc_, zd_;
+  r_:=image(
+    a_:=redpart(c) mod 180; l_:=greenpart(c); d_:=-bluepart(c);
+    b_:=o rotated -a_;
+    b_:=if a_>=90: (lrcorner b_--llcorner b_--ulcorner b_--urcorner b_--cycle)
+    else: (llcorner b_--lrcorner b_--urcorner b_--ulcorner b_--cycle) fi
+    rotated a_;
+    za_:=point 0 of b_; zb_:=point 1 of b_;
+    zc_:=point 2 of b_; zd_:=point 3 of b_;
+    if hatch_match>0:
+    n_:=round(length(zd_-za_)/l_); if n_<2: n_:=2; fi; l_:=length(zd_-za_)/n_;
+    else: n_:=length(zd_-za_)/l_; fi
+    % show (greenpart(c), l_);
+    for i_:=if hatch_match>0: 1 else: 0 fi upto ceiling n_-1:
+    draw_hatched_band((i_/n_)[zd_,za_],(i_/n_)[zc_,zb_],a_,l_,d_);
+    endfor
+  );
+  clip r_ to o; r_
+  enddef;
+
+  def draw_hatched_band(expr za,zb,a,l,d) = % normally, |a| and |l| are ignored
+  draw za--zb withpen pencircle scaled d _hop_;
+  enddef;
+
+  def hatchoptions(text t) = def _hop_ = t enddef enddef;
+
+  newinternal hatch_match; hatch_match:=1;
+  hatchoptions(); extra_beginfig:=extra_beginfig & ";hatchoptions();";
+
+  % End hatching.mp, start custom code
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  % Display square nib-width marks at line start?
+  boolean displayNibs ;
+  if known \MPvar{displayNibs} :
+    displayNibs := \MPvar{displayNibs} ;
   else :
-    marcas := false ;
+    displayNibs := false ;
   fi ;
 
-  % Trazado de marcas
-  path marca ; marca = unitsquare ;
+  % Path for nib-widhts
+  path nibWidth ; nibWidth = unitsquare ;
 
-  % Ancho de linea
-  numeric linea ; linea = TextWidth ;
+  % Line width
+  numeric line ; line = TextWidth ;
 
-  % Altura de caja tipográfica
-  numeric caja ; caja = TextHeight - FooterHeight - HeaderHeight ;
+  % Text height (without footers or headers)
+  numeric box ; box = TextHeight - FooterHeight - HeaderHeight ;
 
-  % Distancia entre líneas
-  numeric pluma ; pluma = \MPvar{pluma} ;
+  % Distance between lines
+  numeric nibWidth ; nibWidth = \MPvar{nibWidth} ;
 
-  % Ascendentes
-  numeric asc ; asc = \MPvar{ascendentes} ;
+  % Ascenders
+  numeric asc ; asc = \MPvar{ascenders} ;
 
-  % Ojo medio
-  numeric med ; med = \MPvar{ojoMedio} ;
+  % X-Height
+  numeric med ; med = \MPvar{xHeight} ;
 
-  % Descendentes
-  numeric dsc ; dsc = \MPvar{descendentes} ;
+  % Descenders
+  numeric dsc ; dsc = \MPvar{descenders} ;
 
-  % Valor de compensación para ajustar layouts
-  numeric ajuste ; ajuste = \MPvar{ajuste} ;
+  % Adjustment value for layout
+  numeric adjustment ; adjustment = \MPvar{adjustment} ;
 
-  % Altura total de un renglon
-  numeric alturaRenglon ;
-  alturaRenglon = (asc + med + dsc + ajuste) * pluma ;
+  % Full line height
+  numeric lineHeight ;
+  lineHeight = (asc + med + dsc + adjustment) * nibWidth ;
 
-  % Renglones disponibles
-  numeric renglonesDisponibles ;
-  renglonesDisponibles = floor(caja / alturaRenglon) ;
+  % Available lines
+  numeric availableLines ;
+  availableLines = floor(box / lineHeight) ;
 
-  % Posición inicial
-  numeric inicio ; inicio := 0 ;
+  % Start position (zero)
+  numeric start ; start := 0 ;
 
-  % Ángulo de pluma
-  boolean verAngulo ;
-  if known \MPvar{verAngulo} :
-    verAngulo := \MPvar{verAngulo} ;
+  % Nib-width nagle
+  boolean displayAngleMarks ;
+  if known \MPvar{displayAngleMarks} :
+    displayAngleMarks := \MPvar{displayAngleMarks} ;
   else :
-    verAngulo := false ;
+    displayAngleMarks := false ;
   fi ;
 
-  numeric angulo ; angulo = \MPvar{angulo} + 90 ;
+  numeric nibAngle ; nibAngle = \MPvar{nibAngle} + 90 ;
 
-  % Colores de marcas y líneas
-  color colorTerciario ; colorTerciario = \MPcolor{colorTerciario} ;
-  color colorPrincipal ; colorPrincipal = \MPcolor{colorPrincipal} ;
-  color colorSecundario ; colorSecundario = \MPcolor{colorSecundario} ;
+  % Color settings
+  color mainColor ; mainColor = \MPcolor{mainColor} ;
+  color secondaryColor ; secondaryColor = \MPcolor{secondaryColor} ;
+  color tertiaryColor ; tertiaryColor = \MPcolor{tertiaryColor} ;
 
   % -------------------------------------------------------------------
-  % Macros
+  % Vardefs
   % -------------------------------------------------------------------
 
-  % Dibujar una sección (ascendente, ojo medio o descendente)
-  vardef Seccion(expr lineas, inicial) =
-    % Dibujamos líneas de sección
-    for i = 0 upto lineas :
-      save final ; final = i*pluma ;
-      save distancia ; distancia = final + inicial ;
-      % dibujamos la linea
-      pair a; a = (0, distancia) ;
-      pair b; b = (linea, distancia) ;
+  % Draw a section (ascendant, x-height or descendant)
+  vardef Section(expr lines, startPos) =
+    % Draw section lines
+    for i = 0 upto lines :
+      save endPos ; endPos = i*nibWidth ;
+      save distance ; distance = endPos + startPos ;
+      pair a; a = (0, distance) ;
+      pair b; b = (line, distance) ;
       draw a -- b withpen pencircle scaled 0.1mm
-        withcolor colorSecundario ;
+        withcolor secondaryColor ;
     endfor ;
 
-    % Dibujamos separadores de sección
-    draw (0, inicial) -- (linea, inicial)
+    % Draw section separators
+    draw (0, startPos) -- (line, startPos)
       withpen pencircle scaled 0.2mm
-      withcolor colorPrincipal ;
+      withcolor mainColor ;
 
-    draw (0, distancia) -- (linea, distancia)
+    draw (0, distance) -- (line, distance)
       withpen pencircle scaled 0.2mm
-      withcolor colorPrincipal ;
+      withcolor mainColor ;
 
-    distancia
+    % Return the distance
+    distance
   enddef ;
 
-  % Dibujar un renglon con las tres secciones
-  vardef Renglon(expr descendente, ascendente, ojoMedio, inicial) =
-    % mostrar marca de ancho de pluma
-    if marcas = true :
+  % Draw a line with three sections
+  vardef TextLine(expr descendant, ascendant, xHeight, startPos) =
+    % Display nib-width marks
+    if displayNibs = true :
 
-      numeric lineas ; lineas = descendente + ascendente + ojoMedio ;
-      numeric espacios ; espacios = lineas - 1 ;
+      numeric lines ; lines = descendant + ascendant + xHeight ;
+      numeric nibs ; nibs = lines - 1 ;
 
-      for i = 0 upto espacios :
-        numeric espacio ;
-        espacio = i * pluma + inicial ;
+      for i = 0 upto nibs :
+        numeric nib ;
+        nib = i * nibWidth + startPos ;
 
-        fill unitsquare scaled pluma shifted
+        fill unitsquare scaled nibWidth shifted
           (if (i mod 2 = 0) :
-            (0, espacio)
+            (0, nib)
           else:
-            (pluma, espacio)
-          fi) withcolor colorTerciario ;
+            (nibWidth, nib)
+          fi) withcolor tertiaryColor ;
       endfor ;
     fi ;
 
-    % Líneas
+    % Draw the three sections
     numeric desc, omed, asce ;
 
-    desc = Seccion(descendente, inicial) ;
-    omed = Seccion(ojoMedio, desc) ;
-    asce = Seccion(ascendente, omed) ;
+    desc = Section(descendant, startPos) ;
+    omed = Section(xHeight, desc) ;
+    asce = Section(ascendant, omed) ;
 
-    % Caja para renglon con angulos
-    numeric espacio ;
+    % Draw a box to contain dotted angle guides
+    numeric space ;
 
-    if verAngulo = true :
-      if marcas :
-        espacio = pluma * 2 ;
+    if displayAngleMarks = true :
+      if displayNibs :
+        space = nibWidth * 2 ;
       else :
-        espacio = 0 ;
+        space = 0 ;
       fi ;
 
-      path caja ; caja =
-        (espacio, inicial) -- (espacio, asce) --
-        (linea, asce) -- (linea, inicial) --
+      path box ; box =
+        (space, startPos) -- (space, asce) --
+        (line, asce) -- (line, startPos) --
         cycle ;
 
-      hatchoptions (withcolor colorSecundario dashed withdots) ;
-      hatchfill caja withcolor (angulo, 1mm, -0.2mm) ;
+      % We use hatching.mp to fill the box with lines
+      % with the right angle, gap and pen
+      hatchoptions (withcolor secondaryColor dashed withdots) ;
+      hatchfill box withcolor (nibAngle, 1mm, -0.2mm) ;
     fi ;
 
-    % Devolver posicion final con espacio para siguiente renglon
-    asce + pluma * 2
+    % Return final position, adding interline space
+    asce + nibWidth * 2
   enddef ;
 
-  % Llenar la página con renglones
-  for i=1 upto renglonesDisponibles :
-    inicio := Renglon(dsc, asc, med, inicio) ;
+  % Fill a page with lines
+  for i=1 upto availableLines :
+    start := TextLine(dsc, asc, med, start) ;
   endfor ;
 \stopuseMPgraphic
