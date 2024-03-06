@@ -1,36 +1,6 @@
 \usemodule[pauta]
 
-%\showframe
-
-% No page numbering
-\setuppagenumbering[location=,]
-\setupbodyfont[10pt]
-
-% Available modes
-% --mode=letter:v
-% --mode=letter:h (default)
-\startsetups pauta:letterv
-  \setuppapersize
-    [letter]
-    [letter]
-\stopsetups
-
-\startsetups pauta:letterh
-  \setuppapersize
-    [letter,landscape]
-    [letter,landscape]
-\stopsetups
-
-\definemode[letter:v][keep]
-\definemode[letter:h][keep]
-
-\startmode[letter:v]
-  \setup[pauta:letterv]
-\stopmode
-
-\startmode[letter:h]
-  \setup[pauta:letterh]
-\stopmode
+\environment[env-example]
 
 \startdocument
 
@@ -40,80 +10,99 @@ A \CONTEXT\ module to typeset templates for calligraphy practice.
 
 \page % I need a page or things get weird...
 
-\Pauta[
-  % Show pen width marks (true | false)
-  displayNibs=true,
+\Pauta [
+  % Hand name
+  hand={Carolingian},
+  %
+  % Some extra info for the hand
+  handInfo={Tours school, VIII\high{th} century},
+  %
   % Where to show the extra info (header | footer)
   infoPosition=header,
-  % Pen nib width with units
-  nibWidth=2mm,
-  % Number of ascender lines (in nib widths)
-  ascenders=3,
-  % Number of x-height lines (in nib widths)
-  xHeight=4,
-  % Number of descending lines (in nib widths)
-  descenders=3,
-  % Sometimes it's necessary to adjust the line height if the last one covers the page info
-  adjustment=1,
+  %
+  % Info on the left side of the page (in header or footer, determined by infoPosition)
+  %infoLeft={Custom text that will override hand generated data},
+  %
+  % Info on the right side of the page (same position as infoLeft)
+  %infoRight={If set, variables hand, handInfo won't have any effect},
+  %
+  % Show pen width marks (true | false)
+  displayNibs=true,
+  %
   % Display dotted guides for the nib angle
   displayAngleMarks=true,
-  % Angle of the pen nib in degrees (zero is a nib in a vertical position, 90 is horizontal)
+  %
+  % Pen nib width (with units)
+  nibWidth=3mm,
+  %
+  % Number of ascender lines (in nib widths)
   nibAngle=35,
+  %
+  % Number of x-height lines (in nib widths)
+  ascenders=3,
+  %
+  % Number of descending lines (in nib widths)
+  xHeight=4,
+  %
+  % Sometimes it's necessary to adjust the line height if the last one covers the page info
+  descenders=3,
+  %
+  % Angle of the pen nib in degrees (0: completly horizontal, 90: completely vertical)
+  adjustment=0,
+  %
   % Main color (lines that separate sections)
-  mainColor={s=.7},
+  mainColor={s=.5},
+  %
   % Secondary color (lines separated by a nib width and dotted angle lines)
-  secondaryColor={s=.8},
+  secondaryColor={s=.6},
+  %
   % Tertiary color (nib width marks on the left margin)
-  tertiaryColor={s=.9},
-  % Info on the left side of the page (in header or footer, determined by infoPosition)
-  infoLeft={Nib: \unit{2 mm} \qquad (3/4/3) \qquad 35\textdegree{}},
-  % Info on the right side of the page (same position as infoLeft)
-  infoRight={Carolingia \quad Escuela de Tours, siglo VIII},
+  tertiaryColor={s=.7},
 ]
 
 \Pauta[
+  hand={Carolingian},
+  handInfo={Tours school, VIII\high{th} century},
   displayNibs=true,
   infoPosition=header,
-  nibWidth=3mm,
+  nibWidth=2.5mm,
   ascenders=2,
   xHeight=3,
   descenders=2,
-  adjustment=0,
-  displayAngleMarks=true,
+  adjustment=1,
+  displayAngleMarks=false,
   nibAngle=25,
-  mainColor={s=.4},
-  secondaryColor={s=.8},
-  tertiaryColor={s=.9},
-  infoLeft={Nib: \unit{3 mm} \quad (2/3/2) \qquad 25\textdegree{}},
-  infoRight={Carolingia \quad Escuela de Tours, siglo VIII},
+  mainColor={s=.3},
+  secondaryColor={s=.4},
+  tertiaryColor={s=.5},
 ]
 
 \Pauta[
+  hand={Visigothic script},
+  handInfo={Spain, VII\high{th} century},
   displayNibs=true,
   infoPosition=footer,
-  nibWidth=2.5mm,
+  nibWidth=2mm,
   ascenders=4,
   xHeight=3,
   descenders=4,
   displayAngleMarks=true,
   nibAngle=32,
   mainColor={s=.5},
-  secondaryColor={s=.7},
-  tertiaryColor={s=.9},
-  infoLeft={Nib: \unit{2.5 mm} \quad (4/3/4) \qquad 32\textdegree{}},
-  infoRight={Visigoda \quad España, siglo VII},
+  secondaryColor={s=.4},
+  tertiaryColor={s=.3},
 ]
 
 \Pauta[
+  hand={Foundational Hand},
+  handInfo={Edward Johnston, 1906},
   displayNibs=true,
   nibWidth=3mm,
   displayAngleMarks=true,
   nibAngle=35,
-  mainColor={s=.7},
-  secondaryColor={s=.8},
-  tertiaryColor={s=.9},
-  infoLeft={Nib: \unit{3 mm} \quad (3/4/3) \qquad 35\textdegree{}},
-  infoRight={Foundational Hand \quad Edward Johnston, 1906},
+  mainColor={s=.3},
+  secondaryColor={s=.4},
+  tertiaryColor={s=.3},
 ]
 
 \Pauta[displayAngleMarks=true]
