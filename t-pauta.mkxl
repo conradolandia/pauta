@@ -31,38 +31,13 @@
 %C TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 %C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-\setuppagenumbering[location=,]
-\setupbodyfont[10pt]
-
 \setuplayout[
-  backspace={.07\paperwidth},
-  width={.86\paperwidth},
-  height={.87\paperheight},
-  topspace={.063\paperheight},
+  backspace={.05\paperwidth},
+  width={.9\paperwidth},
+  topspace={.05\paperheight},
+  height={.9\paperheight},
+  margindistance=6pt,
 ]
-
-\startsetups pauta:letterv
-  \setuppapersize
-    [letter]
-    [letter]
-\stopsetups
-
-\startsetups pauta:letterh
-  \setuppapersize
-    [letter,landscape]
-    [letter,landscape]
-\stopsetups
-
-\definemode[letter:v][keep]
-\definemode[letter:h][keep]
-
-\startmode[letter:v]
-  \setup[pauta:letterv]
-\stopmode
-
-\startmode[letter:h]
-  \setup[pauta:letterh]
-\stopmode
 
 \startsetups pauta:layout:footermarks
   \setuplayout[header=\zeropoint,footer={.07\paperheight}]
@@ -112,9 +87,7 @@
     nibAngle=\PAUTAnibAngle,
   ]
 
-  \page
-  \reuseMPgraphic{pauta}
-  \page
+  \page\useMPgraphic{pauta}\page
 \stoptexdefinition
 
 \startuseMPgraphic{pauta}
@@ -182,7 +155,6 @@
 
   % End hatching.mp, start custom code
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
   % Display square nib-width marks at line start?
   boolean displayNibs ;
   if known \MPvar{displayNibs} :
@@ -191,14 +163,17 @@
     displayNibs := false ;
   fi ;
 
+  %StartPage ;
   % Path for nib-widhts
   path nibWidth ; nibWidth = unitsquare ;
+
+  %fill Field[Text][Text] withcolor .85red ;
 
   % Line width
   numeric line ; line = TextWidth ;
 
   % Text height (without footers or headers)
-  numeric box ; box = TextHeight - FooterHeight - HeaderHeight ;
+  numeric box ; box = TextHeight - (HeaderHeight + FooterHeight);
 
   % Distance between lines
   numeric nibWidth ; nibWidth = \MPvar{nibWidth} ;
@@ -224,7 +199,7 @@
   availableLines = floor(box / lineHeight) ;
 
   % Start position (zero)
-  numeric start ; start := 0 ;
+  numeric start ; start = 0 ;
 
   % Nib-width nagle
   boolean displayAngleMarks ;
@@ -327,4 +302,6 @@
   for i=1 upto availableLines :
     start := TextLine(dsc, asc, med, start) ;
   endfor ;
+
+  %StopPage ;
 \stopuseMPgraphic
