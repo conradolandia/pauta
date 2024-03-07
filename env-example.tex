@@ -1,0 +1,40 @@
+%\showframe
+
+% Setup layout
+\setuplayout[
+  topspace={.03\paperheight},
+  height={.93\paperheight},
+  backspace={.03\paperwidth},
+  width={.93\paperwidth},
+  margindistance=\zeropoint,
+]
+
+% No page numbering
+\setuppagenumbering[location=,]
+\setupbodyfont[10pt]
+
+% Available modes
+% --mode=letter:v
+% --mode=letter:h (default)
+\startsetups pauta:letterv
+  \setuppapersize
+    [letter]
+    [letter]
+\stopsetups
+
+\startsetups pauta:letterh
+  \setuppapersize
+    [letter,landscape]
+    [letter,landscape]
+\stopsetups
+
+\definemode[letter:v][keep]
+\definemode[letter:h][keep]
+
+\startmode[letter:v]
+  \setup[pauta:letterv]
+\stopmode
+
+\startmode[letter:h]
+  \setup[pauta:letterh]
+\stopmode

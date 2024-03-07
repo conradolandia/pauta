@@ -1,0 +1,114 @@
+\usemodule[pauta]
+
+\environment[env-example]
+
+\startdocument
+
+\starttitle[title={Pauta}]
+A \CONTEXT\ module to typeset templates for calligraphy practice.
+\stoptitle
+
+\page % I need a page or things get weird...
+
+\Pauta [
+  % Hand name
+  hand={Carolingian},
+  %
+  % Some extra info for the hand
+  handInfo={Tours school, VIII\high{th} century},
+  %
+  % Where to show the extra info (header | footer)
+  infoPosition=header,
+  %
+  % Info on the left side of the page (in header or footer, determined by infoPosition)
+  %infoLeft={Custom text that will override hand generated data},
+  %
+  % Info on the right side of the page (same position as infoLeft)
+  %infoRight={If set, variables hand, handInfo won't have any effect},
+  %
+  % Show pen width marks (true | false)
+  displayNibs=true,
+  %
+  % Display dotted guides for the nib angle
+  displayAngleMarks=true,
+  %
+  % Pen nib width (with units)
+  nibWidth=3mm,
+  %
+  % Number of ascender lines (in nib widths)
+  nibAngle=35,
+  %
+  % Number of x-height lines (in nib widths)
+  ascenders=3,
+  %
+  % Number of descending lines (in nib widths)
+  xHeight=4,
+  %
+  % Sometimes it's necessary to adjust the line height if the last one covers the page info
+  descenders=3,
+  %
+  % Angle of the pen nib in degrees (0: completly horizontal, 90: completely vertical)
+  adjustment=0,
+  %
+  % Main color (lines that separate sections)
+  mainColor={s=.5},
+  %
+  % Secondary color (lines separated by a nib width and dotted angle lines)
+  secondaryColor={s=.6},
+  %
+  % Tertiary color (nib width marks on the left margin)
+  tertiaryColor={s=.7},
+]
+
+\Pauta[
+  hand={Carolingian},
+  handInfo={Tours school, VIII\high{th} century},
+  displayNibs=true,
+  infoPosition=header,
+  nibWidth=2.5mm,
+  ascenders=2,
+  xHeight=3,
+  descenders=2,
+  adjustment=1,
+  displayAngleMarks=false,
+  nibAngle=25,
+  mainColor={s=.3},
+  secondaryColor={s=.4},
+  tertiaryColor={s=.5},
+]
+
+\Pauta[
+  hand={Visigothic script},
+  handInfo={Spain, VII\high{th} century},
+  displayNibs=true,
+  infoPosition=footer,
+  nibWidth=2mm,
+  ascenders=4,
+  xHeight=3,
+  descenders=4,
+  displayAngleMarks=true,
+  nibAngle=32,
+  mainColor={s=.5},
+  secondaryColor={s=.4},
+  tertiaryColor={s=.3},
+]
+
+\Pauta[
+  hand={Foundational Hand},
+  handInfo={Edward Johnston, 1906},
+  displayNibs=true,
+  nibWidth=3mm,
+  displayAngleMarks=true,
+  nibAngle=35,
+  mainColor={s=.3},
+  secondaryColor={s=.4},
+  tertiaryColor={s=.3},
+]
+
+\Pauta[displayAngleMarks=true,infoRight={testing override of \type{infoRight} only}]
+
+\Pauta[infoLeft={Default settings},infoRight={testing only info overrides}]
+
+\Pauta
+
+\stopdocument

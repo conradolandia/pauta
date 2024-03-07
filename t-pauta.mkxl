@@ -1,0 +1,247 @@
+%D \module
+%D   [       file=t-pauta,
+%D        version=2024.03.02,
+%D          title=\CONTEXT\ User Module,
+%D       subtitle=Create templates for calligraphy practice using METAPOST,
+%D         author=Andrés Conrado Montoya Acosta,
+%D           date=\currentdate,
+%D      copyright={Andrés Conrado Montoya Acosta},
+%D        email=andresconrado@gmail.com,
+%D      license=MIT License]
+%D
+
+%C Copyright (c) 2024 Andrés Conrado Montoya Acosta
+%C
+%C Permission is hereby granted, free of charge, to any person obtaining
+%C a copy of this software and associated documentation files (the
+%C "Software"), to deal in the Software without restriction, including
+%C without limitation the rights to use, copy, modify, merge, publish,
+%C distribute, sublicense, and/or sell copies of the Software, and to
+%C permit persons to whom the Software is furnished to do so, subject to
+%C the following conditions:
+%C
+%C The above copyright notice and this permission notice shall be
+%C included in all copies or substantial portions of the Software.
+%C
+%C THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+%C EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+%C MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+%C IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+%C CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+%C TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+%C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+\startsetups pauta:layout:footermarks
+  \setuplayout[header=\zeropoint,footer={.07\paperheight}]
+  \setupfootertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
+\stopsetups
+
+\startsetups pauta:layout:headermarks
+  \setuplayout[header={.07\paperheight},footer=\zeropoint]
+  \setupheadertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
+\stopsetups
+
+\startsetups pauta:content:leftmark
+  Nib:\space\PAUTAnibWidth
+  \quad(\PAUTAascenders/\PAUTAxHeight/\PAUTAdescenders)\quad
+  \PAUTAnibAngle\textdegree{}
+\stopsetups
+
+\startsetups pauta:content:rightmark
+  \doifsomething{\PAUTAhand}{\PAUTAhand}
+  \doifsomething{\PAUTAhandInfo}{\quad(\PAUTAhandInfo)}
+\stopsetups
+
+\starttexdefinition nospaces doPauta [#1]
+  \getparameters[PAUTA]
+    [hand=,
+    handInfo=,
+    infoPosition=footer,
+    infoLeft={\setup{pauta:content:leftmark}},
+    infoRight={\setup{pauta:content:rightmark}},
+    displayNibs=false,
+    displayAngleMarks=false,
+    nibWidth=3mm,
+    nibAngle=35,
+    ascenders=3,
+    xHeight=4,
+    descenders=3,
+    adjustment=0,
+    mainColor={s=.4},
+    secondaryColor={s=.6},
+    tertiaryColor={s=.8},
+    #1]
+
+  \doifelse{\PAUTAinfoPosition}{footer}
+    {\setup[pauta:layout:footermarks]}
+    {\setup[pauta:layout:headermarks]}
+
+  \definecolor[tertiaryColor] [\PAUTAtertiaryColor]
+  \definecolor[mainColor]     [\PAUTAmainColor]
+  \definecolor[secondaryColor][\PAUTAsecondaryColor]
+
+  \setupMPvariables[pauta][
+    displayNibs=\PAUTAdisplayNibs,
+    displayAngleMarks=\PAUTAdisplayAngleMarks,
+    nibWidth=\PAUTAnibWidth,
+    nibAngle=\PAUTAnibAngle,
+    ascenders=\PAUTAascenders,
+    xHeight=\PAUTAxHeight,
+    descenders=\PAUTAdescenders,
+    adjustment=\PAUTAadjustment,
+  ]
+
+  % Draw pauta
+  \page\start\useMPgraphic{pauta}\stop\page
+\stoptexdefinition
+
+\starttexdefinition Pauta
+  \dosingleargument\doPauta
+\stoptexdefinition
+
+\startMPinclusions
+  % We use hatching.mp to draw the angle guides as a pattern fill
+  input ./hatching.mp ;
+
+  % Line thickness that won't change
+  numeric thinLine ; thinLine = 0.2mm ;
+  numeric thickLine ; thickLine = 0.4mm ;
+
+  % -------------------------------------------------------------------
+  % Vardefs
+  % -------------------------------------------------------------------
+
+  % Draw a section (ascendant, x-height or descendant)
+  vardef Section(expr lines, startPosition) =
+    % Draw section lines
+    for i = 0 upto lines :
+      save endPos ; endPos := i*nibWidth ;
+      save distance ; distance := endPos + startPosition ;
+      pair a; a := (0, distance) ;
+      pair b; b := (TextWidth, distance) ;
+      draw a -- b withpen pencircle scaled thinLine
+        withcolor secondaryColor ;
+    endfor ;
+
+    % Draw section separators
+    draw (0, startPosition) -- (TextWidth, startPosition)
+      withpen pencircle scaled thickLine
+      withcolor mainColor ;
+
+    draw (0, distance) -- (TextWidth, distance)
+      withpen pencircle scaled thickLine
+      withcolor mainColor ;
+
+    % Return the distance
+    distance
+  enddef ;
+
+  % Draw a line with three sections
+  vardef TextLine(expr startPosition, ascendant, xHeight, descendant) =
+    if displayNibs = true :
+      % Calculate nib-width marks
+      numeric lines ; lines := descendant + ascendant + xHeight ;
+      numeric nibs ; nibs := lines - 1 ;
+      % Display nib-width marks
+      for i = 0 upto nibs :
+        numeric nib ; nib := i * nibWidth + startPosition ;
+        fill unitsquare scaled nibWidth shifted
+          (if (i mod 2 = 0) :
+            (0, nib)
+          else:
+            (nibWidth, nib)
+          fi) withcolor tertiaryColor ;
+      endfor ;
+    fi ;
+
+    % Draw the three sections
+    numeric descendants, xHeights, ascendants ;
+    descendants := Section(descendant, startPosition) ;
+    xHeights := Section(xHeight, descendants) ;
+    ascendants := Section(ascendant, xHeights) ;
+
+    % Draw a rectangle to contain dotted angle guides
+    numeric space ;
+
+    if displayAngleMarks = true :
+      if displayNibs :
+        space := nibWidth * 2 ;
+      else :
+        space := 0 ;
+      fi ;
+
+      path angleContainer ; angleContainer :=
+        (space, startPosition) -- (space, ascendants) --
+        (TextWidth, ascendants) -- (TextWidth, startPosition) --
+        cycle ;
+
+      % We use hatching.mp to fill the box with lines
+      % with the right angle, gap and pen
+      hatchoptions (withcolor tertiaryColor dashed evenly) ;
+      hatchfill angleContainer withcolor (nibAngle, nibWidth*3, -thinLine) ;
+    fi ;
+
+    % Return final position, adding interline space
+    ascendants + nibWidth * 2
+  enddef ;
+\stopMPinclusions
+
+\startuseMPgraphic{pauta}
+  % These variables will be recalculated every time we call the MPgraphic
+  % and that's why I don't put them in the MPinclusions
+
+  % Display square nib-width marks at line start?
+  boolean displayNibs ;
+  if known \MPvar{displayNibs} :
+    displayNibs = \MPvar{displayNibs} ;
+  else :
+    displayNibs = false ;
+  fi ;
+
+  % Color settings
+  color mainColor ; mainColor = \MPcolor{mainColor} ;
+  color secondaryColor ; secondaryColor = \MPcolor{secondaryColor} ;
+  color tertiaryColor ; tertiaryColor = \MPcolor{tertiaryColor} ;
+
+  % Text height (without footers or headers)
+  numeric SimpleTextHeight ; SimpleTextHeight = TextHeight - (HeaderHeight + FooterHeight);
+
+  % Distance between lines (nib width)
+  numeric nibWidth ; nibWidth = \MPvar{nibWidth} ;
+
+  % Ascenders
+  numeric ascenders ; ascenders = \MPvar{ascenders} ;
+
+  % X-Height
+  numeric xHeight ; xHeight = \MPvar{xHeight} ;
+
+  % Descenders
+  numeric descenders ; descenders = \MPvar{descenders} ;
+
+  % Adjustment value for layout
+  numeric adjustment ; adjustment = \MPvar{adjustment} ;
+
+  % Full line height
+  numeric lineHeight ; lineHeight = (ascenders + xHeight + descenders + adjustment) * nibWidth ;
+
+  % Available lines
+  numeric availableLines ; availableLines = floor(SimpleTextHeight / lineHeight) ;
+
+  % Start position (zero)
+  numeric startPosition ; startPosition = 0 ;
+
+  % Nib-width angle
+  boolean displayAngleMarks ;
+  if known \MPvar{displayAngleMarks} :
+    displayAngleMarks := \MPvar{displayAngleMarks} ;
+  else :
+    displayAngleMarks := false ;
+  fi ;
+
+  numeric nibAngle ; nibAngle = \MPvar{nibAngle} ;
+
+  % Draw a page
+  for i=1 upto availableLines :
+    startPosition := TextLine(startPosition, ascenders, xHeight, descenders) ;
+  endfor ;
+\stopuseMPgraphic
