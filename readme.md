@@ -1,51 +1,102 @@
-# Pauta caligráfica en ConTeXt/LMTX
+# Calligraphy Grid in ConTeXt/LMTX
 
-Generador de retículas para caligrafía medieval en [ConTeXt/LMTX](https://wiki.contextgarden.net/) y [METAPOST](https://wiki.contextgarden.net/MetaPost).
+This project is a generator of grids for medieval calligraphy in [ConTeXt/LMTX](https://wiki.contextgarden.net/) and [METAPOST](https://wiki.contextgarden.net/MetaPost). It includes a main file, `pauta.mkxl`, a MetaPost library, `hatching.mp`, and two examples, `Carolingia.mkxl` and `FoundationalHand.mkxl`.
 
-Se incluyen:
+## Usage Mode
 
-- Un archivo principal
-  - `pauta.mkxl`
-- Una librería de metapost
-  - `hatching.mp` (se puede descargar tambien de [CTAN](https://ctan.org/tex-archive/graphics/metapost/contrib/macros/hatching))
-- Dos ejemplos
-  - `Carolingia.mkxl`
-  - `FoundationalHand.mkxl`
+1. Ensure `pauta.mkxl`, `hatching.mp`, and the ConTeXt file to compile are in the same directory.
+2. Include the grid in your ConTeXt file.
+3. Compile with `context [FILE]`.
+4. Invoke the `\Pauta` macro as many times as you want pages. Each invocation can have a different configuration.
 
-## Modo de empleo
+## Configuration Parameters
 
-1. `pauta.mkxl`, `hatching.mp` y su archivo de ConTeXt a compilar deben estar en el mismo directorio.
-2. Incluir la pauta en su archivo de ConTeXt:
-   ```tex
-   \input pauta.mkxl
-   ```
-3. Compilar con `context --mode=carta:h [ARCHIVO]` para una plantilla en tamaño carta y posición horizontal, o `context --mode=carta:v [ARCHIVO]` para una plantilla en tamaño carta y posición vertical.
-
-4. Luego invocamos la macro `\Pauta` tantas veces como páginas queremos. Cada invocación puede tener una configuración diferente.
-
-Todos los parámetros son opcionales. Sin embargo, si se desea invocar la macro sin parámetros, deben incluirse los paréntesis cuadrados, así: `\Pauta[]`.
-
-## Parámetros de configuración
+All parameters are optional. Defaults (except `hand` and `handInfo`, empty by default) are as follows:
 
 ```tex
 \Pauta[
-  verMarcas=true, % Mostrar marcas de anchos de pluma (true / false)
-  marcas=header, % Dónde mostramos las marcas (header | footer)
-  pluma=2mm, % Ancho de pluma (se le pueden pasar las unidades también)
-  ascendentes=3, % Cantidad de líneas ascendentes (en anchos de pluma)
-  ojoMedio=4, % Cantidad de líneas de ojo medio (en anchos de pluma)
-  descendentes=3, % Cantidad de líneas descendentes (en anchos de pluma)
-  ajuste=0, % A veces es necesario ajustar la altura del renglón si el último cubre la info
-  verAngulo=true, % Ver el ángulo de la punta de la pluna
-  angulo=35, % Ángulo de la punta de la pluma en grados respecto de la vertical
-  colorPrincipal={s=.7}, % Color principal (líneas que separan secciones)
-  colorSecundario={s=.8}, % Color secundario (líneas separadas por una anchura de pluma y líneas punteadas de ángulo)
-  colorTerciario={s=.9}, % Color terciario (marcas de anchos de pluma)
-  infoIzquierda={Pluma: \unit{2 mm} \qquad (3/4/3) \qquad 35\textdegree{}}, % Info a la izquierda de la página
-  infoDerecha={Carolingia \quad Escuela de Tours, siglo VIII}, % Info a la derecha de la página
+ hand={Carolingian}, % Hand name
+ handInfo={Tours school, VIII\high{th} century}, % Some extra info for the hand
+ infoPosition=header, % Where to show the extra info (header | footer)
+ displayNibs=true, % Show pen width marks (true | false)
+ displayAngleMarks=true, % Display dotted guides for the nib angle
+ nibWidth=3mm, % Pen nib width (with units)
+ ascenders=3, % Number of ascender lines (in nib widths)
+ xHeight=4, % Number of x-height lines (in nib widths)
+ descenders=3, % Number of descending lines (in nib widths)
+ adjustment=0, % Sometimes it's necessary to adjust the line height if the last one covers the page info
+ mainColor={s=.5}, % Main color (lines that separate sections)
+ secondaryColor={s=.6}, % Secondary color (lines separated by a nib width and dotted angle lines)
+ tertiaryColor={s=.7}, % Tertiary color (nib width marks on the left margin)
 ]
 ```
 
-# TODO
+## Code Examples
 
-- [ ] Mejorar la presentación de información (header/footer)
+### Example 1: Basic Usage
+
+```tex
+\usemodule[pauta]
+
+\startdocument
+\Pauta[
+ hand={Carolingian},
+ handInfo={Tours school, VIII\high{th} century},
+ infoPosition=header,
+ displayNibs=true,
+ displayAngleMarks=true,
+ nibWidth=3mm,
+ ascenders=3,
+ xHeight=4,
+ descenders=3,
+ adjustment=0,
+ mainColor={s=.5},
+ secondaryColor={s=.6},
+ tertiaryColor={s=.7},
+]
+\stopdocument
+```
+
+### Example 2: Multiple Pauta Instances
+
+```tex
+\usemodule[pauta]
+
+\startdocument
+\Pauta[
+ hand={Carolingian},
+ handInfo={Tours school, VIII\high{th} century},
+ infoPosition=header,
+ displayNibs=true,
+ displayAngleMarks=true,
+ nibWidth=3mm,
+ ascenders=3,
+ xHeight=4,
+ descenders=3,
+ adjustment=0,
+ mainColor={s=.5},
+ secondaryColor={s=.6},
+ tertiaryColor={s=.7},
+]
+
+% Overriding the hader / footer info:
+
+\Pauta[
+ infoLeft={An excercise in Visigothic script},
+ infoRight={from an Spanish manuscript, VII\high{th} century},
+ infoPosition=footer,
+ displayNibs=true,
+ displayAngleMarks=false,
+ nibWidth=2mm,
+ ascenders=2,
+ xHeight=3,
+ descenders=2,
+ adjustment=1,
+ mainColor={s=.3},
+ secondaryColor={s=.4},
+ tertiaryColor={s=.5},
+]
+\stopdocument
+```
+
+This project aims to provide a flexible and efficient tool for creating calligraphy practice templates, leveraging the power of ConTeXt and MetaPost.
