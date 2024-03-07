@@ -1,35 +1,48 @@
-%\showframe
-
-% Setup layout
-\setuplayout[
-  topspace={.03\paperheight},
-  height={.93\paperheight},
+% Setup layout for Pauta pages
+\definelayout[Pauta][
+  topspace={.04\paperheight},
+  height={.92\paperheight},
   backspace={.03\paperwidth},
-  width={.93\paperwidth},
+  width={.94\paperwidth},
   margindistance=\zeropoint,
 ]
 
+% Setup layout for first page
+\definelayout[1][First][
+  topspace={.11\paperheight},
+  header=\zeropoint,
+  footer=\zeropoint,
+  height={.77\paperheight},
+  backspace={.11\paperwidth},
+  width={.77\paperwidth},
+  margindistance={0.01\paperwidth},
+]
+
+\setuplayout[Pauta]
+
 % No page numbering
 \setuppagenumbering[location=,]
-\setupbodyfont[10pt]
+
+% Headings
+\setuphead[chapter][style={\switchtobodyfont[30pt]}]
 
 % Available modes
 % --mode=letter:v
 % --mode=letter:h (default)
-\startsetups pauta:letterv
-  \setuppapersize
-    [letter]
-    [letter]
-\stopsetups
-
-\startsetups pauta:letterh
-  \setuppapersize
-    [letter,landscape]
-    [letter,landscape]
-\stopsetups
 
 \definemode[letter:v][keep]
 \definemode[letter:h][keep]
+
+\definepapersize[lv][letter]
+\definepapersize[lh][letter,landscape]
+
+\startsetups pauta:letterv
+  \setuppapersize[lv][lv]
+\stopsetups
+
+\startsetups pauta:letterh
+  \setuppapersize[lh][lh]
+\stopsetups
 
 \startmode[letter:v]
   \setup[pauta:letterv]
@@ -38,3 +51,6 @@
 \startmode[letter:h]
   \setup[pauta:letterh]
 \stopmode
+
+\setupbodyfont[pagella,10pt]
+%\showframe
