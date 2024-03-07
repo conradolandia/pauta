@@ -1,5 +1,7 @@
 # Calligraphy Grid in ConTeXt/LMTX
 
+WARNING: WORK IN PROGRESS (PRE-ALPHA) USE AT YOUR OWN RISK!
+
 This project is a generator of grids for medieval calligraphy in [ConTeXt/LMTX](https://wiki.contextgarden.net/) and [METAPOST](https://wiki.contextgarden.net/MetaPost). It includes a main file, `pauta.mkxl`, a MetaPost library, `hatching.mp`, and two examples, `Carolingia.mkxl` and `FoundationalHand.mkxl`.
 
 ## Usage Mode
