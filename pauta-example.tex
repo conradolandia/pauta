@@ -4,9 +4,9 @@
 
 \startdocument
 
-\startchapter[title={Pauta}]
+\starttitle[title={Pauta}]
 A \CONTEXT\ module to typeset templates for calligraphy practice.
-\stopchapter
+\stoptitle
 
 \page % I need a page or things get weird...
 
@@ -105,8 +105,10 @@ A \CONTEXT\ module to typeset templates for calligraphy practice.
   tertiaryColor={s=.3},
 ]
 
-\Pauta[displayAngleMarks=true]
+\Pauta[displayAngleMarks=true,infoRight={testing override of \type{infoRight} only}]
 
-\Pauta[]
+\Pauta[infoLeft={Default settings},infoRight={testing only info overrides}]
+
+\Pauta
 
 \stopdocument
