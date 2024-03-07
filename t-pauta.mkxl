@@ -67,9 +67,9 @@
     xHeight=4,
     descenders=3,
     adjustment=0,
-    mainColor={s=.5},
+    mainColor={s=.4},
     secondaryColor={s=.6},
-    tertiaryColor={s=.7},
+    tertiaryColor={s=.8},
     #1]
 
   \doifelse{\PAUTAinfoPosition}{footer}
@@ -100,91 +100,36 @@
 \stoptexdefinition
 
 \startMPinclusions
+  % We use hatching.mp to draw the angle guides as a pattern fill
   input ./hatching.mp ;
-\stopMPinclusions
 
-\startuseMPgraphic{pauta}
-  % Display square nib-width marks at line start?
-  boolean displayNibs ;
-  if known \MPvar{displayNibs} :
-    displayNibs := \MPvar{displayNibs} ;
-  else :
-    displayNibs := false ;
-  fi ;
-
-  % Path for nib-widhts
-  path nibWidth ; nibWidth = unitsquare ;
-
-  % Line width
-  numeric line ; line = TextWidth ;
-
-  % Text height (without footers or headers)
-  numeric box ; box = TextHeight - (HeaderHeight + FooterHeight);
-
-  % Distance between lines
-  numeric nibWidth ; nibWidth = \MPvar{nibWidth} ;
-
-  % Ascenders
-  numeric asc ; asc = \MPvar{ascenders} ;
-
-  % X-Height
-  numeric med ; med = \MPvar{xHeight} ;
-
-  % Descenders
-  numeric dsc ; dsc = \MPvar{descenders} ;
-
-  % Adjustment value for layout
-  numeric adjustment ; adjustment = \MPvar{adjustment} ;
-
-  % Full line height
-  numeric lineHeight ;
-  lineHeight = (asc + med + dsc + adjustment) * nibWidth ;
-
-  % Available lines
-  numeric availableLines ;
-  availableLines = floor(box / lineHeight) ;
-
-  % Start position (zero)
-  numeric start ; start = 0 ;
-
-  % Nib-width nagle
-  boolean displayAngleMarks ;
-  if known \MPvar{displayAngleMarks} :
-    displayAngleMarks := \MPvar{displayAngleMarks} ;
-  else :
-    displayAngleMarks := false ;
-  fi ;
-
-  numeric nibAngle ; nibAngle = \MPvar{nibAngle} ;
-
-  % Color settings
-  color mainColor ; mainColor = \MPcolor{mainColor} ;
-  color secondaryColor ; secondaryColor = \MPcolor{secondaryColor} ;
-  color tertiaryColor ; tertiaryColor = \MPcolor{tertiaryColor} ;
+  % Line thickness that won't change
+  numeric thinLine ; thinLine = 0.2mm ;
+  numeric thickLine ; thickLine = 0.4mm ;
 
   % -------------------------------------------------------------------
   % Vardefs
   % -------------------------------------------------------------------
 
   % Draw a section (ascendant, x-height or descendant)
-  vardef Section(expr lines, startPos) =
+  vardef Section(expr lines, startPosition) =
     % Draw section lines
     for i = 0 upto lines :
-      save endPos ; endPos = i*nibWidth ;
-      save distance ; distance = endPos + startPos ;
-      pair a; a = (0, distance) ;
-      pair b; b = (line, distance) ;
-      draw a -- b withpen pencircle scaled 0.2mm
+      save endPos ; endPos := i*nibWidth ;
+      save distance ; distance := endPos + startPosition ;
+      pair a; a := (0, distance) ;
+      pair b; b := (TextWidth, distance) ;
+      draw a -- b withpen pencircle scaled thinLine
         withcolor secondaryColor ;
     endfor ;
 
     % Draw section separators
-    draw (0, startPos) -- (line, startPos)
-      withpen pencircle scaled 0.3mm
+    draw (0, startPosition) -- (TextWidth, startPosition)
+      withpen pencircle scaled thickLine
       withcolor mainColor ;
 
-    draw (0, distance) -- (line, distance)
-      withpen pencircle scaled 0.3mm
+    draw (0, distance) -- (TextWidth, distance)
+      withpen pencircle scaled thickLine
       withcolor mainColor ;
 
     % Return the distance
@@ -192,17 +137,14 @@
   enddef ;
 
   % Draw a line with three sections
-  vardef TextLine(expr descendant, ascendant, xHeight, startPos) =
-    % Display nib-width marks
+  vardef TextLine(expr startPosition, ascendant, xHeight, descendant) =
     if displayNibs = true :
-
-      numeric lines ; lines = descendant + ascendant + xHeight ;
-      numeric nibs ; nibs = lines - 1 ;
-
+      % Calculate nib-width marks
+      numeric lines ; lines := descendant + ascendant + xHeight ;
+      numeric nibs ; nibs := lines - 1 ;
+      % Display nib-width marks
       for i = 0 upto nibs :
-        numeric nib ;
-        nib = i * nibWidth + startPos ;
-
+        numeric nib ; nib := i * nibWidth + startPosition ;
         fill unitsquare scaled nibWidth shifted
           (if (i mod 2 = 0) :
             (0, nib)
@@ -213,38 +155,93 @@
     fi ;
 
     % Draw the three sections
-    numeric desc, omed, asce ;
+    numeric descendants, xHeights, ascendants ;
+    descendants := Section(descendant, startPosition) ;
+    xHeights := Section(xHeight, descendants) ;
+    ascendants := Section(ascendant, xHeights) ;
 
-    desc = Section(descendant, startPos) ;
-    omed = Section(xHeight, desc) ;
-    asce = Section(ascendant, omed) ;
-
-    % Draw a box to contain dotted angle guides
+    % Draw a rectangle to contain dotted angle guides
     numeric space ;
 
     if displayAngleMarks = true :
       if displayNibs :
-        space = nibWidth * 2 ;
+        space := nibWidth * 2 ;
       else :
-        space = 0 ;
+        space := 0 ;
       fi ;
 
-      path box ; box =
-        (space, startPos) -- (space, asce) --
-        (line, asce) -- (line, startPos) --
+      path angleContainer ; angleContainer :=
+        (space, startPosition) -- (space, ascendants) --
+        (TextWidth, ascendants) -- (TextWidth, startPosition) --
         cycle ;
 
       % We use hatching.mp to fill the box with lines
       % with the right angle, gap and pen
       hatchoptions (withcolor tertiaryColor dashed evenly) ;
-      hatchfill box withcolor (nibAngle, nibWidth*3, -0.2mm) ;
+      hatchfill angleContainer withcolor (nibAngle, nibWidth*3, -thinLine) ;
     fi ;
 
     % Return final position, adding interline space
-    asce + nibWidth * 2
+    ascendants + nibWidth * 2
   enddef ;
+\stopMPinclusions
 
+\startuseMPgraphic{pauta}
+  % These variables will be recalculated every time we call the MPgraphic
+  % and that's why I don't put them in the MPinclusions
+
+  % Display square nib-width marks at line start?
+  boolean displayNibs ;
+  if known \MPvar{displayNibs} :
+    displayNibs = \MPvar{displayNibs} ;
+  else :
+    displayNibs = false ;
+  fi ;
+
+  % Color settings
+  color mainColor ; mainColor = \MPcolor{mainColor} ;
+  color secondaryColor ; secondaryColor = \MPcolor{secondaryColor} ;
+  color tertiaryColor ; tertiaryColor = \MPcolor{tertiaryColor} ;
+
+  % Text height (without footers or headers)
+  numeric SimpleTextHeight ; SimpleTextHeight = TextHeight - (HeaderHeight + FooterHeight);
+
+  % Distance between lines (nib width)
+  numeric nibWidth ; nibWidth = \MPvar{nibWidth} ;
+
+  % Ascenders
+  numeric ascenders ; ascenders = \MPvar{ascenders} ;
+
+  % X-Height
+  numeric xHeight ; xHeight = \MPvar{xHeight} ;
+
+  % Descenders
+  numeric descenders ; descenders = \MPvar{descenders} ;
+
+  % Adjustment value for layout
+  numeric adjustment ; adjustment = \MPvar{adjustment} ;
+
+  % Full line height
+  numeric lineHeight ; lineHeight = (ascenders + xHeight + descenders + adjustment) * nibWidth ;
+
+  % Available lines
+  numeric availableLines ; availableLines = floor(SimpleTextHeight / lineHeight) ;
+
+  % Start position (zero)
+  numeric startPosition ; startPosition = 0 ;
+
+  % Nib-width angle
+  boolean displayAngleMarks ;
+  if known \MPvar{displayAngleMarks} :
+    displayAngleMarks := \MPvar{displayAngleMarks} ;
+  else :
+    displayAngleMarks := false ;
+  fi ;
+
+  numeric nibAngle ; nibAngle = \MPvar{nibAngle} ;
+
+  % Draw a page
   for i=1 upto availableLines :
-    start := TextLine(dsc, asc, med, start) ;
+    startPosition := TextLine(startPosition, ascenders, xHeight, descenders) ;
   endfor ;
 \stopuseMPgraphic
