@@ -4,13 +4,14 @@
 
 \startdocument
 
-\adaptpapersize[lv]
+\setuppapersize[lv]
+\setuplayout[First]
 
-\starttitle[title={Pauta}]
-A \CONTEXT\ module to typeset templates for calligraphy practice.
-\stoptitle
+\input readme
 
-\page % I need a page or things get weird...
+\page
+\setuppapersize[lh]
+\setuplayout[Pauta]
 
 \Pauta [
   % Hand name

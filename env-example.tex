@@ -8,17 +8,15 @@
 ]
 
 % Setup layout for first page
-\definelayout[1][First][
+\definelayout[First][
   topspace={.11\paperheight},
   header=\zeropoint,
   footer=\zeropoint,
   height={.77\paperheight},
   backspace={.11\paperwidth},
-  width={.77\paperwidth},
+  width={.66\paperwidth},
   margindistance={0.01\paperwidth},
 ]
-
-\setuplayout[Pauta]
 
 % No page numbering
 \setuppagenumbering[location=,]
@@ -51,6 +49,70 @@
 \startmode[letter:h]
   \setup[pauta:letterh]
 \stopmode
+
+% Code listings
+\defineframedtext [shaded]
+  [backgroundcolor=shadecolor,
+   background=color,
+   frame=off,
+   offset=0pt,
+   width=local]
+\definetyping [highlighting]
+  [escape=yes,
+   before={\startshaded},
+   after={\stopshaded}]
+\definetype [highlight]
+  [escape=yes]
+\define[1]\AlertTok{\colored[r=1.00,g=0.00,b=0.00]{\bf #1}}
+\define[1]\AnnotationTok{\colored[r=0.38,g=0.63,b=0.69]{\bf \em #1}}
+\define[1]\AttributeTok{\colored[r=0.49,g=0.56,b=0.16]{#1}}
+\define[1]\BaseNTok{\colored[r=0.25,g=0.63,b=0.44]{#1}}
+\define[1]\BuiltInTok{\colored[r=0.00,g=0.50,b=0.00]{#1}}
+\define[1]\CharTok{\colored[r=0.25,g=0.44,b=0.63]{#1}}
+\define[1]\CommentTok{\colored[r=0.38,g=0.63,b=0.69]{\em #1}}
+\define[1]\CommentVarTok{\colored[r=0.38,g=0.63,b=0.69]{\bf \em #1}}
+\define[1]\ConstantTok{\colored[r=0.53,g=0.00,b=0.00]{#1}}
+\define[1]\ControlFlowTok{\colored[r=0.00,g=0.44,b=0.13]{\bf #1}}
+\define[1]\DataTypeTok{\colored[r=0.56,g=0.13,b=0.00]{#1}}
+\define[1]\DecValTok{\colored[r=0.25,g=0.63,b=0.44]{#1}}
+\define[1]\DocumentationTok{\colored[r=0.73,g=0.13,b=0.13]{\em #1}}
+\define[1]\ErrorTok{\colored[r=1.00,g=0.00,b=0.00]{\bf #1}}
+\define[1]\ExtensionTok{#1}
+\define[1]\FloatTok{\colored[r=0.25,g=0.63,b=0.44]{#1}}
+\define[1]\FunctionTok{\colored[r=0.02,g=0.16,b=0.49]{#1}}
+\define[1]\ImportTok{\colored[r=0.00,g=0.50,b=0.00]{\bf #1}}
+\define[1]\InformationTok{\colored[r=0.38,g=0.63,b=0.69]{\bf \em #1}}
+\define[1]\KeywordTok{\colored[r=0.00,g=0.44,b=0.13]{\bf #1}}
+\define[1]\NormalTok{#1}
+\define[1]\OperatorTok{\colored[r=0.40,g=0.40,b=0.40]{#1}}
+\define[1]\OtherTok{\colored[r=0.00,g=0.44,b=0.13]{#1}}
+\define[1]\PreprocessorTok{\colored[r=0.74,g=0.48,b=0.00]{#1}}
+\define[1]\RegionMarkerTok{#1}
+\define[1]\SpecialCharTok{\colored[r=0.25,g=0.44,b=0.63]{#1}}
+\define[1]\SpecialStringTok{\colored[r=0.73,g=0.40,b=0.53]{#1}}
+\define[1]\StringTok{\colored[r=0.25,g=0.44,b=0.63]{#1}}
+\define[1]\VariableTok{\colored[r=0.10,g=0.09,b=0.49]{#1}}
+\define[1]\VerbatimStringTok{\colored[r=0.25,g=0.44,b=0.63]{#1}}
+\define[1]\WarningTok{\colored[r=0.38,g=0.63,b=0.69]{\bf \em #1}}
+
+\setuphead[chapter]            [style=\tfd\setupinterlinespace,header=empty]
+\setuphead[section]            [style=\tfc\setupinterlinespace]
+\setuphead[subsection]         [style=\tfb\setupinterlinespace]
+\setuphead[subsubsection]      [style=\bf]
+\setuphead[subsubsubsection]   [style=\sc]
+\setuphead[subsubsubsubsection][style=\it]
+
+\definesectionlevels
+   [default]
+   [section, subsection, subsubsection, subsubsubsection, subsubsubsubsection]
+
+\setuphead[chapter, section, subsection, subsubsection, subsubsubsection, subsubsubsubsection][number=no]
+
+\setupitemize[autointro]    % prevent orphan list intro
+\setupitemize[indentnext=no]
+
+\defineitemgroup[enumerate]
+\setupenumerate[each][fit][itemalign=left,distance=.5em,style={\feature[+][default:tnum]}]
 
 \setupbodyfont[pagella,10pt]
 %\showframe
