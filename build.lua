@@ -2,12 +2,22 @@
 
 -- Define the build program, the build options and the files to build
 local build_program = "/home/andi/Apps/lmtx/tex/texmf-linux-64/bin/context"
+local docs_program = "pandoc"
+
 local build_files = {{
     name = "pauta-example.tex",
-    options = "--mode=letter:h --noconsole --purgeall"
+    program = build_program,
+    options = "--mode=letter:h --purgeall"
 }, {
     name = "_pauta_pendragon.tex",
-    options = "--noconsole --purgeall"
+    program = build_program,
+    options = "--purgeall"
+}, {
+    name = "readme.md",
+    program = docs_program,
+    options = "--from=markdown --to=context+ntb --wrap=none --top-level-division=section --section-divs",
+    after = "-o",
+    exit = "readme.tex"
 }}
 
 -- Messages
@@ -34,7 +44,16 @@ local function build_file(file)
     print(separator)
     print("Building [ " .. file.name .. " ]:")
 
-    local command = build_program .. space .. file.options .. space .. file.name
+    local command = file.program .. space .. file.options .. space .. file.name
+
+    if file.after then
+      command = command .. space .. file.after
+    end
+
+    if file.exit then
+      command = command .. space .. file.exit
+    end
+
     local success, exit, code = os.execute(command)
     local message
 
