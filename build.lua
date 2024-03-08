@@ -35,13 +35,13 @@ local function build_file(file)
     print("Building [ " .. file.name .. " ]:")
 
     local command = build_program .. space .. file.options .. space .. file.name
-    local success, status, signal = os.execute(command)
+    local success, exit, code = os.execute(command)
     local message
 
     if success then
         message = success_message
     else
-        message = error_message .. " (status: " .. status .. ", signal: " .. signal .. ")"
+        message = error_message .. " (" .. exit .. ": " .. code .. ")"
     end
 
     print(intro .. file.name .. message)
