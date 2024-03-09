@@ -111,13 +111,11 @@
 
 \definesectionlevels
    [default]
-   [section, subsection, subsubsection, subsubsubsection, subsubsubsubsection]
+   [section, subsection]
 
-\setuphead[chapter, section, subsection, subsubsection, subsubsubsection, subsubsubsubsection][number=no]
+\setuphead[chapter, section, subsection][number=no]
 
-\setupitemize[autointro]    % prevent orphan list intro
 \setupitemize[indentnext=no]
-
 \defineitemgroup[enumerate]
 \setupenumerate[each][fit][itemalign=left,distance=.5em,style={\feature[+][default:tnum]}]
 

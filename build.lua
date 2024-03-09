@@ -18,6 +18,10 @@ local build_files = {{
     program = build_program,
     options = "--mode=letter:h --purgeall --noconsole",
     name = "pauta-example.tex"
+}, {
+    program = build_program,
+    options = "--mode=letter:v --purgeall --noconsole",
+    name = "pauta.tex"
 }}
 
 -- Messages
