@@ -1,0 +1,162 @@
+\startsection[title={A Calligraphy Grid in ConTeXt/LMTX},reference={a-calligraphy-grid-in-contextlmtx}]
+
+{\bf WARNING: WORK IN PROGRESS (ALPHA) USE AT YOUR OWN RISK!}
+
+This project is a generator of grids for medieval calligraphy in \goto{ConTeXt/LMTX}[url(https://wiki.contextgarden.net/)] and \goto{MetaPost}[url(https://wiki.contextgarden.net/MetaPost)].
+
+\startsubsection[title={Files},reference={files}]
+
+\startitemize[packed]
+\item
+  Main module: \type{t-pauta.mkxl}
+\item
+  MetaPost library: \type{hatching.mp}
+\item
+  Example file: \type{pauta-example.tex} (also in pdf)
+\item
+  Environment file for the example: \type{env-example.tex}
+\item
+  This \type{readme.md} file, and a pandoc generated tex version \type{readme.tex}
+\item
+  The build script \type{build.lua}
+\stopitemize
+
+\stopsubsection
+
+\startsubsection[title={Use},reference={use}]
+
+\startenumerate[n,packed][stopper=.]
+\item
+  Ensure \type{pauta.mkxl}, \type{hatching.mp}, and the ConTeXt file to compile are in the same directory.
+\item
+  Include the grid in your ConTeXt file.
+\item
+  Compile with \type{context [FILE]}.
+\item
+  Invoke the \type{\Pauta} macro as many times as you want pages. Each invocation can have a different configuration.
+\stopenumerate
+
+\stopsubsection
+
+\startsubsection[title={Generating the example file},reference={generating-the-example-file}]
+
+Review and run the lua script \type{build.lua}. If you don't have a standalone lua interpreter, you can run it with luametatex like so:
+
+\starthighlighting
+/BTEX\ExtensionTok{luametatex} \AttributeTok{--luaonly}\NormalTok{ build.lua}/ETEX
+\stophighlighting
+
+You can also adapt it and use to build your own project.
+
+\stopsubsection
+
+\startsubsection[title={Configuration Parameters},reference={configuration-parameters}]
+
+All parameters are optional. Defaults are as follows:
+
+\starthighlighting
+/BTEX\FunctionTok{\letterbackslash{}Pauta}\NormalTok{[}/ETEX
+/BTEX\NormalTok{ { }hand=, }\CommentTok{\letterpercent{} Hand name}/ETEX
+/BTEX\NormalTok{ { }handInfo=, }\CommentTok{\letterpercent{} Some extra info for the hand}/ETEX
+/BTEX\NormalTok{ { }infoPosition=header, }\CommentTok{\letterpercent{} Where to show the extra info (header \letterbar{} footer)}/ETEX
+/BTEX\NormalTok{ { }displayNibs=true, }\CommentTok{\letterpercent{} Show pen width marks (true \letterbar{} false)}/ETEX
+/BTEX\NormalTok{ { }displayAngleMarks=true, }\CommentTok{\letterpercent{} Display dotted guides for the nib angle}/ETEX
+/BTEX\NormalTok{ { }nibWidth=3mm, }\CommentTok{\letterpercent{} Pen nib width (with units)}/ETEX
+/BTEX\NormalTok{ { }ascenders=3, }\CommentTok{\letterpercent{} Number of ascender lines (in nib widths)}/ETEX
+/BTEX\NormalTok{ { }xHeight=4, }\CommentTok{\letterpercent{} Number of x-height lines (in nib widths)}/ETEX
+/BTEX\NormalTok{ { }descenders=3, }\CommentTok{\letterpercent{} Number of descending lines (in nib widths)}/ETEX
+/BTEX\NormalTok{ { }adjustment=0, }\CommentTok{\letterpercent{} Sometimes it's necessary to adjust the line height if the last one covers the page info}/ETEX
+/BTEX\NormalTok{ { }mainColor=\letteropenbrace{}s=.4\letterclosebrace{}, }\CommentTok{\letterpercent{} Main color (lines that separate sections)}/ETEX
+/BTEX\NormalTok{ { }secondaryColor=\letteropenbrace{}s=.6\letterclosebrace{}, }\CommentTok{\letterpercent{} Secondary color (lines separated by a nib width and dotted angle lines)}/ETEX
+/BTEX\NormalTok{ { }tertiaryColor=\letteropenbrace{}s=.8\letterclosebrace{}, }\CommentTok{\letterpercent{} Tertiary color (nib width marks on the left margin)}/ETEX
+/BTEX\NormalTok{]}/ETEX
+\stophighlighting
+
+\stopsubsection
+
+\startsubsection[title={Code Examples},reference={code-examples}]
+
+\startsubsubsection[title={Example 1: Basic Usage},reference={example-1-basic-usage}]
+
+\starthighlighting
+/BTEX\FunctionTok{\letterbackslash{}usemodule}\NormalTok{[pauta]}/ETEX
+
+/BTEX\FunctionTok{\letterbackslash{}startdocument}/ETEX
+/BTEX\FunctionTok{\letterbackslash{}Pauta}\NormalTok{[}/ETEX
+/BTEX\NormalTok{ { }hand=\letteropenbrace{}Carolingian\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ { }handInfo=\letteropenbrace{}Tours school, VIII}\FunctionTok{\letterbackslash{}high}\NormalTok{\letteropenbrace{}th\letterclosebrace{} century\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ { }infoPosition=header,}/ETEX
+/BTEX\NormalTok{ { }displayNibs=true,}/ETEX
+/BTEX\NormalTok{ { }displayAngleMarks=true,}/ETEX
+/BTEX\NormalTok{ { }nibWidth=3mm,}/ETEX
+/BTEX\NormalTok{ { }ascenders=2,}/ETEX
+/BTEX\NormalTok{ { }xHeight=3,}/ETEX
+/BTEX\NormalTok{ { }descenders=2,}/ETEX
+/BTEX\NormalTok{ { }adjustment=0,}/ETEX
+/BTEX\NormalTok{ { }mainColor=\letteropenbrace{}s=.6\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ { }secondaryColor=\letteropenbrace{}s=.8\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ { }tertiaryColor=\letteropenbrace{}s=.8\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{]}/ETEX
+/BTEX\FunctionTok{\letterbackslash{}stopdocument}/ETEX
+\stophighlighting
+
+\stopsubsubsection
+
+\startsubsubsection[title={Example 2: Multiple Pauta Instances},reference={example-2-multiple-pauta-instances}]
+
+\starthighlighting
+/BTEX\FunctionTok{\letterbackslash{}usemodule}\NormalTok{[pauta]}/ETEX
+
+/BTEX\FunctionTok{\letterbackslash{}startdocument}/ETEX
+/BTEX\FunctionTok{\letterbackslash{}Pauta}\NormalTok{[}/ETEX
+/BTEX\NormalTok{ hand=\letteropenbrace{}Carolingian\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ handInfo=\letteropenbrace{}Tours school, VIII}\FunctionTok{\letterbackslash{}high}\NormalTok{\letteropenbrace{}th\letterclosebrace{} century\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ infoPosition=header,}/ETEX
+/BTEX\NormalTok{ displayNibs=true,}/ETEX
+/BTEX\NormalTok{ displayAngleMarks=true,}/ETEX
+/BTEX\NormalTok{ nibWidth=3mm,}/ETEX
+/BTEX\NormalTok{ ascenders=2,}/ETEX
+/BTEX\NormalTok{ xHeight=3,}/ETEX
+/BTEX\NormalTok{ descenders=2,}/ETEX
+/BTEX\NormalTok{ adjustment=0,}/ETEX
+/BTEX\NormalTok{ mainColor=\letteropenbrace{}s=.5\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ secondaryColor=\letteropenbrace{}s=.6\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ tertiaryColor=\letteropenbrace{}s=.7\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{]}/ETEX
+
+/BTEX\CommentTok{\letterpercent{} Overriding the hader \letterslash{} footer info:}/ETEX
+
+/BTEX\FunctionTok{\letterbackslash{}Pauta}\NormalTok{[}/ETEX
+/BTEX\NormalTok{ infoLeft=\letteropenbrace{}An excercise in Visigothic script\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ infoRight=\letteropenbrace{}from an Spanish manuscript, VII}\FunctionTok{\letterbackslash{}high}\NormalTok{\letteropenbrace{}th\letterclosebrace{} century\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ infoPosition=footer,}/ETEX
+/BTEX\NormalTok{ displayNibs=true,}/ETEX
+/BTEX\NormalTok{ displayAngleMarks=false,}/ETEX
+/BTEX\NormalTok{ nibWidth=2mm,}/ETEX
+/BTEX\NormalTok{ ascenders=4,}/ETEX
+/BTEX\NormalTok{ xHeight=3,}/ETEX
+/BTEX\NormalTok{ descenders=4,}/ETEX
+/BTEX\NormalTok{ adjustment=1,}/ETEX
+/BTEX\NormalTok{ mainColor=\letteropenbrace{}s=.3\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ secondaryColor=\letteropenbrace{}s=.4\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ tertiaryColor=\letteropenbrace{}s=.5\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{]}/ETEX
+/BTEX\FunctionTok{\letterbackslash{}stopdocument}/ETEX
+\stophighlighting
+
+This project aims to provide a flexible and efficient tool for creating calligraphy practice templates, leveraging the power of \CONTEXT~and \METAPOST.
+
+\stopsubsubsection
+
+\stopsubsection
+
+\startsubsection[title={Changelog},reference={changelog}]
+
+\startitemize[packed]
+\item
+  20240307: Added build script, first alpha version
+\stopitemize
+
+\stopsubsection
+
+\stopsection

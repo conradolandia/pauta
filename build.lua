@@ -1,23 +1,23 @@
 #!/usr/bin/env lua
 
--- Define the build program, the build options and the files to build
+-- Define the build program(s)
 local build_program = "/home/andi/Apps/lmtx/tex/texmf-linux-64/bin/context"
 local docs_program = "pandoc"
 
+-- Extensions to clean if `--clean` is used
+local clean_extensions = {".pdf", ".tuc", ".log"}
+
+-- Build options and files to build (files are processed by table order)
 local build_files = {{
-    name = "pauta-example.tex",
-    program = build_program,
-    options = "--mode=letter:h --purgeall"
-}, {
-    name = "_pauta_pendragon.tex",
-    program = build_program,
-    options = "--purgeall"
-}, {
-    name = "readme.md",
     program = docs_program,
     options = "--from=markdown --to=context+ntb --wrap=none --top-level-division=section --section-divs",
+    name = "README.md",
     after = "-o",
     exit = "readme.tex"
+}, {
+    program = build_program,
+    options = "--mode=letter:h --purgeall --noconsole",
+    name = "pauta-example.tex"
 }}
 
 -- Messages
@@ -29,29 +29,37 @@ local success_message = space .. "completed successfully"
 
 -- Clean function
 local function clean_file(file)
-    local extensions = {".pdf", ".tuc", ".log"}
-    for _, extension in pairs(extensions) do
-        local removable = file.name:gsub("%.tex$", extension)
-        local success = os.remove(removable)
-        if success then
-            print(removable .. space .. "removed")
+    for _, extension in pairs(clean_extensions) do
+        local removable, amount = file.name:gsub("%.tex$", extension)
+        if amount > 0 then
+            local success = os.remove(removable)
+            if success == true then
+                print(removable .. space .. "removed")
+            end
         end
     end
 end
 
 -- Function to build a file
 local function build_file(file)
-    print(separator)
     print("Building [ " .. file.name .. " ]:")
 
-    local command = file.program .. space .. file.options .. space .. file.name
+    local command = file.program
+
+    if file.options then
+        command = command .. space .. file.options
+    end
+
+    if file.name then
+        command = command .. space .. file.name
+    end
 
     if file.after then
-      command = command .. space .. file.after
+        command = command .. space .. file.after
     end
 
     if file.exit then
-      command = command .. space .. file.exit
+        command = command .. space .. file.exit
     end
 
     local success, exit, code = os.execute(command)
@@ -63,7 +71,7 @@ local function build_file(file)
         message = error_message .. " (" .. exit .. ": " .. code .. ")"
     end
 
-    print(intro .. file.name .. message)
+    print(intro .. file.name .. message .. separator)
 end
 
 -- Check for the --clean flag
@@ -82,7 +90,8 @@ if clean_flag_present then
     end
 else
     -- Build each file in the list
-    for _, file in ipairs(build_files) do
+    for key, file in ipairs(build_files) do
+        io.write("[" .. key .. "/" .. #build_files .. "] -> ")
         build_file(file)
     end
 end
