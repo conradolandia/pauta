@@ -8,7 +8,7 @@
 ]
 
 % Setup layout for first page
-\definelayout[First][
+\definelayout[Docs][
   topspace={.11\paperheight},
   header=\zeropoint,
   footer=\zeropoint,
@@ -33,6 +33,16 @@
 
 \definepapersize[lv][letter]
 \definepapersize[lh][letter,landscape]
+
+\startsetups pauta:pautalayout
+  \setuppapersize[lh]
+  \setuplayout[Pauta]
+\stopsetups
+
+\startsetups pauta:doclayout
+  \setuppapersize[lv]
+  \setuplayout[Docs]
+\stopsetups
 
 \startsetups pauta:letterv
   \setuppapersize[lv][lv]
@@ -111,13 +121,11 @@
 
 \definesectionlevels
    [default]
-   [section, subsection, subsubsection, subsubsubsection, subsubsubsubsection]
+   [section, subsection]
 
-\setuphead[chapter, section, subsection, subsubsection, subsubsubsection, subsubsubsubsection][number=no]
+\setuphead[chapter, section, subsection][number=no]
 
-\setupitemize[autointro]    % prevent orphan list intro
 \setupitemize[indentnext=no]
-
 \defineitemgroup[enumerate]
 \setupenumerate[each][fit][itemalign=left,distance=.5em,style={\feature[+][default:tnum]}]
 
