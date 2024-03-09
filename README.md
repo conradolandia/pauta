@@ -125,3 +125,4 @@ This project aims to provide a flexible and efficient tool for creating calligra
 ## Changelog
 
 - 20240307: Added build script, first alpha version
+- 20240308: Improved build script, TDS compliant branch created
