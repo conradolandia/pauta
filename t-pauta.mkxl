@@ -173,7 +173,6 @@
   % -------------------------------------------------------------------
   % Vardefs
   % -------------------------------------------------------------------
-
   % Draw a section (ascendant, x-height or descendant)
   vardef Section(expr lines, startPosition) =
     % Draw section lines
