@@ -1,101 +1,86 @@
 #!/usr/bin/env lua
 
--- Define the build program(s)
-local build_program = "/home/andi/Apps/lmtx/tex/texmf-linux-64/bin/context"
-local docs_program = "pandoc"
+-- [[ Customization ]]
+-- Build command(s) and variables
+local docs_command = "pandoc"
+local docs_folder = "doc/context/third/pauta/"
+local build_command = "/home/andi/Apps/lmtx/tex/texmf-linux-64/bin/context"
+local build_folder = "tex/context/third/pauta/"
+local build_paths = {build_folder, docs_folder}
+local build_options = {"--purgeall", "--noconsole", "--path=" .. table.concat(build_paths, ",")}
+local build_modes = {
+    h = "--mode=letter:h",
+    v = "--mode=letter:v"
+}
 
--- Extensions to clean if `--clean` is used
-local clean_extensions = {".pdf", ".tuc", ".log"}
-
--- Build options and files to build (files are processed by table order)
-local build_files = {{
-    program = docs_program,
-    options = "--from=markdown --to=context+ntb --wrap=none --top-level-division=section --section-divs",
-    name = "README.md",
-    after = "-o",
-    exit = "readme.tex"
-}, {
-    program = build_program,
-    options = "--mode=letter:h --purgeall --noconsole",
-    name = "pauta-example.tex"
-}, {
-    program = build_program,
-    options = "--mode=letter:v --purgeall --noconsole",
-    name = "pauta.tex"
-}}
-
--- Messages
+-- Messages used all around
 local space = " "
-local intro = "Processing "
+local intro = "Processing the file "
 local separator = "\n"
 local error_message = space .. "failed to complete"
 local success_message = space .. "completed successfully"
 
--- Clean function
-local function clean_file(file)
-    for _, extension in pairs(clean_extensions) do
-        local removable, amount = file.name:gsub("%.tex$", extension)
-        if amount > 0 then
-            local success = os.remove(removable)
-            if success == true then
-                print(removable .. space .. "removed")
-            end
-        end
-    end
+-- Create full options string for the build command with optional mode
+local function create_options(mode)
+    return table.concat(build_options, space) .. space .. mode
 end
 
--- Function to build a file
-local function build_file(file)
-    print("Building [ " .. file.name .. " ]:")
+-- Tasks to execute and options
+local tasks = {{
+    command = docs_command,
+    options = "--from=markdown --to=context+ntb --wrap=none --top-level-division=section --section-divs",
+    input = "README.md",
+    after = "-o",
+    output = "README.tex"
+}, {
+    command = build_command,
+    options = create_options(build_modes.h),
+    input = docs_folder .. "pauta-example.tex"
+}, {
+    command = build_command,
+    options = create_options(build_modes.v),
+    input = docs_folder .. "pauta.tex"
+}}
 
-    local command = file.program
+-- [[ Internal functions ]]
 
-    if file.options then
-        command = command .. space .. file.options
+-- Function to build a task
+local function execute(task)
+    print("Building [ " .. task.input .. " ]")
+
+    local command = task.command
+
+    if task.options then
+        command = command .. space .. task.options
     end
 
-    if file.name then
-        command = command .. space .. file.name
+    if task.input then
+        command = command .. space .. task.input
     end
 
-    if file.after then
-        command = command .. space .. file.after
+    if task.after then
+        command = command .. space .. task.after
     end
 
-    if file.exit then
-        command = command .. space .. file.exit
+    if task.output then
+        command = command .. space .. task.output
     end
 
-    local success, exit, code = os.execute(command)
+    print("Executing: " .. command)
+
+    local handle = io.popen(command)
+    local output = handle:read("*a")
     local message
 
-    if success then
+    if handle then
         message = success_message
-    else
-        message = error_message .. " (" .. exit .. ": " .. code .. ")"
     end
 
-    print(intro .. file.name .. message .. separator)
+    print(intro .. task.input .. message .. separator)
 end
 
--- Check for the --clean flag
-local clean_flag_present = false
-for _, arg in ipairs(arg) do
-    if arg == "--clean" then
-        clean_flag_present = true
-        break
-    end
-end
-
-if clean_flag_present then
-    -- Clean results for each file in the list
-    for _, file in ipairs(build_files) do
-        clean_file(file)
-    end
-else
-    -- Build each file in the list
-    for key, file in ipairs(build_files) do
-        io.write("[" .. key .. "/" .. #build_files .. "] -> ")
-        build_file(file)
-    end
+-- Build each task in the list
+for key, task in ipairs(tasks) do
+    io.write("[" .. key .. "/" .. #tasks .. "] -> ")
+    execute(task)
 end
