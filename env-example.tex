@@ -51,11 +51,18 @@
 \stopmode
 
 % Code listings
-\defineframedtext [shaded]
-  [backgroundcolor=shadecolor,
+\definetextbackground [shaded]
+  [backgroundcolor=lightgray,
    background=color,
+   before={\blank[big]},
+   after={\blank[big]},
+   location=paragraph,
+   style=small,
    frame=off,
-   offset=0pt,
+   leftoffset=.8\bodyfontsize,
+   rightoffset=3\bodyfontsize,
+   topoffset=.5\bodyfontsize,
+   bottomoffset=.5\bodyfontsize,
    width=local]
 \definetyping [highlighting]
   [escape=yes,
