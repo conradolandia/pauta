@@ -1,10 +1,10 @@
-\startsection[title={A Calligraphy Grid in ConTeXt/LMTX},reference={a-calligraphy-grid-in-contextlmtx}]
+\startchapter[title={A Calligraphy Grid in ConTeXt/LMTX},reference={a-calligraphy-grid-in-contextlmtx}]
 
 {\bf WARNING: WORK IN PROGRESS (ALPHA) USE AT YOUR OWN RISK!}
 
 This project is a generator of grids for medieval calligraphy in \goto{ConTeXt/LMTX}[url(https://wiki.contextgarden.net/)] and \goto{MetaPost}[url(https://wiki.contextgarden.net/MetaPost)].
 
-\startsubsection[title={Files},reference={files}]
+\startsection[title={Files},reference={files}]
 
 \startitemize[packed]
 \item
@@ -21,9 +21,9 @@ This project is a generator of grids for medieval calligraphy in \goto{ConTeXt/L
   The build script \type{build.lua}
 \stopitemize
 
-\stopsubsection
+\stopsection
 
-\startsubsection[title={Use},reference={use}]
+\startsection[title={Use},reference={use}]
 
 \startenumerate[n,packed][stopper=.]
 \item
@@ -36,9 +36,9 @@ This project is a generator of grids for medieval calligraphy in \goto{ConTeXt/L
   Invoke the \type{\Pauta} macro as many times as you want pages. Each invocation can have a different configuration.
 \stopenumerate
 
-\stopsubsection
+\stopsection
 
-\startsubsection[title={Generating the example file},reference={generating-the-example-file}]
+\startsection[title={Generating the example file},reference={generating-the-example-file}]
 
 Review and run the lua script \type{build.lua}. If you don't have a standalone lua interpreter, you can run it with luametatex like so:
 
@@ -48,9 +48,9 @@ Review and run the lua script \type{build.lua}. If you don't have a standalone l
 
 You can also adapt it and use to build your own project.
 
-\stopsubsection
+\stopsection
 
-\startsubsection[title={Configuration Parameters},reference={configuration-parameters}]
+\startsection[title={Configuration Parameters},reference={configuration-parameters}]
 
 All parameters are optional. Defaults are as follows:
 
@@ -72,11 +72,11 @@ All parameters are optional. Defaults are as follows:
 /BTEX\NormalTok{]}/ETEX
 \stophighlighting
 
-\stopsubsection
+\stopsection
 
-\startsubsection[title={Code Examples},reference={code-examples}]
+\startsection[title={Code Examples},reference={code-examples}]
 
-\startsubsubsection[title={Example 1: Basic Usage},reference={example-1-basic-usage}]
+\startsubsection[title={Example 1: Basic Usage},reference={example-1-basic-usage}]
 
 \starthighlighting
 /BTEX\FunctionTok{\letterbackslash{}usemodule}\NormalTok{[pauta]}/ETEX
@@ -100,9 +100,9 @@ All parameters are optional. Defaults are as follows:
 /BTEX\FunctionTok{\letterbackslash{}stopdocument}/ETEX
 \stophighlighting
 
-\stopsubsubsection
+\stopsubsection
 
-\startsubsubsection[title={Example 2: Multiple Pauta Instances},reference={example-2-multiple-pauta-instances}]
+\startsubsection[title={Example 2: Multiple Pauta Instances},reference={example-2-multiple-pauta-instances}]
 
 \starthighlighting
 /BTEX\FunctionTok{\letterbackslash{}usemodule}\NormalTok{[pauta]}/ETEX
@@ -146,17 +146,19 @@ All parameters are optional. Defaults are as follows:
 
 This project aims to provide a flexible and efficient tool for creating calligraphy practice templates, leveraging the power of \CONTEXT~and \METAPOST.
 
-\stopsubsubsection
-
 \stopsubsection
 
-\startsubsection[title={Changelog},reference={changelog}]
+\stopsection
+
+\startsection[title={Changelog},reference={changelog}]
 
 \startitemize[packed]
 \item
   20240307: Added build script, first alpha version
+\item
+  20240308: Improved build script, TDS compliant branch created
 \stopitemize
 
-\stopsubsection
-
 \stopsection
+
+\stopchapter
