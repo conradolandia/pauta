@@ -31,7 +31,15 @@
 %C TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 %C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-\unprotect
+\writestatus{loading}{Pauta (ver: 2024.03.09)}
+
+\startmodule [pauta]
+\usemodule   [module-catcodes]
+\unprotectmodulecatcodes
+
+%D \subject{Setups}
+%D
+%D We use setups to configure the header /  footer marks for a Pauta page
 
 \startsetups pauta:layout:footermarks
   \setuplayout[header=\zeropoint,footer={.07\paperheight}]
@@ -54,9 +62,16 @@
   \doifsomething{\PAUTAhandInfo}{\quad(\PAUTAhandInfo)}
 \stopsetups
 
+%D \subject{Pauta definition}
+%D
+%D We define the doPauta macro, that takes up to 16 arguments.
+%D All arguments are optional.
+%D
+
+
 \starttexdefinition nospaces doPauta [#1]
-  \getparameters[PAUTA]
-    [hand=,
+  \getparameters[PAUTA] [
+    hand=,
     handInfo=,
     infoPosition=footer,
     infoLeft={\setup{pauta:content:leftmark}},
@@ -72,7 +87,8 @@
     mainColor={s=.4},
     secondaryColor={s=.6},
     tertiaryColor={s=.8},
-    #1]
+    #1,
+  ]
 
   \doifelse{\PAUTAinfoPosition}{footer}
     {\setup[pauta:layout:footermarks]}
@@ -312,4 +328,4 @@
   endfor ;
 \stopuseMPgraphic
 
-\protect \endinput
+\stopmodule

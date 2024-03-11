@@ -4,21 +4,20 @@
 
 This project is a generator of grids for medieval calligraphy in [ConTeXt/LMTX](https://wiki.contextgarden.net/) and [MetaPost](https://wiki.contextgarden.net/MetaPost).
 
-## Files
+## Files included
 
-- Main module: `t-pauta.mkxl`
-- MetaPost library: `hatching.mp`
-- Example file: `pauta-example.tex` (also in pdf)
-- Environment file for the example: `env-example.tex`
-- This `readme.md` file, and a pandoc generated tex version `readme.tex`
-- The build script `build.lua`
+- Main module: `tex/context/third/pauta/t-pauta.mkxl`
+- Example file: `doc/context/third/pauta/pauta-example.tex` (also in pdf)
+- A copy of this file in \CONTEXT\ format: `doc/context/third/pauta/pauta-example.tex` (also in pdf)
+- Environment file for the example: `doc/context/third/pauta/env-pauta.tex`
+- This `README.md` file, and a pandoc generated ConTeXt version at `doc/context/third/pauta/README.tex`.
+- The build script `build.lua`, that takes care of generating the tex version of the README file and all the pdfs.
 
 ## Use
 
-1. Ensure `pauta.mkxl`, `hatching.mp`, and the ConTeXt file to compile are in the same directory.
-2. Include the grid in your ConTeXt file.
-3. Compile with `context [FILE]`.
-4. Invoke the `\Pauta` macro as many times as you want pages. Each invocation can have a different configuration.
+1. Clone this repository: `git clone https://github.com/conradolandia/pauta.git`, and go inside it.
+2. Copy the `doc` and `tex` folders to your ConTeXt tree and rebuild your database with `context --generate`. You can find more details about the process [on the ConTeXt wiki](https://wiki.contextgarden.net/Modules#Installation). Alternatively, call context with the `--path` flag, and provide it with the path of this folder, i.e: `context --path=/home/user/pauta`. Alternatively still, place `t-pauta.mkxl` on the same directory as the file importing it.
+3. Invoke the `\Pauta` macro as many times as you want pages. Each invocation can have a different configuration.
 
 ## Generating the example file
 
@@ -39,9 +38,12 @@ All parameters are optional. Defaults are as follows:
   hand=, % Hand name
   handInfo=, % Some extra info for the hand
   infoPosition=header, % Where to show the extra info (header | footer)
-  displayNibs=true, % Show pen width marks (true | false)
-  displayAngleMarks=true, % Display dotted guides for the nib angle
+  infoLeft={\setup{pauta:content:leftmark}},
+  infoRight={\setup{pauta:content:rightmark}},
+  displayNibs=false, % Show nib-width marks (true | false)
+  displayAngleMarks=false, % Display dotted guides for the nib angle
   nibWidth=3mm, % Pen nib width (with units)
+  nibAngle=35, % Nib angle
   ascenders=3, % Number of ascender lines (in nib widths)
   xHeight=4, % Number of x-height lines (in nib widths)
   descenders=3, % Number of descending lines (in nib widths)

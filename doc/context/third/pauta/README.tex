@@ -4,21 +4,21 @@
 
 This project is a generator of grids for medieval calligraphy in \goto{ConTeXt/LMTX}[url(https://wiki.contextgarden.net/)] and \goto{MetaPost}[url(https://wiki.contextgarden.net/MetaPost)].
 
-\startsection[title={Files},reference={files}]
+\startsection[title={Files included},reference={files-included}]
 
 \startitemize[packed]
 \item
-  Main module: \type{t-pauta.mkxl}
+  Main module: \type{tex/context/third/pauta/t-pauta.mkxl}
 \item
-  MetaPost library: \type{hatching.mp}
+  Example file: \type{doc/context/third/pauta/pauta-example.tex} (also in pdf)
 \item
-  Example file: \type{pauta-example.tex} (also in pdf)
+  A copy of this file in \CONTEXT~format: \type{doc/context/third/pauta/pauta-example.tex} (also in pdf)
 \item
-  Environment file for the example: \type{env-example.tex}
+  Environment file for the example: \type{doc/context/third/pauta/env-pauta.tex}
 \item
-  This \type{readme.md} file, and a pandoc generated tex version \type{readme.tex}
+  This \type{README.md} file, and a pandoc generated ConTeXt version at \type{doc/context/third/pauta/README.tex}.
 \item
-  The build script \type{build.lua}
+  The build script \type{build.lua}, that takes care of generating the tex version of the README file and all the pdfs.
 \stopitemize
 
 \stopsection
@@ -27,7 +27,9 @@ This project is a generator of grids for medieval calligraphy in \goto{ConTeXt/L
 
 \startenumerate[n,packed][stopper=.]
 \item
-  Ensure \type{pauta.mkxl}, \type{hatching.mp}, and the ConTeXt file to compile are in the same directory.
+  Clone this repository: \type{git clone https://github.com/conradolandia/pauta.git}, and go inside it.
+\item
+  Copy the \type{doc} and \type{tex} folders to your ConTeXt tree and rebuild your database with \type{context --generate}. You can find more details about the process \goto{on the ConTeXt wiki}[url(https://wiki.contextgarden.net/Modules\#Installation)]. Alternatively, place \type{t-pauta.mkxl} on the same directory.
 \item
   Include the grid in your ConTeXt file.
 \item

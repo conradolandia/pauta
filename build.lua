@@ -17,14 +17,6 @@ local build_modes = {
     v = "--mode=letter:v"
 }
 
--- Some minimal kind of error checking...
---[[
-local commands = {docs_command, build_command}
-for _, command in pairs(commands) do
-  local handle = io.popen(command)
-end
-]]
-
 -- Messages used all around
 local space = " "
 local intro = "Processing the file "
