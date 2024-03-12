@@ -126,9 +126,10 @@ All parameters are optional. Defaults are as follows:
 \stopdocument
 ```
 
-This project aims to provide a flexible and efficient tool for creating calligraphy practice templates, leveraging the power of \CONTEXT\ and \METAPOST.
+This project aims to provide a somewhat flexible and kind of efficient tool for creating calligraphy practice templates, leveraging the power of ConTeXt and MetaPost.
 
 ## Changelog
 
 - 20240307: Added build script, first alpha version
 - 20240308: Improved build script, TDS compliant branch created
+- 20240311: Improved build script yet even more, and we are TDS compliant.
