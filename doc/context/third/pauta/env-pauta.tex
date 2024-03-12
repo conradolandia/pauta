@@ -1,0 +1,119 @@
+\setupsynctex[state=start]
+\usemodule[fullpage]
+
+% Colors
+\usecolors[crayola]
+
+% No page numbering
+\setuppagenumbering[location=,]
+
+% Headings
+\setuphead[chapter][style={\switchtobodyfont[30pt]}]
+
+% Available modes
+% --mode=letter:v
+% --mode=letter:h (default)
+
+\definemode[letter:v][keep]
+\definemode[letter:h][keep]
+
+\definepapersize[lv][letter]
+\definepapersize[lh][letter,landscape]
+
+\startsetups pauta:letterv
+  \setuppapersize[lv][lv]
+\stopsetups
+
+\startsetups pauta:letterh
+  \setuppapersize[lh][lh]
+\stopsetups
+
+\startsetups pauta:pautalayout
+  \setup[pauta:letterh]
+  \setupfullpage[style={cm,plain}]
+\stopsetups
+
+\startsetups pauta:doclayout
+  \setup[pauta:letterv]
+  \setupfullpage[style={in,plain}]
+\stopsetups
+
+\startmode[letter:v]
+  \setup[pauta:letterv]
+\stopmode
+
+\startmode[letter:h]
+  \setup[pauta:letterh]
+\stopmode
+
+% Code listings
+\definetextbackground[shaded]
+  [backgroundcolor=lightgray,
+   background=color,
+   before={\blank[big]},
+   after={\blank[big]},
+   location=paragraph,
+   style=small,
+   frame=off,
+   leftoffset=.8\bodyfontsize,
+   rightoffset=3\bodyfontsize,
+   topoffset=.5\bodyfontsize,
+   bottomoffset=.5\bodyfontsize,
+   width=local]
+
+\definetyping[highlighting]
+  [escape=yes,
+   before={\startshaded},
+   after={\stopshaded}]
+
+\definetype[highlight][escape=yes]
+
+\define[1]\AlertTok{\color[Scarlet]{\bf #1}}
+\define[1]\AnnotationTok{\color[CeruleanFrost]{\bf \em #1}}
+\define[1]\AttributeTok{\color[MaximumGreen]{#1}}
+\define[1]\BaseNTok{\color[Jade]{#1}}
+\define[1]\BuiltInTok{\color[TropicalRainForest]{#1}}
+\define[1]\CharTok{\color[LapisLazuli]{#1}}
+\define[1]\CommentTok{\color[CeruleanFrost]{\em #1}}
+\define[1]\CommentVarTok{\color[CeruleanFrost]{\bf \em #1}}
+\define[1]\ConstantTok{\color[SmokeyTopaz]{#1}}
+\define[1]\ControlFlowTok{\color[TropicalRainForest]{\bf #1}}
+\define[1]\DataTypeTok{\color[SmokeyTopaz]{#1}}
+\define[1]\DecValTok{\color[Jade]{#1}}
+\define[1]\DocumentationTok{\color[DarkVenetianRed]{\em #1}}
+\define[1]\ErrorTok{\color[Scarlet]{\bf #1}}
+\define[1]\FloatTok{\color[Jade]{#1}}
+\define[1]\FunctionTok{\color[MidnightBlue]{#1}}
+\define[1]\ImportTok{\color[TropicalRainForest]{\bf #1}}
+\define[1]\InformationTok{\color[CeruleanFrost]{\bf \em #1}}
+\define[1]\KeywordTok{\color[TropicalRainForest]{\bf #1}}
+\define[1]\OperatorTok{\color[GraniteGray]{#1}}
+\define[1]\OtherTok{\color[TropicalRainForest]{#1}}
+\define[1]\PreprocessorTok{\color[TigersEye]{#1}}
+\define[1]\SpecialCharTok{\color[LapisLazuli]{#1}}
+\define[1]\SpecialStringTok{\color[PinkPearl]{#1}}
+\define[1]\StringTok{\color[LapisLazuli]{#1}}
+\define[1]\VariableTok{\color[CosmicCobalt]{#1}}
+\define[1]\VerbatimStringTok{\color[LapisLazuli]{#1}}
+\define[1]\WarningTok{\color[CeruleanFrost]{\bf \em #1}}
+\define[1]\ExtensionTok{#1}
+\define[1]\NormalTok{#1}
+\define[1]\RegionMarkerTok{#1}
+
+\setuphead[chapter]            [style=\tfd\setupinterlinespace,header=empty]
+\setuphead[section]            [style=\tfc\setupinterlinespace]
+\setuphead[subsection]         [style=\tfb\setupinterlinespace]
+\setuphead[subsubsection]      [style=\bf]
+\setuphead[subsubsubsection]   [style=\sc]
+\setuphead[subsubsubsubsection][style=\it]
+
+\definesectionlevels [default] [section, subsection]
+
+\setuphead[chapter, section, subsection][number=no]
+
+\setupitemize[indentnext=no]
+\defineitemgroup[enumerate]
+\setupenumerate[each][fit][itemalign=left,distance=.5em,style={\feature[+][default:tnum]}]
+
+\setupbodyfont[pagella,10pt]
+%\showframe

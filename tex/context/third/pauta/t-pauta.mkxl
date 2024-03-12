@@ -1,13 +1,13 @@
 %D \module
 %D   [       file=t-pauta,
-%D        version=2024.03.02,
+%D        version=2024.03.12,
 %D          title=\CONTEXT\ User Module,
 %D       subtitle=Create templates for calligraphy practice using METAPOST,
 %D         author=Andrés Conrado Montoya Acosta,
 %D           date=\currentdate,
 %D      copyright={Andrés Conrado Montoya Acosta},
-%D        email=andresconrado@gmail.com,
-%D      license=MIT License]
+%D          email=andresconrado@gmail.com,
+%D        license=MIT License]
 %D
 
 %C Copyright (c) 2024 Andrés Conrado Montoya Acosta
@@ -31,16 +31,29 @@
 %C TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 %C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-\unprotect
+\writestatus{loading}{Pauta (ver: 2024.03.12)}
 
-\startsetups pauta:layout:footermarks
-  \setuplayout[header=\zeropoint,footer={.07\paperheight}]
-  \setupfootertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
+\startmodule [pauta]
+\usemodule   [module-catcodes]
+\unprotectmodulecatcodes
+
+%D \subject{Setups}
+%D
+%D We use setups to configure the top /  bottom marks for a Pauta page
+
+\startsetups pauta:layout:bottommarks
+  \setuplayout[top=\zeropoint,bottom={.07\paperheight}]
+  \setupbottomtexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
-\startsetups pauta:layout:headermarks
-  \setuplayout[header={.07\paperheight},footer=\zeropoint]
-  \setupheadertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
+\startsetups pauta:layout:topmarks
+  \setuplayout[top={.07\paperheight},bottom=\zeropoint]
+  \setuptoptexts[\PAUTAinfoLeft][\PAUTAinfoRight]
+\stopsetups
+
+\startsetups pauta:layout:clearmarks
+\setupbottomtexts[][][][]
+\setuptoptexts[][][][]
 \stopsetups
 
 \startsetups pauta:content:leftmark
@@ -54,11 +67,26 @@
   \doifsomething{\PAUTAhandInfo}{\quad(\PAUTAhandInfo)}
 \stopsetups
 
+%D \subject{Pauta definition}
+%D
+%D We define the doPauta macro, that takes up to 16 arguments.
+%D All arguments are optional, they come with default values.
+%D If you want to disable the top / bottom text, you can
+%D use \type{infoLeft=,} and \type{infoRight=,}.
+%D
+%D Do not leave other variables blank. Just don't define them
+%D if you want to accept the defaults.
+%D
+%D We use \type{\getparameters} to, well, get the parameters.
+%D Created following the wiki article for
+%D \goto{Handling Arguments}
+%D   [url(https://wiki.contextgarden.net/System_Macros/Handling_Arguments)]
+
 \starttexdefinition nospaces doPauta [#1]
-  \getparameters[PAUTA]
-    [hand=,
+  \getparameters[PAUTA] [
+    hand=,
     handInfo=,
-    infoPosition=footer,
+    infoPosition=bottom,
     infoLeft={\setup{pauta:content:leftmark}},
     infoRight={\setup{pauta:content:rightmark}},
     displayNibs=false,
@@ -72,16 +100,24 @@
     mainColor={s=.4},
     secondaryColor={s=.6},
     tertiaryColor={s=.8},
-    #1]
+    #1,
+  ]
 
-  \doifelse{\PAUTAinfoPosition}{footer}
-    {\setup[pauta:layout:footermarks]}
-    {\setup[pauta:layout:headermarks]}
+%D This creates a macro for each config value, containing the value.
+%D We use these values to setup all the variables we need.
+%D
+%D Configure the bottom:
 
+  \doifelse{\PAUTAinfoPosition}{bottom}
+    {\setup[pauta:layout:bottommarks]}
+    {\setup[pauta:layout:topmarks]}
+
+%D Configure the colors:
   \definecolor[tertiaryColor] [\PAUTAtertiaryColor]
   \definecolor[mainColor]     [\PAUTAmainColor]
   \definecolor[secondaryColor][\PAUTAsecondaryColor]
 
+%D Setup MP variables:
   \setupMPvariables[pauta][
     displayNibs=\PAUTAdisplayNibs,
     displayAngleMarks=\PAUTAdisplayAngleMarks,
@@ -93,14 +129,29 @@
     adjustment=\PAUTAadjustment,
   ]
 
-  % Draw pauta
-  \page\start\useMPgraphic{pauta}\stop\page
+%D Finally, draw the MP graphic {\em pauta} based on user settings.
+%D
+%C For now the \page(s) and \start...\stop seems to almost work,
+%C except for when it does not... Seems header and footers are tricky.
+%C I've tried other things but nothing has worked when combining
+%C Pauta with pages containing different content, i.e., a page
+%C with instructions at the start of the document.
+%C But I'm not sure yet if this is the proper way of handling it.
+%C Will ask in the mailing list about that.
+  \page\start\useMPgraphic{pauta}\stop\page\setup[pauta:layout:clearmarks]
 \stoptexdefinition
 
+%D Now we use the \type{\dosingleargument} macro, as explained at
+%D \goto{Handling Arguments}
+%D   [url(https://wiki.contextgarden.net/System_Macros/Handling_Arguments)]
 \starttexdefinition Pauta
   \dosingleargument\doPauta
 \stoptexdefinition
 
+%D We include the hatching.mp macro definitions to create a hatched pattern
+%D for the angled guides. So far can't find a better way of doing it.
+%D
+%D After that, we include all our vardefs that won't change between runs.
 \startMPinclusions
   % -------------------------------------------------------------------
   % hatching.mp
@@ -252,6 +303,7 @@
   numeric thickLine ; thickLine = 0.4mm ;
 \stopMPinclusions
 
+%D Finally, we use the graphic, redefining the variables we need for each run.
 \startuseMPgraphic{pauta}
   % These variables will be recalculated every time we call the MPgraphic
   % and that's why I don't put them in the MPinclusions
@@ -269,7 +321,7 @@
   color secondaryColor ; secondaryColor = \MPcolor{secondaryColor} ;
   color tertiaryColor ; tertiaryColor = \MPcolor{tertiaryColor} ;
 
-  % Text height (without footers or headers)
+  % Text height (without footer or header)
   numeric SimpleTextHeight ; SimpleTextHeight = TextHeight - (HeaderHeight + FooterHeight);
 
   % Distance between lines (nib width)
@@ -312,4 +364,4 @@
   endfor ;
 \stopuseMPgraphic
 
-\protect \endinput
+\stopmodule

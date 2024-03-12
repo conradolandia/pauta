@@ -4,7 +4,16 @@
 
 \setup[pauta:pautalayout]
 
+% A macro for testing chapters
+\define[2]\ExampleChapter{
+  \startchapter[title={#1}]
+    This is a test. \dorecurse{#2}{\input darwin\par}
+  \stopchapter
+}
+
 \startdocument
+
+\ExampleChapter{A chapter before}{6}
 
 \Pauta [
   % Hand name
@@ -105,6 +114,13 @@
 
 \Pauta[infoLeft={testing testing testing},infoRight={testing testing testing}]
 
+\Pauta[
+  infoLeft=,
+  infoRight=,
+]
+
 \Pauta
+
+\ExampleChapter{A chapter after}{10}
 
 \stopdocument
