@@ -33,8 +33,6 @@ local build_modes = {
 	v = "--mode=letter:v",
 }
 
--- [[ Internal functions ]]
---
 -- Create full options string for the build command with optional mode
 -- I use a table because it seems easier than just concatenating strings and spaces
 local function create_options(mode)
@@ -59,6 +57,9 @@ local function create_options(mode)
 	return table.concat(build_options, space)
 end
 
+-- [[ Internal functions ]]
+--
+
 -- [[ Task Class ]]
 local Task = {}
 Task.__index = Task
@@ -76,7 +77,7 @@ function Task:new(name, command, options, input, after, output, postprocess)
 end
 
 function Task:execute(show_output)
-	print("Executing [ " .. self.name .. " ]")
+	print("Executing task [ " .. self.name .. " ]")
 
 	local command = self.command
 	if self.options then
