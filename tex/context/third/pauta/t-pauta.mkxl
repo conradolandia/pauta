@@ -65,16 +65,14 @@
 %D \subject{Pauta definition}
 %D
 %D We define the doPauta macro, that takes up to 16 arguments.
-%D All arguments are optional, but need a default value.
+%D All arguments are optional, they come with default values.
 %D If you want to disable the header / footer text, you can
 %D use \type{infoLeft=,} and \type{infoRight=,}.
 %D
-%D Do not leave blank these variables that specify units, or
-%D results may be unpredictable: \type{nibWidth},
-%D \type{nibAngle}, \type{ascenders}, \type{xHeight},
-%D \type{descenders}, \type{adjustment}.
+%D Do not leave other variables blank. Just don't define them
+%D if you want to accept the defaults.
 %D
-%D Colors can be left blank and
+%D We use \type{\getparameters} to, well, get the parameters.
 
 \starttexdefinition nospaces doPauta [#1]
   \getparameters[PAUTA] [
@@ -97,14 +95,21 @@
     #1,
   ]
 
+%D This creates a macro for each config value, containing the value.
+%D We use these values to setup all the variables we need.
+%D
+%D Configure the footer:
+
   \doifelse{\PAUTAinfoPosition}{footer}
     {\setup[pauta:layout:footermarks]}
     {\setup[pauta:layout:headermarks]}
 
+%D Configure the colors:
   \definecolor[tertiaryColor] [\PAUTAtertiaryColor]
   \definecolor[mainColor]     [\PAUTAmainColor]
   \definecolor[secondaryColor][\PAUTAsecondaryColor]
 
+%D Setup MP variables:
   \setupMPvariables[pauta][
     displayNibs=\PAUTAdisplayNibs,
     displayAngleMarks=\PAUTAdisplayAngleMarks,
@@ -116,7 +121,10 @@
     adjustment=\PAUTAadjustment,
   ]
 
-  % Draw pauta
+%D Finally, draw the graphic pauta based on user settings
+%D
+%C For now the \page and \start...\stop seems to do the trick.
+%C But I'm not sure if it's a proper
   \page\start\useMPgraphic{pauta}\stop\page
 \stoptexdefinition
 
