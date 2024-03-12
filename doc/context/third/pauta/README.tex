@@ -29,11 +29,7 @@ This project is a generator of grids for medieval calligraphy in \goto{ConTeXt/L
 \item
   Clone this repository: \type{git clone https://github.com/conradolandia/pauta.git}, and go inside it.
 \item
-  Copy the \type{doc} and \type{tex} folders to your ConTeXt tree and rebuild your database with \type{context --generate}. You can find more details about the process \goto{on the ConTeXt wiki}[url(https://wiki.contextgarden.net/Modules\#Installation)]. Alternatively, place \type{t-pauta.mkxl} on the same directory.
-\item
-  Include the grid in your ConTeXt file.
-\item
-  Compile with \type{context [FILE]}.
+  Copy the \type{doc} and \type{tex} folders to your ConTeXt tree and rebuild your database with \type{context --generate}. You can find more details about the process \goto{on the ConTeXt wiki}[url(https://wiki.contextgarden.net/Modules\#Installation)]. Alternatively, call context with the \type{--path} flag, and provide it with the path of this folder, i.e: \type{context --path=/home/user/pauta}. Alternatively still, place \type{t-pauta.mkxl} on the same directory as the file importing it.
 \item
   Invoke the \type{\Pauta} macro as many times as you want pages. Each invocation can have a different configuration.
 \stopenumerate
@@ -61,9 +57,12 @@ All parameters are optional. Defaults are as follows:
 /BTEX\NormalTok{ { }hand=, }\CommentTok{\letterpercent{} Hand name}/ETEX
 /BTEX\NormalTok{ { }handInfo=, }\CommentTok{\letterpercent{} Some extra info for the hand}/ETEX
 /BTEX\NormalTok{ { }infoPosition=header, }\CommentTok{\letterpercent{} Where to show the extra info (header \letterbar{} footer)}/ETEX
-/BTEX\NormalTok{ { }displayNibs=true, }\CommentTok{\letterpercent{} Show pen width marks (true \letterbar{} false)}/ETEX
-/BTEX\NormalTok{ { }displayAngleMarks=true, }\CommentTok{\letterpercent{} Display dotted guides for the nib angle}/ETEX
+/BTEX\NormalTok{ { }infoLeft=\letteropenbrace{}}\FunctionTok{\letterbackslash{}setup}\NormalTok{\letteropenbrace{}pauta:content:leftmark\letterclosebrace{}\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ { }infoRight=\letteropenbrace{}}\FunctionTok{\letterbackslash{}setup}\NormalTok{\letteropenbrace{}pauta:content:rightmark\letterclosebrace{}\letterclosebrace{},}/ETEX
+/BTEX\NormalTok{ { }displayNibs=false, }\CommentTok{\letterpercent{} Show nib-width marks (true \letterbar{} false)}/ETEX
+/BTEX\NormalTok{ { }displayAngleMarks=false, }\CommentTok{\letterpercent{} Display dotted guides for the nib angle}/ETEX
 /BTEX\NormalTok{ { }nibWidth=3mm, }\CommentTok{\letterpercent{} Pen nib width (with units)}/ETEX
+/BTEX\NormalTok{ { }nibAngle=35, }\CommentTok{\letterpercent{} Nib angle}/ETEX
 /BTEX\NormalTok{ { }ascenders=3, }\CommentTok{\letterpercent{} Number of ascender lines (in nib widths)}/ETEX
 /BTEX\NormalTok{ { }xHeight=4, }\CommentTok{\letterpercent{} Number of x-height lines (in nib widths)}/ETEX
 /BTEX\NormalTok{ { }descenders=3, }\CommentTok{\letterpercent{} Number of descending lines (in nib widths)}/ETEX

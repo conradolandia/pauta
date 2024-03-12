@@ -65,9 +65,16 @@
 %D \subject{Pauta definition}
 %D
 %D We define the doPauta macro, that takes up to 16 arguments.
-%D All arguments are optional.
+%D All arguments are optional, but need a default value.
+%D If you want to disable the header / footer text, you can
+%D use \type{infoLeft=,} and \type{infoRight=,}.
 %D
-
+%D Do not leave blank these variables that specify units, or
+%D results may be unpredictable: \type{nibWidth},
+%D \type{nibAngle}, \type{ascenders}, \type{xHeight},
+%D \type{descenders}, \type{adjustment}.
+%D
+%D Colors can be left blank and
 
 \starttexdefinition nospaces doPauta [#1]
   \getparameters[PAUTA] [

@@ -19,22 +19,22 @@
 \definepapersize[lv][letter]
 \definepapersize[lh][letter,landscape]
 
-\startsetups pauta:pautalayout
-  \setuppapersize[lh]
-  \setupfullpage[style={cm,headings}]
-\stopsetups
-
-\startsetups pauta:doclayout
-  \setuppapersize[lv]
-  \setupfullpage[style={in,plain}]
-\stopsetups
-
 \startsetups pauta:letterv
   \setuppapersize[lv][lv]
 \stopsetups
 
 \startsetups pauta:letterh
   \setuppapersize[lh][lh]
+\stopsetups
+
+\startsetups pauta:pautalayout
+  \setup[pauta:letterh]
+  \setupfullpage[style={cm,headings}]
+\stopsetups
+
+\startsetups pauta:doclayout
+  \setup[pauta:letterv]
+  \setupfullpage[style={in,plain}]
 \stopsetups
 
 \startmode[letter:v]
@@ -46,7 +46,7 @@
 \stopmode
 
 % Code listings
-\definetextbackground [shaded]
+\definetextbackground[shaded]
   [backgroundcolor=lightgray,
    background=color,
    before={\blank[big]},
@@ -59,12 +59,14 @@
    topoffset=.5\bodyfontsize,
    bottomoffset=.5\bodyfontsize,
    width=local]
-\definetyping [highlighting]
+
+\definetyping[highlighting]
   [escape=yes,
    before={\startshaded},
    after={\stopshaded}]
-\definetype [highlight]
-  [escape=yes]
+
+\definetype[highlight][escape=yes]
+
 \define[1]\AlertTok{\color[Scarlet]{\bf #1}}
 \define[1]\AnnotationTok{\color[CeruleanFrost]{\bf \em #1}}
 \define[1]\AttributeTok{\color[MaximumGreen]{#1}}
@@ -104,9 +106,7 @@
 \setuphead[subsubsubsection]   [style=\sc]
 \setuphead[subsubsubsubsection][style=\it]
 
-\definesectionlevels
-   [default]
-   [section, subsection]
+\definesectionlevels [default] [section, subsection]
 
 \setuphead[chapter, section, subsection][number=no]
 
