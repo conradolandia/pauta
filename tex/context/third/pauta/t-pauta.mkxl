@@ -39,15 +39,21 @@
 
 %D \subject{Setups}
 %D
+%D We define a start/stop pair to configure the macro structure.
+%D Each \type{Pauta} call will have a "section" of sorts.
+\definestartstop[pauta][
+  before={\page\start},
+  after={\stop\page},
+]
 %D We use setups to configure the top /  bottom marks for a Pauta page
 
 \startsetups pauta:layout:bottommarks
-  \setuplayout[top=\zeropoint,bottom={.07\paperheight}]
+  \setuplayout[top=\zeropoint,bottom=2\bodyfontsize]
   \setupbottomtexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
 \startsetups pauta:layout:topmarks
-  \setuplayout[top={.07\paperheight},bottom=\zeropoint]
+  \setuplayout[top=2\bodyfontsize,bottom=\zeropoint]
   \setuptoptexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
@@ -138,7 +144,8 @@
 %C with instructions at the start of the document.
 %C But I'm not sure yet if this is the proper way of handling it.
 %C Will ask in the mailing list about that.
-  \page\start\useMPgraphic{pauta}\stop\page\setup[pauta:layout:clearmarks]
+%C \footnote{As of march 13, 2024, I have not found answers to my questions}
+  \startpauta\useMPgraphic{pauta}\stoppauta
 \stoptexdefinition
 
 %D Now we use the \type{\dosingleargument} macro, as explained at

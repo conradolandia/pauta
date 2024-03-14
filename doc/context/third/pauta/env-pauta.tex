@@ -1,14 +1,13 @@
-\setupsynctex[state=start]
 \usemodule[fullpage]
+
+% Interaction
+\setupinteraction[state=start]
 
 % Colors
 \usecolors[crayola]
 
 % No page numbering
 \setuppagenumbering[location=,]
-
-% Headings
-\setuphead[chapter][style={\switchtobodyfont[30pt]}]
 
 % Available modes
 % --mode=letter:v
@@ -115,5 +114,5 @@
 \defineitemgroup[enumerate]
 \setupenumerate[each][fit][itemalign=left,distance=.5em,style={\feature[+][default:tnum]}]
 
-\setupbodyfont[pagella,10pt]
+\setupbodyfont[plex,9pt]
 %\showframe
