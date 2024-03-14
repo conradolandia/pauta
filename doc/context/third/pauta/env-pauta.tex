@@ -1,4 +1,10 @@
 \usemodule[fullpage]
+\usemodule[filter]
+
+\defineexternalfilter
+    [markdown]
+    [filtercommand={pandoc --from=markdown --to=context+ntb --wrap=none --top-level-division=chapter --section-divs -o \externalfilteroutputfile\space \externalfilterinputfile}]
+
 
 % Interaction
 \setupinteraction[state=start]
