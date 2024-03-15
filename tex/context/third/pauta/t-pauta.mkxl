@@ -1,8 +1,8 @@
 %D \module
 %D   [       file=t-pauta,
-%D        version=2024.03.12,
-%D          title=\CONTEXT\ User Module,
-%D       subtitle=Create templates for calligraphy practice using METAPOST,
+%D        version=2024.03.14,
+%D          title=Pauta Module,
+%D       subtitle=Grids for calligraphy practice,
 %D         author=Andrés Conrado Montoya Acosta,
 %D           date=\currentdate,
 %D      copyright={Andrés Conrado Montoya Acosta},
@@ -17,7 +17,7 @@
 %C "Software"), to deal in the Software without restriction, including
 %C without limitation the rights to use, copy, modify, merge, publish,
 %C distribute, sublicense, and/or sell copies of the Software, and to
-%C permit persons to whom the Software is furnished to do so, subject to
+%C permit persons to whom the Software is furnished to do so, title to
 %C the following conditions:
 %C
 %C The above copyright notice and this permission notice shall be
@@ -31,35 +31,32 @@
 %C TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 %C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-\writestatus{loading}{Pauta (ver: 2024.03.12)}
+\writestatus{loading}{Pauta (ver: 2024.03.14)}
 
 \startmodule [pauta]
 \usemodule   [module-catcodes]
 \unprotectmodulecatcodes
 
-%D \subject{Setups}
+%D \title{Setups}
 %D
 %D We define a start/stop pair to configure the macro structure.
 %D Each \type{Pauta} call will have a "section" of sorts.
+
 \definestartstop[pauta][
   before={\page\start},
   after={\stop\page},
 ]
+
 %D We use setups to configure the top /  bottom marks for a Pauta page
 
 \startsetups pauta:layout:bottommarks
-  \setuplayout[top=\zeropoint,bottom=2\bodyfontsize]
+  \setuplayout[top=\zeropoint, bottom=2\bodyfontsize]
   \setupbottomtexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
 \startsetups pauta:layout:topmarks
-  \setuplayout[top=2\bodyfontsize,bottom=\zeropoint]
+  \setuplayout[top=2\bodyfontsize, bottom=\zeropoint]
   \setuptoptexts[\PAUTAinfoLeft][\PAUTAinfoRight]
-\stopsetups
-
-\startsetups pauta:layout:clearmarks
-\setupbottomtexts[][][][]
-\setuptoptexts[][][][]
 \stopsetups
 
 \startsetups pauta:content:leftmark
@@ -73,12 +70,12 @@
   \doifsomething{\PAUTAhandInfo}{\quad(\PAUTAhandInfo)}
 \stopsetups
 
-%D \subject{Pauta definition}
+%D \title{Pauta definition}
 %D
 %D We define the doPauta macro, that takes up to 16 arguments.
 %D All arguments are optional, they come with default values.
 %D If you want to disable the top / bottom text, you can
-%D use \type{infoLeft=,} and \type{infoRight=,}.
+%D use \type{infoLeft=, } and \type{infoRight=, }.
 %D
 %D Do not leave other variables blank. Just don't define them
 %D if you want to accept the defaults.
@@ -112,18 +109,20 @@
 %D This creates a macro for each config value, containing the value.
 %D We use these values to setup all the variables we need.
 %D
-%D Configure the bottom:
+%D Configure the info position:
 
   \doifelse{\PAUTAinfoPosition}{bottom}
     {\setup[pauta:layout:bottommarks]}
     {\setup[pauta:layout:topmarks]}
 
 %D Configure the colors:
+
   \definecolor[tertiaryColor] [\PAUTAtertiaryColor]
   \definecolor[mainColor]     [\PAUTAmainColor]
   \definecolor[secondaryColor][\PAUTAsecondaryColor]
 
 %D Setup MP variables:
+
   \setupMPvariables[pauta][
     displayNibs=\PAUTAdisplayNibs,
     displayAngleMarks=\PAUTAdisplayAngleMarks,
@@ -136,97 +135,85 @@
   ]
 
 %D Finally, draw the MP graphic {\em pauta} based on user settings.
-%D
-%C For now the \page(s) and \start...\stop seems to almost work,
-%C except for when it does not... Seems header and footers are tricky.
-%C I've tried other things but nothing has worked when combining
-%C Pauta with pages containing different content, i.e., a page
-%C with instructions at the start of the document.
-%C But I'm not sure yet if this is the proper way of handling it.
-%C Will ask in the mailing list about that.
-%C \footnote{As of march 13, 2024, I have not found answers to my questions}
+
   \startpauta\useMPgraphic{pauta}\stoppauta
+
 \stoptexdefinition
 
-%D Now we use the \type{\dosingleargument} macro, as explained at
+%D \title{Empty argument handling}
+%D
+%D We use the \type{\dosingleargument} macro to call doPauta, as explained at
 %D \goto{Handling Arguments}
-%D   [url(https://wiki.contextgarden.net/System_Macros/Handling_Arguments)]
+%D   [url(https://wiki.contextgarden.net/System_Macros/Handling_Arguments)].
+%D This helps us avoid issues with empty arguments.
+
 \starttexdefinition Pauta
   \dosingleargument\doPauta
 \stoptexdefinition
 
-%D We include the hatching.mp macro definitions to create a hatched pattern
-%D for the angled guides. So far can't find a better way of doing it.
+%D \title{\METAPOST\ macros}
 %D
+%D First, we include the hatching.mp macro definitions to create a hatched pattern
+%D for the nib angle guides.
 %D After that, we include all our vardefs that won't change between runs.
+
 \startMPinclusions
   % -------------------------------------------------------------------
   % hatching.mp
   % -------------------------------------------------------------------
-  %%% addto clip hatchfill hatchfill_
-  %%% numeric color
-  %%% length withcolor
-  % This is HATCHING.MP file defining a set of METAPOST macros for
-  % hatching interior of closed paths.
-  %
-  % Made in BOP, Gda\'nsk, Poland
+  % Made in BOP, Gdánsk, Poland
   % E-mail contact: B.Jackowski@gust.org.pl
   % Public domain software (no copyrights, copylefts, copyups, copydowns, etc.)
-  % Current version: 11.07.2000 -- ver 0.1 (pre-release)
   % Current version: 21.09.2000 -- ver 0.11 (ending semicolon
-  %    added in |extra_beginfig|; |hatchfill_| introduced in order
+  %    added in |extra_beginfig| ; |hatchfill_| introduced in order
   %    to make possible something like |def fill = hatchfill enddef|
-  def hatchfill_ expr c = addto currentpicture contour c _op_ enddef;
+  def hatchfill_ expr c = addto currentpicture contour c _op_ enddef ;
 
   vardef hatchfill text p =
-  save c_,p_; path p_; color c_[\\]; c_.num:=0;
-  save withcolor_; let withcolor_:=withcolor;
-  def withcolor = ; c_[incr c_.num]:= enddef;
-  p_:=p; let withcolor:=withcolor_;
-  for i_:=c_.num downto 1: % find the least ``true'' fill
-    c_.num':=i_; exitif bluepart(c_[i_])>0;
-  endfor
-  if c_.num>0:
-    for i_:=c_.num' upto c_.num:
-    if bluepart(c_[i_])<0: draw hatched(p_)c_[i_];
-    else: hatchfill_ p_ withcolor c_[i_]; fi
+    save c_, p_ ; path p_ ; color c_[\\] ; c_.num := 0 ;
+    save withcolor_ ; let withcolor_ := withcolor ;
+    def withcolor = ; c_[incr c_.num] := enddef ;
+    p_ := p ; let withcolor := withcolor_ ;
+    for i_ := c_.num downto 1: % find the least ``true'' fill
+      c_.num' := i_ ; exitif bluepart(c_[i_])>0 ;
     endfor
-  else: hatchfill_ p_; fi
-  enddef;
+    if c_.num>0:
+      for i_ := c_.num' upto c_.num:
+        if bluepart(c_[i_])<0: draw hatched(p_)c_[i_] ;
+        else: hatchfill_ p_ withcolor c_[i_] ; fi
+      endfor
+    else: hatchfill_ p_ ; fi
+  enddef ;
 
   vardef hatched(expr o) primary c =
-  save a_, b_, d_, l_, i_, r_, za_, zb_, zc_, zd_;
-  path b_; picture r_; pair za_, zb_, zc_, zd_;
-  r_:=image(
-    a_:=redpart(c) mod 180; l_:=greenpart(c); d_:=-bluepart(c);
-    b_:=o rotated -a_;
-    b_:=if a_>=90: (lrcorner b_--llcorner b_--ulcorner b_--urcorner b_--cycle)
-    else: (llcorner b_--lrcorner b_--urcorner b_--ulcorner b_--cycle) fi
-    rotated a_;
-    za_:=point 0 of b_; zb_:=point 1 of b_;
-    zc_:=point 2 of b_; zd_:=point 3 of b_;
-    if hatch_match>0:
-    n_:=round(length(zd_-za_)/l_); if n_<2: n_:=2; fi; l_:=length(zd_-za_)/n_;
-    else: n_:=length(zd_-za_)/l_; fi
-    % show (greenpart(c), l_);
-    for i_:=if hatch_match>0: 1 else: 0 fi upto ceiling n_-1:
-    draw_hatched_band((i_/n_)[zd_,za_],(i_/n_)[zc_,zb_],a_,l_,d_);
-    endfor
-  );
-  clip r_ to o; r_
-  enddef;
+    save a_, b_, d_, l_, i_, r_, za_, zb_, zc_, zd_ ;
+    path b_ ; picture r_ ; pair za_, zb_, zc_, zd_ ;
+    r_ := image(
+      a_ := redpart(c) mod 180 ; l_ := greenpart(c) ; d_ := -bluepart(c) ;
+      b_ := o rotated -a_ ;
+      b_ := if a_>=90: (lrcorner b_--llcorner b_--ulcorner b_--urcorner b_--cycle)
+      else: (llcorner b_--lrcorner b_--urcorner b_--ulcorner b_--cycle) fi
+      rotated a_ ;
+      za_ := point 0 of b_ ; zb_ := point 1 of b_ ;
+      zc_ := point 2 of b_ ; zd_ := point 3 of b_ ;
+      if hatch_match>0:
+        n_ := round(length(zd_-za_)/l_) ; if n_<2: n_ := 2 ; fi ; l_ := length(zd_-za_)/n_ ;
+      else: n_ := length(zd_-za_)/l_ ; fi
+      for i_ := if hatch_match>0: 1 else: 0 fi upto ceiling n_-1:
+        draw_hatched_band((i_/n_)[zd_, za_], (i_/n_)[zc_, zb_], a_, l_, d_) ;
+      endfor
+    ) ;
+    clip r_ to o ; r_
+  enddef ;
 
-  def draw_hatched_band(expr za,zb,a,l,d) = % normally, |a| and |l| are ignored
-  draw za--zb withpen pencircle scaled d _hop_;
-  enddef;
+  def draw_hatched_band(expr za, zb, a, l, d) = % normally, |a| and |l| are ignored
+    draw za--zb withpen pencircle scaled d _hop_ ;
+  enddef ;
 
-  def hatchoptions(text t) = def _hop_ = t enddef enddef;
+  def hatchoptions(text t) = def _hop_ = t enddef enddef ;
 
-  newinternal hatch_match; hatch_match:=1;
-  hatchoptions(); extra_beginfig:=extra_beginfig & ";hatchoptions();";
-
-  endinput
-  %%\end
+  newinternal hatch_match ; hatch_match := 1 ;
+  hatchoptions() ; extra_beginfig := extra_beginfig & " ;hatchoptions() ;" ;
 
   % -------------------------------------------------------------------
   % Vardefs
@@ -237,8 +224,8 @@
     for i = 0 upto lines :
       save endPos ; endPos := i*nibWidth ;
       save distance ; distance := endPos + startPosition ;
-      pair a; a := (0, distance) ;
-      pair b; b := (TextWidth, distance) ;
+      pair a ; a := (0, distance) ;
+      pair b ; b := (TextWidth, distance) ;
       draw a -- b withpen pencircle scaled thinLine
         withcolor secondaryColor ;
     endfor ;
@@ -311,6 +298,7 @@
 \stopMPinclusions
 
 %D Finally, we use the graphic, redefining the variables we need for each run.
+
 \startuseMPgraphic{pauta}
   % These variables will be recalculated every time we call the MPgraphic
   % and that's why I don't put them in the MPinclusions
@@ -329,7 +317,7 @@
   color tertiaryColor ; tertiaryColor = \MPcolor{tertiaryColor} ;
 
   % Text height (without footer or header)
-  numeric SimpleTextHeight ; SimpleTextHeight = TextHeight - (HeaderHeight + FooterHeight);
+  numeric SimpleTextHeight ; SimpleTextHeight = TextHeight - (HeaderHeight + FooterHeight) ;
 
   % Distance between lines (nib width)
   numeric nibWidth ; nibWidth = \MPvar{nibWidth} ;
