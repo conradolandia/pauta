@@ -12,24 +12,26 @@
 
 %C Copyright (c) 2024 Andrés Conrado Montoya Acosta
 %C
-%C Permission is hereby granted, free of charge, to any person obtaining
-%C a copy of this software and associated documentation files (the
-%C "Software"), to deal in the Software without restriction, including
-%C without limitation the rights to use, copy, modify, merge, publish,
-%C distribute, sublicense, and/or sell copies of the Software, and to
-%C permit persons to whom the Software is furnished to do so, title to
-%C the following conditions:
+%C Redistribution and use in source and binary forms, with or without
+%C modification, are permitted provided that the following conditions are met:
 %C
-%C The above copyright notice and this permission notice shall be
-%C included in all copies or substantial portions of the Software.
+%C 1. Redistributions of source code must retain the above copyright notice, this
+%C    list of conditions and the following disclaimer.
 %C
-%C THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-%C EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-%C MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-%C IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-%C CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-%C TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-%C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%C 2. Redistributions in binary form must reproduce the above copyright notice,
+%C    this list of conditions and the following disclaimer in the documentation
+%C    and/or other materials provided with the distribution.
+%C
+%C THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+%C AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+%C IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+%C DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+%C FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+%C DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+%C SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+%C CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+%C OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+%C OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 \writestatus{loading}{Pauta (ver: 2024.03.14)}
 
