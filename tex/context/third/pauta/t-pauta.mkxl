@@ -327,7 +327,7 @@
   color secondaryColor ; secondaryColor = \MPcolor{secondaryColor} ;
   color tertiaryColor ; tertiaryColor = \MPcolor{tertiaryColor} ;
 
-  % Text height (without footer or header)
+  % Text height without header or footer
   numeric SimpleTextHeight ; SimpleTextHeight = TextHeight - (HeaderHeight + FooterHeight) ;
 
   % Distance between lines (nib width)

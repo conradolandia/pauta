@@ -4,3 +4,4 @@ _*
 *.synctex
 README-*
 .vscode
+build.lua
