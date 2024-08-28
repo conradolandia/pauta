@@ -1,8 +1,8 @@
 # A Calligraphy Grid in ConTeXt/LMTX
 
 This project is a generator of grids for medieval calligraphy in
-[`\ConTeXt`{=tex}/LMTX](https://wiki.contextgarden.net/) and
-[`\MetaPost`{=tex}](https://wiki.contextgarden.net/MetaPost).
+[ConTeXt/LMTX](https://wiki.contextgarden.net/) and
+[MetaPost](https://wiki.contextgarden.net/MetaPost).
 
 ## Files included
 
