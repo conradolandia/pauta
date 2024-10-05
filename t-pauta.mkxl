@@ -32,12 +32,12 @@
 %C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 \startsetups pauta:layout:footermarks
-  \setuplayout[header=\zeropoint,footer={.07\paperheight}]
+  \setuplayout[header=\zeropoint,footer={.066\paperheight}]
   \setupfootertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
 \startsetups pauta:layout:headermarks
-  \setuplayout[header={.07\paperheight},footer=\zeropoint]
+  \setuplayout[header={.066\paperheight},footer=\zeropoint]
   \setupheadertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
