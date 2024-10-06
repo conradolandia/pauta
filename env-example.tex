@@ -17,7 +17,7 @@
 
 % Available modes
 % --mode=letter:v
-% --mode=letter:h (default)
+% --mode=letter:h
 \startsetups pauta:letterv
   \setuppapersize
     [letter]
@@ -30,8 +30,22 @@
     [letter,landscape]
 \stopsetups
 
+\definepapersize[octavo][width=25cm,height=35cm]
+
+\startsetups pauta:octavov
+  \setuppapersize[octavo][octavo]
+\stopsetups
+
+\startsetups pauta:octavoh
+  \setuppapersize
+    [octavo,landscape]
+    [octavo,landscape]
+\stopsetups
+
 \definemode[letter:v][keep]
 \definemode[letter:h][keep]
+\definemode[octavo:v][keep]
+\definemode[octavo:h][keep]
 
 \startmode[letter:v]
   \setup[pauta:letterv]
@@ -39,4 +53,12 @@
 
 \startmode[letter:h]
   \setup[pauta:letterh]
+\stopmode
+
+\startmode[octavo:v]
+  \setup[pauta:octavov]
+\stopmode
+
+\startmode[octavo:h]
+  \setup[pauta:octavoh]
 \stopmode

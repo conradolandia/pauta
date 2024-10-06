@@ -104,8 +104,8 @@
   input ./hatching.mp ;
 
   % Line thickness that won't change
-  numeric thinLine ; thinLine = 0.2mm ;
-  numeric thickLine ; thickLine = 0.4mm ;
+  numeric thinLine ; thinLine = 0.15mm ;
+  numeric thickLine ; thickLine = 0.3mm ;
 
   % -------------------------------------------------------------------
   % Vardefs
