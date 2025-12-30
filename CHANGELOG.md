@@ -11,30 +11,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automated installation script (`install-module.sh`) with version checking and conflict resolution
 - Release creation script (`make-release.sh`) for generating TDS-compliant ZIP archives
 - XML interface file (`t-pauta.xml`) for command documentation and editor support
-- Comprehensive `%D` documentation comments throughout the module source code
+- Added more `%D` documentation comments throughout the module source code
 - `.gitignore` patterns for build artifacts (`.log`, `.tuc`, `.tuo`, `README-md-*.tex`)
-- Support for custom header/footer content via `infoLeft` and `infoRight` parameters
+- Improved support for custom header/footer content via `infoLeft` and `infoRight` parameters
 
 ### Changed
 - **BREAKING**: Renamed `infoPosition` parameter values from `top`/`bottom` to `header`/`footer`
-- Replaced external `hatching.mp` dependency with pure MetaPost implementation
+- Replaced external `hatching.mp` dependency with pure MetaFun implementation
 - Improved module structure to fully comply with ConTeXt module writing guidelines
 - Updated module header version to `2025.12.30`
 - Enhanced README.md with installation instructions, development guidelines, and improved examples
 - Standardized variable naming (e.g., `nibWidth` instead of `nibwidth`)
 
 ### Fixed
-- Resolved "Incomplete string token" MetaPost error by removing dependency on `hatching.mp`
+- Resolved MetaPost errors by removing dependency on `hatching.mp`
 - Fixed MetaPost clipping mechanism in hatching implementation (using `image` blocks instead of direct `clip`)
 - Corrected version comparison logic in installation script to prevent premature exit
 - Updated documentation to reflect `header`/`footer` terminology instead of `top`/`bottom`
 
 ### Removed
-- External `hatching.mp` library (functionality reimplemented in pure MetaPost)
+- External `hatching.mp` library (functionality reimplemented in pure MetaFun)
 - Build artifacts and temporary files from repository
 
 ### Technical
-- Implemented custom `DrawHatching()` function using pure MetaPost/MetaFun
+- Implemented custom `DrawHatching()` function using pure MetaFun
 - All drawing operations now use native MetaPost without external dependencies
 - Module now fully TDS-compliant with proper directory structure
 
