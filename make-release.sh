@@ -26,6 +26,7 @@ echo "Copying top-level files..."
 cp VERSION "${RELEASE_DIR}/"
 cp README.md "${RELEASE_DIR}/"
 cp LICENSE "${RELEASE_DIR}/"
+cp CHANGELOG.md "${RELEASE_DIR}/"
 
 # Copy TDS structure
 echo "Copying TDS structure..."

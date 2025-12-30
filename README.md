@@ -33,6 +33,15 @@ pautado-context
 └── VERSION
 ```
 
+## Requirements
+
+- **ConTeXt/LMTX**: A recent version of ConTeXt is required. The module has been tested with ConTeXt version 2025.11.24 and later. You can check your ConTeXt version by running:
+  ```bash
+  context --version
+  ```
+
+- **Pandoc**: Required only if you want to regenerate the documentation PDF (`pauta-doc.pdf`). The pre-built PDF is included in the repository, so Pandoc is only needed for development purposes.
+
 ## Installation
 
 ### Option 1: Automated Installation Script
@@ -203,6 +212,15 @@ This script will:
 - Exclude build artifacts (`.log`, `.tuc`, `.tuo` files)
 - Include all documentation PDFs
 - Create `pauta-YYYY.MM.DD.zip` ready for upload to [modules.contextgarden.net](https://modules.contextgarden.net)
+
+### Building Documentation
+
+To regenerate the documentation PDF (`pauta-doc.pdf`), you'll need:
+
+1. **Pandoc**: For converting the README to ConTeXt format
+2. **ConTeXt**: For compiling the generated `.tex` file
+
+The documentation is generated from `README.md` using Pandoc.
 
 ### Module Structure
 
