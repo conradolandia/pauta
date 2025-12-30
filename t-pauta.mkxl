@@ -100,8 +100,6 @@
 \stoptexdefinition
 
 \startMPinclusions
-  % We use hatching.mp to draw the angle guides as a pattern fill
-  input ./hatching.mp ;
 
   % Line thickness that won't change
   numeric thinLine ; thinLine = 0.15mm ;
@@ -110,6 +108,47 @@
   % -------------------------------------------------------------------
   % Vardefs
   % -------------------------------------------------------------------
+
+  % Draw hatched lines at a specified angle
+  vardef DrawHatching(expr container, angle, spacing, penWidth) =
+    save rotatedContainer, rbbox, minY, maxY, numLines, i, yPos, hatchImage ;
+    
+    % Rotate container to horizontal for easier line drawing
+    path rotatedContainer ;
+    rotatedContainer := container rotated -angle ;
+    
+    % Get bounding box of rotated container
+    pair rbbox[] ;
+    rbbox[0] := llcorner rotatedContainer ;
+    rbbox[1] := lrcorner rotatedContainer ;
+    rbbox[2] := urcorner rotatedContainer ;
+    rbbox[3] := ulcorner rotatedContainer ;
+    
+    numeric minY, maxY ;
+    minY := min(ypart(rbbox[0]), ypart(rbbox[3])) ;
+    maxY := max(ypart(rbbox[1]), ypart(rbbox[2])) ;
+    numLines := ceiling((maxY - minY) / spacing) + 2 ;
+    
+    % Create an image with the hatching lines, then clip it
+    picture hatchImage ;
+    hatchImage := image(
+      for i = 0 upto numLines :
+        numeric yPos ;
+        yPos := minY + i * spacing ;
+        
+        % Create horizontal line in rotated space, then rotate back
+        path linePath ;
+        linePath := (xpart(rbbox[0]) - 10cm, yPos) -- (xpart(rbbox[1]) + 10cm, yPos) ;
+        linePath := linePath rotated angle ;
+        
+        draw linePath withpen pencircle scaled penWidth withcolor tertiaryColor dashed evenly ;
+      endfor
+    ) ;
+    
+    % Clip the image to the container and add to current picture
+    clip hatchImage to container ;
+    addto currentpicture also hatchImage ;
+  enddef ;
 
   % Draw a section (ascendant, x-height or descendant)
   vardef Section(expr lines, startPosition) =
@@ -175,10 +214,9 @@
         (TextWidth, ascendants) -- (TextWidth, startPosition) --
         cycle ;
 
-      % We use hatching.mp to fill the box with lines
-      % with the right angle, gap and pen
-      hatchoptions (withcolor tertiaryColor dashed evenly) ;
-      hatchfill angleContainer withcolor (nibAngle, nibWidth*3, -thinLine) ;
+      % Draw hatched lines at the specified angle to guide nib placement
+      numeric hatchSpacing ; hatchSpacing := nibWidth * 3 ;
+      DrawHatching(angleContainer, nibAngle, hatchSpacing, thinLine) ;
     fi ;
 
     % Return final position, adding interline space

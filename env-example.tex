@@ -7,7 +7,7 @@
   topspace={.03\paperheight},
   height={.93\paperheight},
   backspace={.03\paperwidth},
-  width={.93\paperwidth},
+  width=middle,
   margindistance=\zeropoint,
 ]
 
@@ -31,6 +31,7 @@
 \stopsetups
 
 \definepapersize[octavo][width=25cm,height=35cm]
+\definepapersize[medieval-folio][width=30cm,height=45cm]
 
 \startsetups pauta:octavov
   \setuppapersize[octavo][octavo]
@@ -42,10 +43,20 @@
     [octavo,landscape]
 \stopsetups
 
+\startsetups pauta:medieval-foliov
+  \setuppapersize[medieval-folio][medieval-folio]
+\stopsetups
+
+\startsetups pauta:medieval-folioh
+  \setuppapersize[medieval-folio,landscape][medieval-folio,landscape]
+\stopsetups
+
 \definemode[letter:v][keep]
 \definemode[letter:h][keep]
 \definemode[octavo:v][keep]
 \definemode[octavo:h][keep]
+\definemode[medieval-folio:v][keep]
+\definemode[medieval-folio:h][keep]
 
 \startmode[letter:v]
   \setup[pauta:letterv]
@@ -53,6 +64,14 @@
 
 \startmode[letter:h]
   \setup[pauta:letterh]
+\stopmode
+
+\startmode[medieval-folio:v]
+  \setup[pauta:medieval-foliov]
+\stopmode
+
+\startmode[medieval-folio:h]
+  \setup[pauta:medieval-folioh]
 \stopmode
 
 \startmode[octavo:v]

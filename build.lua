@@ -135,7 +135,7 @@ local tasks = {
 		"doc/context/third/pauta/pauta-example.tex",
 		nil,
 		nil,
-		"rm -f *.log && rm -f *.tuc && mv pauta-example.pdf doc/context/third/pauta/"
+		"rm -f *.log && rm -f *.tuc"
 	),
 }
 
