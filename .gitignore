@@ -1,7 +1,26 @@
+# Build artifacts (should not be in releases)
 *.log
 *.tuc
-_*
-*.synctex
-README-*
-.vscode
-build.lua
+*.tuo
+*.aux
+*.out
+
+# PDFs are excluded from code directory but included in doc directory
+tex/**/*.pdf
+
+# Temporary files
+*.bak
+*.sav
+*~
+
+# OS files
+.DS_Store
+__MACOSX
+.thumbs
+
+# Release files
+*.zip
+*-*.zip
+
+# Documentation intermediate files
+README-md-*.tex

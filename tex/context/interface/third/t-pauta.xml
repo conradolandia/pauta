@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cd:interface xmlns:cd="http://www.pragma-ade.com/commands" name="context/third/pauta" language="en" version="2025.12.30">
+
+<cd:command name="Pauta" file="t-pauta.mkxl">
+  <cd:sequence>
+    <cd:string value="Pauta"/>
+  </cd:sequence>
+  <cd:arguments>
+    <cd:assignments list="yes" optional="yes">
+      <cd:parameter name="hand">
+        <cd:constant type="cd:text"/>
+      </cd:parameter>
+      <cd:parameter name="handInfo">
+        <cd:constant type="cd:text"/>
+      </cd:parameter>
+      <cd:parameter name="infoPosition">
+        <cd:constant type="footer" default="yes"/>
+        <cd:constant type="header"/>
+      </cd:parameter>
+      <cd:parameter name="infoLeft">
+        <cd:constant type="cd:command"/>
+      </cd:parameter>
+      <cd:parameter name="infoRight">
+        <cd:constant type="cd:command"/>
+      </cd:parameter>
+      <cd:parameter name="displayNibs">
+        <cd:constant type="yes"/>
+        <cd:constant type="no" default="yes"/>
+      </cd:parameter>
+      <cd:parameter name="displayAngleMarks">
+        <cd:constant type="yes"/>
+        <cd:constant type="no" default="yes"/>
+      </cd:parameter>
+      <cd:parameter name="nibWidth">
+        <cd:constant type="cd:dimension" default="3mm"/>
+      </cd:parameter>
+      <cd:parameter name="nibAngle">
+        <cd:constant type="cd:number" default="35"/>
+      </cd:parameter>
+      <cd:parameter name="ascenders">
+        <cd:constant type="cd:number" default="3"/>
+      </cd:parameter>
+      <cd:parameter name="xHeight">
+        <cd:constant type="cd:number" default="4"/>
+      </cd:parameter>
+      <cd:parameter name="descenders">
+        <cd:constant type="cd:number" default="3"/>
+      </cd:parameter>
+      <cd:parameter name="adjustment">
+        <cd:constant type="cd:number" default="0"/>
+      </cd:parameter>
+      <cd:parameter name="mainColor">
+        <cd:constant type="cd:name"/>
+      </cd:parameter>
+      <cd:parameter name="secondaryColor">
+        <cd:constant type="cd:name"/>
+      </cd:parameter>
+      <cd:parameter name="tertiaryColor">
+        <cd:constant type="cd:name"/>
+      </cd:parameter>
+    </cd:assignments>
+  </cd:arguments>
+</cd:command>
+
+</cd:interface>
