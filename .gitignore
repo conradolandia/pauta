@@ -24,3 +24,6 @@ __MACOSX
 
 # Documentation intermediate files
 README-md-*.tex
+
+# Notes and other files
+_*
