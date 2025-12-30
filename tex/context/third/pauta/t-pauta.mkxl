@@ -1,289 +1,210 @@
 %D \module
 %D   [       file=t-pauta,
-%D        version=2024.03.14,
-%D          title=Pauta Module,
-%D       subtitle=Grids for calligraphy practice,
+%D        version=2024.03.02,
+%D          title=\CONTEXT\ User Module,
+%D       subtitle=Create templates for calligraphy practice using METAPOST,
 %D         author=Andrés Conrado Montoya Acosta,
 %D           date=\currentdate,
 %D      copyright={Andrés Conrado Montoya Acosta},
-%D          email=andresconrado@gmail.com,
-%D        license=MIT License]
+%D        email=andresconrado@gmail.com,
+%D      license=MIT License]
 %D
 
 %C Copyright (c) 2024 Andrés Conrado Montoya Acosta
 %C
-%C Redistribution and use in source and binary forms, with or without
-%C modification, are permitted provided that the following conditions are met:
+%C Permission is hereby granted, free of charge, to any person obtaining
+%C a copy of this software and associated documentation files (the
+%C "Software"), to deal in the Software without restriction, including
+%C without limitation the rights to use, copy, modify, merge, publish,
+%C distribute, sublicense, and/or sell copies of the Software, and to
+%C permit persons to whom the Software is furnished to do so, subject to
+%C the following conditions:
 %C
-%C 1. Redistributions of source code must retain the above copyright notice, this
-%C    list of conditions and the following disclaimer.
+%C The above copyright notice and this permission notice shall be
+%C included in all copies or substantial portions of the Software.
 %C
-%C 2. Redistributions in binary form must reproduce the above copyright notice,
-%C    this list of conditions and the following disclaimer in the documentation
-%C    and/or other materials provided with the distribution.
-%C
-%C THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-%C AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-%C IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-%C DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-%C FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-%C DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-%C SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-%C CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-%C OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-%C OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+%C THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+%C EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+%C MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+%C IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+%C CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+%C TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+%C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-\writestatus{loading}{t-pauta (ver: 2024.03.27)}
-
-\startmodule [pauta]
-\usemodule   [module-catcodes]
-\unprotectmodulecatcodes
-
-%D We define a start/stop pair to configure the macro structure.
-%D Each \type{Pauta} call will have a "section" of sorts.
-
-\definestartstop[pauta][
-  before={\page\start},
-  after={\stop\page},
-]
-
-%D We use setups to configure the top /  bottom marks for a Pauta page
-
-\startsetups pauta:layout:bottommarks
-  \setuplayout[top=\zeropoint, bottom=2\bodyfontsize]
-  \setupbottomtexts[\PAUTAinfoleft][\PAUTAinforight]
+\startsetups pauta:layout:footermarks
+  \setuplayout[header=\zeropoint,footer={.066\paperheight}]
+  \setupfootertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
-\startsetups pauta:layout:topmarks
-  \setuplayout[top=2\bodyfontsize, bottom=\zeropoint]
-  \setuptoptexts[\PAUTAinfoleft][\PAUTAinforight]
+\startsetups pauta:layout:headermarks
+  \setuplayout[header={.066\paperheight},footer=\zeropoint]
+  \setupheadertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
 \startsetups pauta:content:leftmark
-  Nib:\space\PAUTAnibwidth
-  \quad(\PAUTAascenders/\PAUTAxheight/\PAUTAdescenders)\quad
-  \PAUTAnibangle\textdegree{}
+  Nib:\space\PAUTAnibWidth
+  \quad(\PAUTAascenders/\PAUTAxHeight/\PAUTAdescenders)\quad
+  \PAUTAnibAngle\textdegree{}
 \stopsetups
 
 \startsetups pauta:content:rightmark
   \doifsomething{\PAUTAhand}{\PAUTAhand}
-  \doifsomething{\PAUTAhandinfo}{\quad(\PAUTAhandinfo)}
+  \doifsomething{\PAUTAhandInfo}{\quad(\PAUTAhandInfo)}
 \stopsetups
 
-%D We define the doPauta macro, that takes up to 16 arguments.
-%D All arguments are optional, they come with default values.
-%D If you want to disable the top / bottom text, you can
-%D use \type{infoleft=, } and \type{inforight=, }.
-%D
-%D Do not leave other variables blank. Just don't define them
-%D if you want to accept the defaults.
-%D
-%D We use \type{\getparameters} to, well, get the parameters.
-%D Created following the wiki article for
-%D \goto{Handling Arguments}
-%D   [url(https://wiki.contextgarden.net/System_Macros/Handling_Arguments)]
-
 \starttexdefinition nospaces doPauta [#1]
-  \getparameters[PAUTA] [
-    % Hand name. If not defined, will not show info on the left side of the top / bottom
-    hand=,
-    % Some extra info for the hand. If not defined, will not show info on the right side of the top / bottom
-    handinfo=,
-    % Where to show the extra info (top | bottom)
-    infoposition=bottom,
-    % If defined, will override autogenerated hand info on the left side of the bottom / top
-    infoleft={\setup{pauta:content:leftmark}},
-    % If defined, will override autogenerated hand info on the right side of the bottom / top
-    inforight={\setup{pauta:content:rightmark}},
-    % Show nib-width marks (true | false)
-    displaynibs=false,
-    % Display dotted guides for the nib angle (true | false)
-    displayanglemarks=false,
-    % Pen nib width
-    nibwidth=3mm,
-    % Nib working angle in degrees
-    nibangle=35,
-    % Number of ascender lines (in nib widths)
+  \getparameters[PAUTA]
+    [hand=,
+    handInfo=,
+    infoPosition=footer,
+    infoLeft={\setup{pauta:content:leftmark}},
+    infoRight={\setup{pauta:content:rightmark}},
+    displayNibs=false,
+    displayAngleMarks=false,
+    nibWidth=3mm,
+    nibAngle=35,
     ascenders=3,
-    % Number of x-height lines (in nib widths)
-    xheight=4,
-    % Number of descending lines (in nib widths)
+    xHeight=4,
     descenders=3,
-    % Sometimes it's necessary to adjust the height, because it can be longer than TextHeight. Still not sure why it happens but it happpens... a value of 1 or 2 should solve it.
     adjustment=0,
-    % Main color (lines that separate sections)
-    maincolor={s=.4},
-    % Secondary color (lines separated by a nib width)
-    secondarycolor={s=.6},
-    % Tertiary color (nib width marks on the left margin and dotted angle lines)
-    tertiarycolor={s=.8},
-    % We take the user defined values and overwrite our defaults
-    #1,
-  ]
+    mainColor={s=.4},
+    secondaryColor={s=.6},
+    tertiaryColor={s=.8},
+    #1]
 
-%D This creates a macro for each config value, containing the value.
-%D We use these values to setup all the variables we need.
-%D
-%D Setup MP variables:
+  \doifelse{\PAUTAinfoPosition}{footer}
+    {\setup[pauta:layout:footermarks]}
+    {\setup[pauta:layout:headermarks]}
+
+  \definecolor[tertiaryColor] [\PAUTAtertiaryColor]
+  \definecolor[mainColor]     [\PAUTAmainColor]
+  \definecolor[secondaryColor][\PAUTAsecondaryColor]
 
   \setupMPvariables[pauta][
-    displaynibs=\PAUTAdisplaynibs,
-    displayanglemarks=\PAUTAdisplayanglemarks,
-    nibwidth=\PAUTAnibwidth,
-    nibangle=\PAUTAnibangle,
+    displayNibs=\PAUTAdisplayNibs,
+    displayAngleMarks=\PAUTAdisplayAngleMarks,
+    nibWidth=\PAUTAnibWidth,
+    nibAngle=\PAUTAnibAngle,
     ascenders=\PAUTAascenders,
-    xheight=\PAUTAxheight,
+    xHeight=\PAUTAxHeight,
     descenders=\PAUTAdescenders,
     adjustment=\PAUTAadjustment,
   ]
 
-%D Configure the info position:
-
-  \doifelse{\PAUTAinfoposition}{bottom}
-    {\setup[pauta:layout:bottommarks]}
-    {\setup[pauta:layout:topmarks]}
-
-%D Configure the colors:
-
-  \definecolor[tertiarycolor] [\PAUTAtertiarycolor]
-  \definecolor[maincolor]     [\PAUTAmaincolor]
-  \definecolor[secondarycolor][\PAUTAsecondarycolor]
-
-%D Finally, draw the MP graphic {\em pauta} based on user settings.
-
-  \startpauta\useMPgraphic{pauta}\stoppauta
-
+  % Draw pauta
+  \page\start\useMPgraphic{pauta}\stop\page
 \stoptexdefinition
-
-%D We use the \type{\dosingleargument} macro to call doPauta, as explained at
-%D \goto{Handling Arguments}
-%D   [url(https://wiki.contextgarden.net/System_Macros/Handling_Arguments)].
-%D This helps us avoid issues with empty arguments.
 
 \starttexdefinition Pauta
   \dosingleargument\doPauta
 \stoptexdefinition
 
-%D First, we include the hatching.mp macro definitions to create a hatched pattern
-%D for the nib angle guides.
-%D After that, we include all our vardefs that won't change between runs.
-
 \startMPinclusions
-  % -------------------------------------------------------------------
-  % hatching.mp
-  % -------------------------------------------------------------------
-  % Made in BOP, Gdánsk, Poland
-  % E-mail contact: B.Jackowski@gust.org.pl
-  % Public domain software (no copyrights, copylefts, copyups, copydowns, etc.)
-  % Current version: 21.09.2000 -- ver 0.11 (ending semicolon
-  %    added in |extra_beginfig| ; |hatchfill_| introduced in order
-  %    to make possible something like |def fill = hatchfill enddef|
-  def hatchfill_ expr c = addto currentpicture contour c _op_ enddef ;
 
-  vardef hatchfill text p =
-    save c_, p_ ; path p_ ; color c_[\\] ; c_.num := 0 ;
-    save withcolor_ ; let withcolor_ := withcolor ;
-    def withcolor = ; c_[incr c_.num] := enddef ;
-    p_ := p ; let withcolor := withcolor_ ;
-    for i_ := c_.num downto 1: % find the least ``true'' fill
-      c_.num' := i_ ; exitif bluepart(c_[i_])>0 ;
-    endfor
-    if c_.num>0:
-      for i_ := c_.num' upto c_.num:
-        if bluepart(c_[i_])<0: draw hatched(p_)c_[i_] ;
-        else: hatchfill_ p_ withcolor c_[i_] ; fi
-      endfor
-    else: hatchfill_ p_ ; fi
-  enddef ;
-
-  vardef hatched(expr o) primary c =
-    save a_, b_, d_, l_, i_, r_, za_, zb_, zc_, zd_ ;
-    path b_ ; picture r_ ; pair za_, zb_, zc_, zd_ ;
-    r_ := image(
-      a_ := redpart(c) mod 180 ; l_ := greenpart(c) ; d_ := -bluepart(c) ;
-      b_ := o rotated -a_ ;
-      b_ := if a_>=90: (lrcorner b_--llcorner b_--ulcorner b_--urcorner b_--cycle)
-      else: (llcorner b_--lrcorner b_--urcorner b_--ulcorner b_--cycle) fi
-      rotated a_ ;
-      za_ := point 0 of b_ ; zb_ := point 1 of b_ ;
-      zc_ := point 2 of b_ ; zd_ := point 3 of b_ ;
-      if hatch_match>0:
-        n_ := round(length(zd_-za_)/l_) ; if n_<2: n_ := 2 ; fi ; l_ := length(zd_-za_)/n_ ;
-      else: n_ := length(zd_-za_)/l_ ; fi
-      for i_ := if hatch_match>0: 1 else: 0 fi upto ceiling n_-1:
-        draw_hatched_band((i_/n_)[zd_, za_], (i_/n_)[zc_, zb_], a_, l_, d_) ;
-      endfor
-    ) ;
-    clip r_ to o ; r_
-  enddef ;
-
-  def draw_hatched_band(expr za, zb, a, l, d) = % normally, |a| and |l| are ignored
-    draw za--zb withpen pencircle scaled d _hop_ ;
-  enddef ;
-
-  def hatchoptions(text t) = def _hop_ = t enddef enddef ;
-
-  newinternal hatch_match ; hatch_match := 1 ;
-  hatchoptions() ; extra_beginfig := extra_beginfig & " ;hatchoptions() ;" ;
+  % Line thickness that won't change
+  numeric thinLine ; thinLine = 0.15mm ;
+  numeric thickLine ; thickLine = 0.3mm ;
 
   % -------------------------------------------------------------------
   % Vardefs
   % -------------------------------------------------------------------
+
+  % Draw hatched lines at a specified angle
+  vardef DrawHatching(expr container, angle, spacing, penWidth) =
+    save rotatedContainer, rbbox, minY, maxY, numLines, i, yPos, hatchImage ;
+    
+    % Rotate container to horizontal for easier line drawing
+    path rotatedContainer ;
+    rotatedContainer := container rotated -angle ;
+    
+    % Get bounding box of rotated container
+    pair rbbox[] ;
+    rbbox[0] := llcorner rotatedContainer ;
+    rbbox[1] := lrcorner rotatedContainer ;
+    rbbox[2] := urcorner rotatedContainer ;
+    rbbox[3] := ulcorner rotatedContainer ;
+    
+    numeric minY, maxY ;
+    minY := min(ypart(rbbox[0]), ypart(rbbox[3])) ;
+    maxY := max(ypart(rbbox[1]), ypart(rbbox[2])) ;
+    numLines := ceiling((maxY - minY) / spacing) + 2 ;
+    
+    % Create an image with the hatching lines, then clip it
+    picture hatchImage ;
+    hatchImage := image(
+      for i = 0 upto numLines :
+        numeric yPos ;
+        yPos := minY + i * spacing ;
+        
+        % Create horizontal line in rotated space, then rotate back
+        path linePath ;
+        linePath := (xpart(rbbox[0]) - 10cm, yPos) -- (xpart(rbbox[1]) + 10cm, yPos) ;
+        linePath := linePath rotated angle ;
+        
+        draw linePath withpen pencircle scaled penWidth withcolor tertiaryColor dashed evenly ;
+      endfor
+    ) ;
+    
+    % Clip the image to the container and add to current picture
+    clip hatchImage to container ;
+    addto currentpicture also hatchImage ;
+  enddef ;
+
   % Draw a section (ascendant, x-height or descendant)
   vardef Section(expr lines, startPosition) =
     % Draw section lines
     for i = 0 upto lines :
-      save endPos ; endPos := i*nibwidth ;
+      save endPos ; endPos := i*nibWidth ;
       save distance ; distance := endPos + startPosition ;
-      pair a ; a := (0, distance) ;
-      pair b ; b := (TextWidth, distance) ;
+      pair a; a := (0, distance) ;
+      pair b; b := (TextWidth, distance) ;
       draw a -- b withpen pencircle scaled thinLine
-        withcolor secondarycolor ;
+        withcolor secondaryColor ;
     endfor ;
 
     % Draw section separators
     draw (0, startPosition) -- (TextWidth, startPosition)
       withpen pencircle scaled thickLine
-      withcolor maincolor ;
+      withcolor mainColor ;
 
     draw (0, distance) -- (TextWidth, distance)
       withpen pencircle scaled thickLine
-      withcolor maincolor ;
+      withcolor mainColor ;
 
     % Return the distance
     distance
   enddef ;
 
   % Draw a line with three sections
-  vardef TextLine(expr startPosition, ascendant, xheight, descendant) =
-    if displaynibs = true :
+  vardef TextLine(expr startPosition, ascendant, xHeight, descendant) =
+    if displayNibs = true :
       % Calculate nib-width marks
-      numeric lines ; lines := descendant + ascendant + xheight ;
+      numeric lines ; lines := descendant + ascendant + xHeight ;
       numeric nibs ; nibs := lines - 1 ;
       % Display nib-width marks
       for i = 0 upto nibs :
-        numeric nib ; nib := i * nibwidth + startPosition ;
-        fill unitsquare scaled nibwidth shifted
+        numeric nib ; nib := i * nibWidth + startPosition ;
+        fill unitsquare scaled nibWidth shifted
           (if (i mod 2 = 0) :
             (0, nib)
           else:
-            (nibwidth, nib)
-          fi) withcolor tertiarycolor ;
+            (nibWidth, nib)
+          fi) withcolor tertiaryColor ;
       endfor ;
     fi ;
 
     % Draw the three sections
-    numeric descendants, xheights, ascendants ;
+    numeric descendants, xHeights, ascendants ;
     descendants := Section(descendant, startPosition) ;
-    xheights := Section(xheight, descendants) ;
-    ascendants := Section(ascendant, xheights) ;
+    xHeights := Section(xHeight, descendants) ;
+    ascendants := Section(ascendant, xHeights) ;
 
     % Draw a rectangle to contain dotted angle guides
     numeric space ;
 
-    if displayanglemarks = true :
-      if displaynibs :
-        space := nibwidth * 2 ;
+    if displayAngleMarks = true :
+      if displayNibs :
+        space := nibWidth * 2 ;
       else :
         space := 0 ;
       fi ;
@@ -293,51 +214,44 @@
         (TextWidth, ascendants) -- (TextWidth, startPosition) --
         cycle ;
 
-      % We use hatching.mp to fill the box with lines
-      % with the right angle, gap and pen
-      hatchoptions (withcolor tertiarycolor dashed evenly) ;
-      hatchfill angleContainer withcolor (nibangle, nibwidth*3, -thinLine) ;
+      % Draw hatched lines at the specified angle to guide nib placement
+      numeric hatchSpacing ; hatchSpacing := nibWidth * 3 ;
+      DrawHatching(angleContainer, nibAngle, hatchSpacing, thinLine) ;
     fi ;
 
     % Return final position, adding interline space
-    ascendants + nibwidth * 2
+    ascendants + nibWidth * 2
   enddef ;
-
-  % Line thickness that won't change
-  numeric thinLine ; thinLine = 0.2mm ;
-  numeric thickLine ; thickLine = 0.4mm ;
 \stopMPinclusions
-
-%D Finally, we use the graphic, redefining the variables we need for each run.
 
 \startuseMPgraphic{pauta}
   % These variables will be recalculated every time we call the MPgraphic
   % and that's why I don't put them in the MPinclusions
 
   % Display square nib-width marks at line start?
-  boolean displaynibs ;
-  if known \MPvar{displaynibs} :
-    displaynibs = \MPvar{displaynibs} ;
+  boolean displayNibs ;
+  if known \MPvar{displayNibs} :
+    displayNibs = \MPvar{displayNibs} ;
   else :
-    displaynibs = false ;
+    displayNibs = false ;
   fi ;
 
   % Color settings
-  color maincolor ; maincolor = \MPcolor{maincolor} ;
-  color secondarycolor ; secondarycolor = \MPcolor{secondarycolor} ;
-  color tertiarycolor ; tertiarycolor = \MPcolor{tertiarycolor} ;
+  color mainColor ; mainColor = \MPcolor{mainColor} ;
+  color secondaryColor ; secondaryColor = \MPcolor{secondaryColor} ;
+  color tertiaryColor ; tertiaryColor = \MPcolor{tertiaryColor} ;
 
-  % Text height without header or footer
-  numeric SimpleTextHeight ; SimpleTextHeight = TextHeight - (HeaderHeight + FooterHeight) ;
+  % Text height (without footers or headers)
+  numeric SimpleTextHeight ; SimpleTextHeight = TextHeight - (HeaderHeight + FooterHeight);
 
   % Distance between lines (nib width)
-  numeric nibwidth ; nibwidth = \MPvar{nibwidth} ;
+  numeric nibWidth ; nibWidth = \MPvar{nibWidth} ;
 
   % Ascenders
   numeric ascenders ; ascenders = \MPvar{ascenders} ;
 
   % X-Height
-  numeric xheight ; xheight = \MPvar{xheight} ;
+  numeric xHeight ; xHeight = \MPvar{xHeight} ;
 
   % Descenders
   numeric descenders ; descenders = \MPvar{descenders} ;
@@ -346,7 +260,7 @@
   numeric adjustment ; adjustment = \MPvar{adjustment} ;
 
   % Full line height
-  numeric lineHeight ; lineHeight = (ascenders + xheight + descenders + adjustment) * nibwidth ;
+  numeric lineHeight ; lineHeight = (ascenders + xHeight + descenders + adjustment) * nibWidth ;
 
   % Available lines
   numeric availableLines ; availableLines = floor(SimpleTextHeight / lineHeight) ;
@@ -355,19 +269,17 @@
   numeric startPosition ; startPosition = 0 ;
 
   % Nib-width angle
-  boolean displayanglemarks ;
-  if known \MPvar{displayanglemarks} :
-    displayanglemarks := \MPvar{displayanglemarks} ;
+  boolean displayAngleMarks ;
+  if known \MPvar{displayAngleMarks} :
+    displayAngleMarks := \MPvar{displayAngleMarks} ;
   else :
-    displayanglemarks := false ;
+    displayAngleMarks := false ;
   fi ;
 
-  numeric nibangle ; nibangle = \MPvar{nibangle} ;
+  numeric nibAngle ; nibAngle = \MPvar{nibAngle} ;
 
   % Draw a page
   for i=1 upto availableLines :
-    startPosition := TextLine(startPosition, ascenders, xheight, descenders) ;
+    startPosition := TextLine(startPosition, ascenders, xHeight, descenders) ;
   endfor ;
 \stopuseMPgraphic
-
-\stopmodule
