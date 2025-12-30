@@ -31,27 +31,57 @@
 %C TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 %C SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+%D We use setups to configure the header / footer marks for a Pauta page.
+%D These setups control where the hand information is displayed.
+
+%D Setup for displaying marks in the footer
 \startsetups pauta:layout:footermarks
   \setuplayout[header=\zeropoint,footer={.066\paperheight}]
   \setupfootertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
+%D Setup for displaying marks in the header
 \startsetups pauta:layout:headermarks
   \setuplayout[header={.066\paperheight},footer=\zeropoint]
   \setupheadertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
+%D Content for the left side of the header/footer.
+%D Displays: Nib width, (ascenders/xHeight/descenders), and nib angle.
 \startsetups pauta:content:leftmark
   Nib:\space\PAUTAnibWidth
   \quad(\PAUTAascenders/\PAUTAxHeight/\PAUTAdescenders)\quad
   \PAUTAnibAngle\textdegree{}
 \stopsetups
 
+%D Content for the right side of the header/footer.
+%D Displays: Hand name and hand information (if provided).
 \startsetups pauta:content:rightmark
   \doifsomething{\PAUTAhand}{\PAUTAhand}
   \doifsomething{\PAUTAhandInfo}{\quad(\PAUTAhandInfo)}
 \stopsetups
 
+%D Main macro that processes the \type{\Pauta} command.
+%D Takes optional key-value arguments to configure the calligraphy grid.
+%D All parameters are optional and have default values.
+%D
+%D Parameters:
+%D - hand: Name of the calligraphic hand (e.g., "Carolingian")
+%D - handInfo: Additional information about the hand
+%D - infoPosition: Where to display info (footer | header), default: footer
+%D - infoLeft: Custom left-side content (overrides default)
+%D - infoRight: Custom right-side content (overrides default)
+%D - displayNibs: Show nib-width marks (true | false), default: false
+%D - displayAngleMarks: Show angle guide lines (true | false), default: false
+%D - nibWidth: Width of the pen nib (with units), default: 3mm
+%D - nibAngle: Angle of the nib in degrees, default: 35
+%D - ascenders: Number of ascender lines (in nib widths), default: 3
+%D - xHeight: Number of x-height lines (in nib widths), default: 4
+%D - descenders: Number of descender lines (in nib widths), default: 3
+%D - adjustment: Line height adjustment factor, default: 0
+%D - mainColor: Color for main separator lines, default: {s=.4}
+%D - secondaryColor: Color for secondary lines, default: {s=.6}
+%D - tertiaryColor: Color for nib marks and angle guides, default: {s=.8}
 \starttexdefinition nospaces doPauta [#1]
   \getparameters[PAUTA]
     [hand=,
@@ -95,9 +125,14 @@
   \page\start\useMPgraphic{pauta}\stop\page
 \stoptexdefinition
 
+%D Public interface macro. Uses \type{\dosingleargument} to handle
+%D optional arguments properly, avoiding issues with empty arguments.
 \starttexdefinition Pauta
   \dosingleargument\doPauta
 \stoptexdefinition
+
+%D We include all our vardefs that won't change between runs.
+%D These are the MetaPost functions and constants used to draw the grid.
 
 \startMPinclusions
 
@@ -109,7 +144,12 @@
   % Vardefs
   % -------------------------------------------------------------------
 
-  % Draw hatched lines at a specified angle
+  % Draw hatched lines at a specified angle to guide nib placement.
+  % Parameters:
+  % - container: Path defining the area to fill with hatching
+  % - angle: Angle in degrees for the hatching lines
+  % - spacing: Distance between hatching lines
+  % - penWidth: Thickness of the hatching lines
   vardef DrawHatching(expr container, angle, spacing, penWidth) =
     save rotatedContainer, rbbox, minY, maxY, numLines, i, yPos, hatchImage ;
     
@@ -150,7 +190,11 @@
     addto currentpicture also hatchImage ;
   enddef ;
 
-  % Draw a section (ascendant, x-height or descendant)
+  % Draw a section of the grid (ascender, x-height, or descender area).
+  % Parameters:
+  % - lines: Number of lines to draw in this section (in nib widths)
+  % - startPosition: Vertical position where the section starts
+  % Returns: The vertical position where the section ends
   vardef Section(expr lines, startPosition) =
     % Draw section lines
     for i = 0 upto lines :
@@ -175,7 +219,14 @@
     distance
   enddef ;
 
-  % Draw a line with three sections
+  % Draw a complete text line with three sections (descenders, x-height, ascenders).
+  % Also draws nib-width marks and angle guides if enabled.
+  % Parameters:
+  % - startPosition: Vertical position where the line starts
+  % - ascendant: Number of ascender lines (in nib widths)
+  % - xHeight: Number of x-height lines (in nib widths)
+  % - descendant: Number of descender lines (in nib widths)
+  % Returns: The vertical position for the next line (with interline spacing)
   vardef TextLine(expr startPosition, ascendant, xHeight, descendant) =
     if displayNibs = true :
       % Calculate nib-width marks
@@ -223,6 +274,10 @@
     ascendants + nibWidth * 2
   enddef ;
 \stopMPinclusions
+
+%D Finally, we use the graphic, redefining the variables we need for each run.
+%D These variables are recalculated every time the graphic is called,
+%D which is why they're not in the MPinclusions section.
 
 \startuseMPgraphic{pauta}
   % These variables will be recalculated every time we call the MPgraphic
