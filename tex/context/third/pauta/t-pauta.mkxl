@@ -36,13 +36,13 @@
 
 %D Setup for displaying marks in the footer
 \startsetups pauta:layout:footermarks
-  \setuplayout[header=\zeropoint,footer={.066\paperheight}]
+  \setuplayout[header=\zeropoint,footer={4\baselineskip}]
   \setupfootertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
 %D Setup for displaying marks in the header
 \startsetups pauta:layout:headermarks
-  \setuplayout[header={.066\paperheight},footer=\zeropoint]
+  \setuplayout[header={4\baselineskip},footer=\zeropoint]
   \setupheadertexts[\PAUTAinfoLeft][\PAUTAinfoRight]
 \stopsetups
 
