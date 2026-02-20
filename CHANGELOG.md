@@ -5,6 +5,22 @@ All notable changes to the `pauta` module will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Planned
+- Proper reset of header/footer typesetting areas after module use
+- Additional customization options
+- Performance optimizations
+
+---
+
+## [2026.02.20] - 2026-02-20
+
+### Fixed
+- ZIP archive structure: removed versioned top-level directory (`pauta-YYYY.MM.DD/`) so that `mtxrun --script install-modules --install pauta` installs correctly into `texmf-modules`. The zip now has TDS structure (`tex/`, `doc/`) at root level as required by the ConTeXt module installer.
+
+---
+
 ## [2025.12.30] - 2025-12-30
 
 ### Added
@@ -51,22 +67,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Converted from standalone script to ConTeXt module structure
 - Improved code organization and modularity
-
----
-
-## [2026.02.20] - 2026-02-20
-
-### Fixed
-- ZIP archive structure: removed versioned top-level directory (`pauta-YYYY.MM.DD/`) so that `mtxrun --script install-modules --install pauta` installs correctly into `texmf-modules`. The zip now has TDS structure (`tex/`, `doc/`) at root level as required by the ConTeXt module installer.
-
----
-
-## [Unreleased]
-
-### Planned
-- Proper reset of header/footer typesetting areas after module use
-- Additional customization options
-- Performance optimizations
 
 ---
 
