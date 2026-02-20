@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<cd:interface xmlns:cd="http://www.pragma-ade.com/commands" name="context/third/pauta" language="en" version="2025.12.30">
+<cd:interface xmlns:cd="http://www.pragma-ade.com/commands" name="context/third/pauta" language="en" version="2026.02.20">
 
 <cd:command name="Pauta" file="t-pauta.mkxl">
   <cd:sequence>

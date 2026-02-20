@@ -1,6 +1,10 @@
 #!/bin/bash
 # Task manager script for creating ConTeXt module releases
 # Based on guidelines from: https://wiki.contextgarden.net/ConTeXt_and_Lua_programming/Module_writing
+#
+# IMPORTANT: The zip must have TDS structure (tex/, doc/) at root level, with NO
+# versioned top-level directory. This is required for mtxrun --script install-modules
+# to install correctly into texmf-modules (see wiki.contextgarden.net/Input_and_compilation/Modules).
 
 set -e
 
@@ -8,7 +12,7 @@ MODULE_NAME="pauta"
 VERSION=$(cat VERSION | tr -d '\n')
 RELEASE_NAME="${MODULE_NAME}-${VERSION}"
 TEMP_DIR=$(mktemp -d)
-RELEASE_DIR="${TEMP_DIR}/${RELEASE_NAME}"
+RELEASE_DIR="${TEMP_DIR}/tds"
 
 # Colors for output
 RED='\033[0;31m'
@@ -18,21 +22,17 @@ NC='\033[0m' # No Color
 
 echo -e "${GREEN}Creating release: ${RELEASE_NAME}${NC}"
 
-# Create release directory structure
-mkdir -p "${RELEASE_DIR}"
+# Create TDS structure at root (no versioned wrapper - required for install-modules)
+mkdir -p "${RELEASE_DIR}/doc/context/third/${MODULE_NAME}"
+mkdir -p "${RELEASE_DIR}/tex/context/third/${MODULE_NAME}"
+mkdir -p "${RELEASE_DIR}/tex/context/interface/third"
 
-# Copy top-level files
+# Copy top-level files (optional; end up in texmf-modules root)
 echo "Copying top-level files..."
 cp VERSION "${RELEASE_DIR}/"
 cp README.md "${RELEASE_DIR}/"
 cp LICENSE "${RELEASE_DIR}/"
 cp CHANGELOG.md "${RELEASE_DIR}/"
-
-# Copy TDS structure
-echo "Copying TDS structure..."
-mkdir -p "${RELEASE_DIR}/doc/context/third/${MODULE_NAME}"
-mkdir -p "${RELEASE_DIR}/tex/context/third/${MODULE_NAME}"
-mkdir -p "${RELEASE_DIR}/tex/context/interface/third"
 
 # Copy documentation (exclude build artifacts, but keep PDFs for documentation)
 echo "Copying documentation..."
@@ -51,10 +51,10 @@ if [ -f "tex/context/interface/third/t-${MODULE_NAME}.xml" ]; then
   cp "tex/context/interface/third/t-${MODULE_NAME}.xml" "${RELEASE_DIR}/tex/context/interface/third/"
 fi
 
-# Create ZIP archive
+# Create ZIP archive with TDS root at top level (tex/, doc/ directly in zip)
 echo "Creating ZIP archive..."
-cd "${TEMP_DIR}"
-zip -r "${RELEASE_NAME}.zip" "${RELEASE_NAME}" > /dev/null
+cd "${RELEASE_DIR}"
+zip -r "${TEMP_DIR}/${RELEASE_NAME}.zip" . -x "*.DS_Store" > /dev/null
 cd - > /dev/null
 
 # Move ZIP to current directory

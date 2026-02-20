@@ -54,6 +54,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2026.02.20] - 2026-02-20
+
+### Fixed
+- ZIP archive structure: removed versioned top-level directory (`pauta-YYYY.MM.DD/`) so that `mtxrun --script install-modules --install pauta` installs correctly into `texmf-modules`. The zip now has TDS structure (`tex/`, `doc/`) at root level as required by the ConTeXt module installer.
+
+---
+
 ## [Unreleased]
 
 ### Planned
@@ -63,5 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[2026.02.20]: https://github.com/conradolandia/pauta/compare/v2025.12.30...v2026.02.20
 [2025.12.30]: https://github.com/conradolandia/pauta/compare/v2024.03.02...v2025.12.30
 [2024.03.02]: https://github.com/conradolandia/pauta/releases/tag/v2024.03.02
